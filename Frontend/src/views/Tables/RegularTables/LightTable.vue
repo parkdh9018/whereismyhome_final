@@ -4,7 +4,7 @@
             <h3 class="mb-0">공지사항</h3>
 
          
-        <a href="#!" class="btn btn-outline-success float-righ" style="float: right;">글쓰기</a>
+        <a href="#!" class="btn btn-outline-success float-right" >글쓰기</a>
         
         </b-card-header>
 

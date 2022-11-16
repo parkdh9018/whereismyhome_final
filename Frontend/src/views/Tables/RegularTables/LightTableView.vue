@@ -1,6 +1,6 @@
 <template>
     <b-card no-body>
-     
+     <b-container>
     <b-row class="mt-4">
       <b-col>
         <stats-card  type="gradient-red" :sub-title="board.subject" :title="board.regtime" icon="ni ni-active-40" class="mb-4">
@@ -13,14 +13,25 @@
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
-        <b-button class="btn btn-outline-success-sm float-righ" variant="outline-primary" @click="moveList">목록</b-button>
+        <b-button variant="success" @click="moveList">목록</b-button>
       </b-col>
       <b-col class="text-right">
-        <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2">글수정</b-button>
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle">글삭제</b-button>
+        <b-button variant="success" @click="moveModifyArticle" class="mr-2">글수정</b-button>
+        <b-button variant="success" @click="deleteArticle">글삭제</b-button>
       </b-col>
     </b-row>
-
+      <div class=" mt-3">
+        <b-row>
+          <b-col-6 >
+        <b-form-group label="Comments" label-class="form-control-label" class="mb-0" label-for="about-form-textaria">
+          <b-form-textarea rows="2" value="댓글을 입력해주세요." id="about-form-textaria"></b-form-textarea>
+        </b-form-group>
+      </b-col-6>
+      <b-col-2>
+        <b-button variant="success" @click="moveModifyArticle" class="mr-2">글수정</b-button>
+      </b-col-2>
+      </b-row>
+      </div>
     <!-- 댓글 -->
     <comment-write :articleno="this.articleno" />
     <comment-write
@@ -29,7 +40,7 @@
       @modify-comment-cancel="onModifyCommentCancel"
     />
     <comment v-for="(comment, index) in comments" :key="index" :comment="comment" @modify-comment="onModifyComment" />
-
+  </b-container>
     </b-card>
 </template>
 <script>
