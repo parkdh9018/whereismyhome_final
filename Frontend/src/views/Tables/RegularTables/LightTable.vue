@@ -1,12 +1,16 @@
 <template>
     <b-card no-body>
         <b-card-header class="border-0">
-            <h3 class="mb-0">Light table</h3>
+            <h3 class="mb-0">공지사항</h3>
+
+         
+        <a href="#!" class="btn btn-outline-success float-righ" style="float: right;">글쓰기</a>
+        
         </b-card-header>
 
         <el-table class="table-responsive table"  header-row-class-name="thead-light" :data="boards" @row-click="rowClick">
             
-            <el-table-column label="articleno" min-width="100px" prop="articleno" @click="movePage">
+            <el-table-column label="articleno" min-width="100px" prop="articleno" >
             </el-table-column>
 
             <el-table-column label="subject" min-width="400px" prop="subject" >
@@ -18,7 +22,7 @@
             </el-table-column>
             
         </el-table>
-
+        
         <b-card-footer class="py-4 d-flex justify-content-end">
             <base-pagination v-model="currentPage" :per-page="10" :total="50"></base-pagination>
         </b-card-footer>
@@ -43,8 +47,9 @@ import { mapGetters } from "vuex";
     this.$store.dispatch("getBoards");
     },
     methods: {
-        rowClick() {
-            console.log("hi");
+        rowClick(row) {
+          console.log("hi");
+          this.$router.push(`/tables/view?articleno=${row.articleno}`);
         },
         
     },

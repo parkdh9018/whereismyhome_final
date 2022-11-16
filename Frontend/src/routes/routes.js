@@ -33,19 +33,19 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue')
       },
       {
-        path: '/tables',
+        path: 'tables',
         name: 'tables',
-        component: () => import('../views/RegularTables.vue'),
+        component: () => import('../views/RegularTables'),
         children: [
           {
             path: "",
             name: "boardlist",
-            component: () => import(`../views/RegularTables.vue`),
+            component: () => import(`../views/Tables/RegularTables/LightTable.vue`),
           },
           {
             path: "view",
             name: "boardview",
-            component: () => import(`../views/RegularTables.vue`),
+            component: () => import("../views/Tables/RegularTables/LightTableView.vue"),
           },
           
         ]
