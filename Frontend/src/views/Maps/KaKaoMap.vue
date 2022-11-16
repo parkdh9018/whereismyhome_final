@@ -15,11 +15,15 @@
 <script>
 import axios from "axios";
 import MapMenu from "./MapMenu.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "KakaoMap",
   components: {
     MapMenu,
+  },
+  computed: {
+    ...mapGetters(["aptlist"]),
   },
   data() {
     return {
@@ -119,15 +123,13 @@ export default {
 
       if (this.level > 3) return;
 
-      axios
-        .get(
-          `http://localhost:9999/vue/map/apt/nearby?lat1=${this.southwest.getLat()}&lng1=${this.southwest.getLng()}&lat2=${this.northeast.getLat()}&lng2=${this.northeast.getLng()}&`
-        )
-        .then((response) => {
-          const aptlist = response.data;
-          console.log(aptlist);
-
-          aptlist.forEach((apt) => {
+      this.$store
+        .dispatch("getaptlist_move", [
+          bounds.getSouthWest(),
+          bounds.getNorthEast(),
+        ])
+        .then(() => {
+          this.aptlist.forEach((apt) => {
             this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
           });
         });
@@ -140,37 +142,6 @@ export default {
       this.markers.push(marker);
       this.clusterer.addMarker(marker);
     },
-
-    // async getPositions(address_init, aptlist) {
-    //   let positions = [];
-
-    //   const promises = aptlist.map(async (apt) => {
-    //     const address = address_init + " " + (apt.법정동 ?? "") + " " + (apt.지번 ?? "");
-    //     return await this.searchPosition(address)
-    //       .then((pos) => {
-    //         positions.push(pos);
-    //       })
-    //       .catch((err) => console.log(err));
-    //   });
-    //   await Promise.all(promises);
-    //   return positions;
-    // },
-
-    // 마커들 만들기
-    // makeMarkers(positions) {
-    //   const markers = positions.map(
-    //     (position) =>
-    //       new kakao.maps.Marker({
-    //         map: this.map,
-    //         position,
-    //       })
-    //   );
-
-    //   this.clusterer.addMarkers(markers);
-    //   const bounds = positions.reduce((bounds, latlng) => bounds.extend(latlng), new kakao.maps.LatLngBounds());
-
-    //   this.map.setBounds(bounds);
-    // },
 
     // 주소로 위도, 경도 찾는 함수
     searchPosition(address) {

@@ -158,10 +158,5 @@ export default {
       });
     },
   },
-  mounted() {
-    GoogleMapsLoader.load((google) => {
-      this.initMap(google);
-    });
-  },
 };
 </script>

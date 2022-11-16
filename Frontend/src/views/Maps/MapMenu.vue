@@ -1,13 +1,7 @@
 <template>
-  <b-card
-    id="map_menu"
-    title="Card Title"
-    style="max-width: 20rem"
-    class="mb-2"
-  >
+  <b-card id="map_menu" title="Card Title" class="mb-2">
     <b-card-text>
-      Some quick example text to build on the card title and make up the bulk of
-      the card's content.
+      <b-table :items="this.aptlist"></b-table>
     </b-card-text>
 
     <b-button href="#" variant="primary">Go somewhere</b-button>
@@ -15,7 +9,16 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters(["aptlist"]),
+  },
+};
 </script>
 
 <style>
