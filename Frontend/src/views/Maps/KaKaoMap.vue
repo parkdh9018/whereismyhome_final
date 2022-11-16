@@ -1,8 +1,8 @@
 <template>
   <div id="map_wrap">
     <div id="map"></div>
-    <!-- <b-button id="menuButton">button</b-button> -->
-    <MapMenu></MapMenu>
+    <b-button id="menuButton">button</b-button>
+    <!-- <MapMenu></MapMenu> -->
   </div>
   <!-- <div>{{ center_address }}</div>
     <div>코드 : {{ gugunCode }}</div>
@@ -121,8 +121,10 @@ export default {
       });
       this.clusterer.removeMarkers(this.markers);
 
-      if (this.level > 3) return;
-
+      if (this.level > 3)  {
+        
+        return;
+      }
       this.$store
         .dispatch("getaptlist_move", [
           bounds.getSouthWest(),
@@ -187,18 +189,15 @@ export default {
 <style scoped>
 #map {
   width: 100%;
-  height: 800px;
+  height: 700px;
 }
 
 #map_wrap {
   position: relative;
 }
 
-#map_wrap > * {
-  position: absolute;
-}
-
 #menuButton {
+  position: absolute;
   top: 10px;
   left: 10px;
   z-index: 1;
