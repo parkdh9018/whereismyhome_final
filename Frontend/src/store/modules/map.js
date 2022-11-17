@@ -1,10 +1,10 @@
 import http from "@/api/http";
 
-export default {
+const mapStore = {
   namespaced: true,
-  state: {
+  state: ()=>({
     aptlist: [],
-  },
+  }),
 
   getters: {
     aptlist(state) {
@@ -19,14 +19,16 @@ export default {
   },
 
   actions: {
-    getaptlist_move(context, positions) {
+    getaptlist_move({commit}, positions) {
       http
         .get(
           `/map/apt/nearby?lat1=${positions[0].getLat()}&lng1=${positions[0].getLng()}&lat2=${positions[1].getLat()}&lng2=${positions[1].getLng()}`
         )
         .then(({ data }) => {
-          context.commit("setAptlist", data);
+          commit("setAptlist", data);
         });
     },
   },
 };
+
+export default mapStore;

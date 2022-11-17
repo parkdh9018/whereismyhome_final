@@ -124,7 +124,7 @@ export default {
         return;
       }
       this.$store
-        .dispatch("getaptlist_move", [
+        .dispatch("map/getaptlist_move", [
           bounds.getSouthWest(),
           bounds.getNorthEast(),
         ])

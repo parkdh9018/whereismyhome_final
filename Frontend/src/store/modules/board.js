@@ -1,12 +1,12 @@
 import http from "@/api/http";
 
-export default {
-  namesapced: true,
-  state: {
+const boardStore = {
+  namespaced: true,
+  state: () =>({
     boards: [],
     board: {},
     comments: [],
-  },
+  }),
   getters: {
     boards(state) {
       return state.boards;
@@ -30,25 +30,27 @@ export default {
     },
   },
   actions: {
-    getBoards(context) {
+    getBoards({commit}) {
       http
         .get("/board")
         .then(({ data }) => {
-          context.commit("setBoards", data);
+          commit("setBoards", data);
         })
         .catch(() => {
           alert("에러발생!");
         });
     },
-    getBoard(context, payload) {
+    getBoard({commit}, payload) {
       http.get(payload).then(({ data }) => {
-        context.commit("setBoard", data);
+        commit("setBoard", data);
       });
     },
-    getComments(context, payload) {
+    getComments({commit}, payload) {
       http.get(payload).then(({ data }) => {
-        context.commit("setComments", data);
+        commit("setComments", data);
       });
     },
   },
 };
+
+export default boardStore;

@@ -85,7 +85,7 @@ import { mapGetters } from "vuex";
 
 export default {
   computed : {
-    ...mapGetters(["aptlist"]),
+    ...mapGetters("map",["aptlist"]),
     getAptdata() {
       return this.aptlist.map(({apartmentName,dong, roadName, jibun, buildYear}) => {return {apartmentName,dong, roadName, jibun, buildYear}});
     }
