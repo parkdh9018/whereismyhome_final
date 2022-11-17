@@ -8,12 +8,13 @@
       </b-row>  -->
     </base-header>
 
-    <b-container-xxl class="mt--10">
+    <b-container fluid="xl" class="mt--10">
       <b-row>
         <b-col>
           <b-card no-body class="border-1"><KaKaoMap></KaKaoMap></b-card>
         </b-col>
       </b-row>
+
       <!-- <b-row>
         <b-col>
           <b-card no-body class="mt-3 border-0">
@@ -21,15 +22,16 @@
           </b-card>
         </b-col>
       </b-row> -->
-    </b-container-xxl>
+    </b-container>
 
   </div>
 </template>
 <script>
-import KaKaoMap from "./Maps/KaKaoMap.vue";
+import KaKaoMap from "@/components/Maps/KaKaoMap.vue";
 import { mapGetters } from "vuex";
 
 export default {
+  name: "MapView",
   computed : {
     ...mapGetters("map",["aptlist"]),
     getAptdata() {
@@ -37,7 +39,7 @@ export default {
     }
   },
   components: {
-    KaKaoMap,
+    KaKaoMap
   },
   
 };

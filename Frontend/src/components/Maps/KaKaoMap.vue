@@ -1,8 +1,8 @@
 <template>
   <div id="map_wrap">
     <div id="map"></div>
-    <b-button id="menuButton">button</b-button>
-    <!-- <MapMenu></MapMenu> -->
+    <b-button v-if="!menuToggle" id="menuButton" @closeEvent="menuClose" @click="menuButtonClick">{{center_address}}</b-button>
+    <MapMenu :address="center_address" v-else/>
   </div>
   <!-- <div>{{ center_address }}</div>
     <div>코드 : {{ gugunCode }}</div>
@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      menuToggle: false,
       center_address: "",
       gugunCode: "",
       dongname: "",
@@ -80,7 +81,7 @@ export default {
         gridSize: 200, //클러스터의 격자 크기. 화면 픽셀 단위이며 해당 격자 영역 안에 마커가 포함되면 클러스터에 포함시킨다
       });
 
-      this.changeCenter();
+      this.moveMap();
 
       //지도 중심 변경 이벤트 리스너
       kakao.maps.event.addListener(this.map, "idle", this.moveMap);
@@ -93,8 +94,7 @@ export default {
 
     changeGunguncode(latlng) {
       this.searchAddress(latlng).then((data) => {
-        this.ADDRESS_INIT = `${data.region_1depth_name} ${data.region_2depth_name}`;
-        this.center_address = data.address_name;
+        this.center_address = `${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`;
         axios
           .get(
             `http://localhost:9999/vue/map/code?sido=${data.region_1depth_name}&gugun=${data.region_2depth_name}`
@@ -141,6 +141,13 @@ export default {
       marker.setMap(this.map);
       this.markers.push(marker);
       this.clusterer.addMarker(marker);
+    },
+
+    menuClose() {
+      this.menuToggle = !this.menuToggle;
+    },
+    menuButtonClick() {
+      this.menuToggle = !this.menuToggle;
     },
 
     // 주소로 위도, 경도 찾는 함수
