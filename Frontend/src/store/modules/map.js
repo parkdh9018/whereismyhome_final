@@ -1,6 +1,7 @@
 import http from "@/api/http";
 
 export default {
+  namespaced: true,
   state: {
     aptlist: [],
   },

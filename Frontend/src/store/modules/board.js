@@ -1,6 +1,7 @@
 import http from "@/api/http";
 
 export default {
+  namesapced: true,
   state: {
     boards: [],
     board: {},
