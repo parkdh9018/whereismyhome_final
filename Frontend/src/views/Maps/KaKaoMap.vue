@@ -27,7 +27,6 @@ export default {
   },
   data() {
     return {
-      APP_KEY: "79d74002f45b6b303a05b55e13f3d458",
       center_address: "",
       gugunCode: "",
       dongname: "",
@@ -44,7 +43,7 @@ export default {
       const script = document.createElement("script");
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${this.APP_KEY}&libraries=services,clusterer`;
+      script.src = process.env.KAKAO_MAP_URL;
       document.head.appendChild(script);
     }
   },
@@ -121,8 +120,7 @@ export default {
       });
       this.clusterer.removeMarkers(this.markers);
 
-      if (this.level > 3)  {
-        
+      if (this.level > 3) {
         return;
       }
       this.$store
