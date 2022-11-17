@@ -15,7 +15,7 @@ public interface MemberService {
 	public MemberDto idFind(MemberDto memberDto) throws Exception;
 	public int idFindCheck(String email) throws Exception;
 	public int passwordFind(MemberDto memberDto) throws Exception;
-	public void passwordUpdate(String id, String pw) throws Exception;
+	public void passwordUpdate(String userid, String userpwd) throws Exception;
 
 	
 }

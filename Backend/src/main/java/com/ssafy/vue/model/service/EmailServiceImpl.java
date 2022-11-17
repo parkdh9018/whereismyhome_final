@@ -20,17 +20,17 @@ public class EmailServiceImpl implements EmailService{
 	MemberService memberService;
 	
 	
-
+	@Autowired
     private JavaMailSender mailSender;
-    private static final String FROM_ADDRESS = "heiditty@naver.com";
+    private static final String FROM_ADDRESS = "calicedev@naver.com";
     
 	@Override
-	public MailDto createMailAndChangePassword(String email, String username) throws Exception {
+	public MailDto createMailAndChangePassword(String username, String email) throws Exception {
 		String str = getTempPassword();
         MailDto dto = new MailDto();
         dto.setAddress(email);
-        dto.setTitle(username+"님의 HOTTHINK 임시비밀번호 안내 이메일 입니다.");
-        dto.setMessage("안녕하세요. HOTTHINK 임시비밀번호 안내 관련 이메일 입니다." + "[" + username + "]" +"님의 임시 비밀번호는 "
+        dto.setTitle(username+"님의 임시비밀번호 안내 이메일 입니다.");
+        dto.setMessage("안녕하세요. 임시비밀번호 안내 관련 이메일 입니다." + "[" + username + "]" +"님의 임시 비밀번호는 "
         + str + " 입니다.");
         System.out.println(str);
         updatePassword(str, email, username);
@@ -40,13 +40,13 @@ public class EmailServiceImpl implements EmailService{
 
 	@Override
 	public void updatePassword(String str, String email, String username) throws Exception {
-		String pw = str;
+		String userpwd = str;
 		MemberDto member = new MemberDto(); 
 		member.setEmail(email);
 		member.setUsername(username);
-        System.out.println( memberService.idFind(member).getUserid());
+        String id = memberService.idFind(member).getUserid();
     
-//        memberService.passwordUpdate(id,pw);
+        memberService.passwordUpdate(id,userpwd);
 		
 	}
 
@@ -69,6 +69,7 @@ public class EmailServiceImpl implements EmailService{
   public void mailSend(MailDto mailDto){
         System.out.println("이멜 전송 완료!");
         SimpleMailMessage message = new SimpleMailMessage();
+
         message.setTo(mailDto.getAddress());
         message.setFrom(EmailServiceImpl.FROM_ADDRESS);
         message.setSubject(mailDto.getTitle());

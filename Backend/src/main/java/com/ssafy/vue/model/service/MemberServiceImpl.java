@@ -74,8 +74,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void passwordUpdate(String userid, String password) throws Exception {
-		sqlSession.getMapper(MemberMapper.class).passwordUpdate(userid, password);
+	public void passwordUpdate(String userid, String userpwd) throws Exception {
+		sqlSession.getMapper(MemberMapper.class).passwordUpdate(userid, userpwd);
 		
 	}
 	

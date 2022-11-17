@@ -48,9 +48,9 @@
 		select count(*) from member where email = #{email} 
 	</select>
 	
-	<select id="passwordUpdate" parameterType="memberDto">
+	<update id="passwordUpdate" parameterType="memberDto">
 		update member
-		set password = #{password}
-		where userid = #{userid} and password = #{password}
-	</select>
+		set userpwd = #{userpwd}
+		where userid = #{userid}
+	</update>
 </mapper>

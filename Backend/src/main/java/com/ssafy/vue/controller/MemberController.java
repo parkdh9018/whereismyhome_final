@@ -198,8 +198,7 @@ public class MemberController {
 		MemberDto member = memberService.idFind(memberDto);
 		String userid = member.getUserid();
 		if(userid!=null) {
-	
-			MailDto dto = emailService.createMailAndChangePassword(memberDto.getUsername(), memberDto.getEmail());;
+			MailDto dto = emailService.createMailAndChangePassword(memberDto.getUsername(), memberDto.getEmail());
 			emailService.mailSend(dto);
 			return new ResponseEntity<String>(userid, HttpStatus.OK);
 			
