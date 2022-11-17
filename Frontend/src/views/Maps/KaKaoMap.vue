@@ -23,7 +23,7 @@ export default {
     MapMenu,
   },
   computed: {
-    ...mapGetters(["aptlist"]),
+    ...mapGetters("map", ["aptlist"]),
   },
   data() {
     return {
