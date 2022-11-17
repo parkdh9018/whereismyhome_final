@@ -1,27 +1,27 @@
 <template>
   <div>
-    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
-      <!-- Card stats -->
-      <!-- <b-row>
+    <base-header class="pb-2 pt-6 bg-gradient-success">
+<!--     
+      <b-row>
         <b-col xl="3" md="6">
         </b-col>
-      </b-row> -->
+      </b-row>  -->
     </base-header>
 
-    <b-container class="mt--7">
+    <b-container-xxl class="mt--10">
       <b-row>
         <b-col>
-          <b-card no-body class="border-0"><KaKaoMap></KaKaoMap></b-card>
+          <b-card no-body class="border-1"><KaKaoMap></KaKaoMap></b-card>
         </b-col>
       </b-row>
-      <b-row>
+      <!-- <b-row>
         <b-col>
           <b-card no-body class="mt-3 border-0">
             <b-table :items="getAptdata" class="container-sm"> </b-table>
           </b-card>
         </b-col>
-      </b-row>
-    </b-container>
+      </b-row> -->
+    </b-container-xxl>
 
   </div>
 </template>
