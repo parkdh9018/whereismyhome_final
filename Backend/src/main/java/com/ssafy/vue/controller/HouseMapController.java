@@ -8,9 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONObject;
 import org.json.XML;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
 import com.ssafy.vue.model.service.HouseMapService;
@@ -58,19 +55,12 @@ public class HouseMapController {
 		logger.info("gugun - 호출");
 		return new ResponseEntity<List<SidoGugunCodeDto>>(haHouseMapService.getGugunInSido(sido), HttpStatus.OK);
 	}
-	
-	@GetMapping("/code")
-	public ResponseEntity<SidoGugunCodeDto> gugunByname(
-			@RequestParam("sido") String sido, @RequestParam("gugun") String gugun) throws Exception {
-		logger.info("gugunByname - 호출 {} {}", sido, gugun);
-		return new ResponseEntity<SidoGugunCodeDto>(haHouseMapService.getGuguncodeByName(sido, gugun), HttpStatus.OK);
-	}
 
 	@ApiOperation(value = "아파트 목록", notes = "지역코드와 매매계약월을 기준으로 아파트 목록을 반환한다.", response = List.class)
 	@GetMapping(value = "/aptlist/{lawd_cd}/{deal_ymd}", produces = "application/json;charset=utf-8")
 	public ResponseEntity<String> aptList(@PathVariable("lawd_cd") String lawdCd, @PathVariable("deal_ymd") String dealYmd) throws IOException {
 		logger.info("sido - 호출");
-		String serviceKey = "IlbdlryMGFAzaYSgZCKyBcx1LfTMuoqEL49ras3mJktcR%2BQ03hVzMreBH5jS5iIOTf%2F1vht3Wck4WtuENLCmEA%3D%3D";
+		String serviceKey = "9Xo0vlglWcOBGUDxH8PPbuKnlBwbWU6aO7%2Bk3FV4baF9GXok1yxIEF%2BIwr2%2B%2F%2F4oVLT8bekKU%2Bk9ztkJO0wsBw%3D%3D";
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev"); /*
 																															 */
@@ -79,7 +69,7 @@ public class HouseMapController {
 		urlBuilder
 				.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /* 페이지번호 */
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
-				+ URLEncoder.encode("50", "UTF-8")); /* 한 페이지 결과 수 */
+				+ URLEncoder.encode("10", "UTF-8")); /* 한 페이지 결과 수 */
 		urlBuilder.append(
 				"&" + URLEncoder.encode("LAWD_CD", "UTF-8") + "=" + URLEncoder.encode(lawdCd, "UTF-8")); /* 지역코드 */
 		urlBuilder.append(
@@ -114,35 +104,9 @@ public class HouseMapController {
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
 	}
 	
-	@GetMapping("/apt/dong/{code}")
-	public ResponseEntity<List<HouseInfoDto>> aptByDong(@PathVariable("code") String code) throws Exception {
-		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInDong(code), HttpStatus.OK);
+	@GetMapping("/apt")
+	public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
+		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInDong(dong), HttpStatus.OK);
 	}
-	
-	@GetMapping("/apt/gugun/{code}")
-	public ResponseEntity<List<HouseInfoDto>> aptByGugun(@PathVariable("code") String code) throws Exception {
-		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInGugun(code), HttpStatus.OK);
-	}
-	
-	@GetMapping("/apt/nearby")
-	public ResponseEntity<List<HouseInfoDto>> aptNearbyDong(@RequestParam("lat1") String lat1, @RequestParam("lat2") String lat2, @RequestParam("lng1") String lng1, @RequestParam("lng2") String lng2) throws Exception {
-		Map<String , String> param = new HashMap<>();
-		param.put("lat1", lat1);
-		param.put("lat2", lat2);
-		param.put("lng1", lng1);
-		param.put("lng2", lng2);
-		logger.info("aptNearbyDong - 호출 {} {}", lat1, lng1);
-		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptNearbyDong(param), HttpStatus.OK);
-	}
-	
-	
-//	@GetMapping("/donglist/{guguncode}/{dongname}")
-//	public ResponseEntity<List<DongCodeDto>> donglist(@PathVariable("guguncode") String guguncode, @PathVariable("dongname") String dongname) throws Exception {
-//		Map<String , String> param = new HashMap<>();
-//		param.put("guguncode", guguncode);
-//		param.put("dongname", dongname);
-//		return new ResponseEntity<List<DongCodeDto>>(haHouseMapService.selectnearbydongBydong(param), HttpStatus.OK);
-//	}
-	
 
 }
