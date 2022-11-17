@@ -1,6 +1,7 @@
 package com.ssafy.vue.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -48,5 +49,35 @@ public class MemberServiceImpl implements MemberService {
 		map.put("token", null);
 		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
 	}
+
+	@Override
+	public int idCheck(String userid) throws Exception{
+		System.out.println(userid);
+		int res =sqlSession.getMapper(MemberMapper.class).idCheck(userid);
+		return res;
+	}
+	
+	
+	@Override
+	public MemberDto idFind(MemberDto memberDto)throws Exception{
+		return sqlSession.getMapper(MemberMapper.class).idFind(memberDto);
+	}
+	
+	@Override
+	public int idFindCheck(String email)throws Exception{
+		return sqlSession.getMapper(MemberMapper.class).idFindCheck(email);
+	}
+
+	@Override
+	public int passwordFind(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).passwordFind(memberDto);
+	}
+
+	@Override
+	public void passwordUpdate(String userid, String password) throws Exception {
+		sqlSession.getMapper(MemberMapper.class).passwordUpdate(userid, password);
+		
+	}
+	
 
 }

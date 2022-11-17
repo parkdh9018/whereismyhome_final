@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.ssafy.vue.model.mapper.QcommentMapper">
+ 
+	<!-- isbn에 해당하는 댓글 조회 -->
+	<select id="list" resultType="QcommentDto">
+		select commentno, userid, comment, regtime, articleno
+		from qcomment
+		where articleno = #{articleno}
+		order by regtime desc
+	</select>
+
+	<!-- 댓글 등록 -->
+	<insert id="create" parameterType="QcommentDto">
+		insert into qcomment(
+			commentno, userid, comment, regtime, articleno
+		) values (
+			#{commentno}, #{userid}, #{comment}, now(), #{articleno}
+		)
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="modify" parameterType="QcommentDto">
+		<![CDATA[
+		update qcomment
+		set comment = #{comment}
+		where commentno = #{commentno}
+		]]>
+	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete
+		from qcomment
+		where commentno = #{commentno}
+	</delete>
+</mapper>

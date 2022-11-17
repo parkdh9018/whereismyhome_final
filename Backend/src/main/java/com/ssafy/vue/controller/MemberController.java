@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.model.MailDto;
 import com.ssafy.vue.model.MemberDto;
+import com.ssafy.vue.model.service.EmailService;
 import com.ssafy.vue.model.service.JwtServiceImpl;
 import com.ssafy.vue.model.service.MemberService;
 
@@ -39,6 +41,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@ApiOperation(value = "로그인", notes = "Access-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
 	@PostMapping("/login")
@@ -105,7 +110,7 @@ public class MemberController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			memberService.deleRefreshToken(userid);
+			memberService.deleRefreshToken(userid); 
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -140,5 +145,69 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	
+	@ApiOperation(value = "회원가입 아이디 중복확인", notes = "중복된 아이디면 1 중복되지 않았으면 0을 반환한다.", response = Map.class)
+	@PostMapping("/idCheck")
+	public ResponseEntity<String> idCheck(
+			@RequestBody @ApiParam(value = "회원가입 아이디 중복확인시 필요한 아이디", required = true) MemberDto memberDto) throws Exception {
+		logger.info("modifyArticle - 호출 {}", memberDto.getUserid());
+		
+		if (memberService.idCheck(memberDto.getUserid())==1) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+	
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+	
+	
+	@ApiOperation(value = "아이디 찾기", notes = "맞는 정보가 없으면 fail 아니면 userid 반환", response = Map.class)
+	@PostMapping("/idFind")
+	public ResponseEntity<String> idFind(
+			@RequestBody @ApiParam(value = "회원가입 아이디 중복확인시 필요한 아이디", required = true) MemberDto memberDto) throws Exception {
+		MemberDto member = memberService.idFind(memberDto);
+		String userid = member.getUserid();
+		if(userid!=null) {
+			return new ResponseEntity<String>(userid, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+		
+	}
+	
+
+	@ApiOperation(value = "아이디 찾기", notes = "맞는 정보가 없으면 fail 아니면 success 반환", response = Map.class)
+	@PostMapping("/idFindCheck")
+	public ResponseEntity<String> idFindCheck(
+			@RequestBody @ApiParam(value = "회원가입 아이디 중복확인시 필요한 아이디", required = true) MemberDto memberDto) throws Exception {
+		logger.info("idFindCheck - 호출 {}", memberDto.getEmail());
+		
+		if(memberService.idFindCheck(memberDto.getEmail())==1) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+		
+	}
+	
+	@ApiOperation(value = "비밀번호 찾기", notes = "회원 정보를 담은 Token을 제거한다.", response = Map.class)
+	@PostMapping("/passwordFind")
+	public ResponseEntity<?> passwordFind (@RequestBody @ApiParam MemberDto memberDto) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		MemberDto member = memberService.idFind(memberDto);
+		String userid = member.getUserid();
+		if(userid!=null) {
+	
+			MailDto dto = emailService.createMailAndChangePassword(memberDto.getUsername(), memberDto.getEmail());;
+			emailService.mailSend(dto);
+			return new ResponseEntity<String>(userid, HttpStatus.OK);
+			
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+		
+
+	}
+	
 
 }

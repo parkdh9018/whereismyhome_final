@@ -34,4 +34,23 @@
 		where userid = #{userid}
 	</update>
 	
+	<select id="idCheck" parameterType="string" resultType="int">
+		select count(*)
+		from member
+		where userid = #{userid}
+	</select>
+	
+	<select id="idFind" parameterType="memberDto" resultType="memberDto">
+		select userid from member where email = #{email} and username = #{username}
+	</select>
+	
+	<select id="idFindCheck" resultType="int">
+		select count(*) from member where email = #{email} 
+	</select>
+	
+	<select id="passwordUpdate" parameterType="memberDto">
+		update member
+		set password = #{password}
+		where userid = #{userid} and password = #{password}
+	</select>
 </mapper>

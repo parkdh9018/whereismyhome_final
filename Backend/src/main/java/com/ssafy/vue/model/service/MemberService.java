@@ -1,5 +1,7 @@
 package com.ssafy.vue.model.service;
 
+import java.util.List;
+
 import com.ssafy.vue.model.MemberDto;
 
 public interface MemberService {
@@ -9,5 +11,11 @@ public interface MemberService {
 	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
 	public Object getRefreshToken(String userid) throws Exception;
 	public void deleRefreshToken(String userid) throws Exception;
+	public int idCheck(String userid) throws Exception;
+	public MemberDto idFind(MemberDto memberDto) throws Exception;
+	public int idFindCheck(String email) throws Exception;
+	public int passwordFind(MemberDto memberDto) throws Exception;
+	public void passwordUpdate(String id, String pw) throws Exception;
+
 	
 }
