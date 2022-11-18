@@ -70,7 +70,13 @@
 	
 	<update id="modifyMember" parameterType="memberDto">
 		update member
-		set username = #{username}, userpwd = #{userpwd} , email = #{email}
+		set username = #{username} , email = #{email}
 		where userid = #{userid}
+	</update>
+	
+	<update id="modifyPassword" parameterType="string">
+		update member
+		set userpwd = #{newpassword}
+		where userpwd = #{originpassword} and userid = #{userid}
 	</update>
 </mapper>

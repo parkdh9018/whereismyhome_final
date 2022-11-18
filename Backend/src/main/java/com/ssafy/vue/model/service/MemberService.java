@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.MemberDto;
+import com.ssafy.vue.model.PasswordDto;
 
 public interface MemberService {
 
@@ -25,6 +26,7 @@ public interface MemberService {
 	public boolean deleteMember(String userid) throws Exception;
 	public boolean modifyMember(MemberDto memberDto)throws Exception;
 	public String isValidMember(String userid, String email)throws Exception;
+	public boolean modifyPassword(PasswordDto passwordDto) throws Exception;
 
 	
 }

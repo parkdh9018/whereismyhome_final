@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.MailDto;
 import com.ssafy.vue.model.MemberDto;
+import com.ssafy.vue.model.PasswordDto;
 import com.ssafy.vue.model.service.EmailService;
 import com.ssafy.vue.model.service.JwtServiceImpl;
 import com.ssafy.vue.model.service.MemberService;
@@ -183,6 +184,17 @@ public class MemberController {
 		logger.info("modifyMember - 호출", memberDto);
 		
 		if (memberService.modifyMember(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "회원 비밀번호 수정", notes = "수정할 회원 비밀번호를 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping("/modifyPassword")
+	public ResponseEntity<String> modifyPassword(@RequestBody @ApiParam(value = "수정할 회원 비밀번호.", required = true) PasswordDto passwordDto) throws Exception {
+		logger.info("modifyPassword - 호출");
+		
+		if (memberService.modifyPassword(passwordDto)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);

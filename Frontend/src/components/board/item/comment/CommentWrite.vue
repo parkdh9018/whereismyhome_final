@@ -31,10 +31,12 @@ export default {
   },
   methods: {
     registComment() {
+      console.log(this.userid);
       let param = {
         userid: this.userid,
           comment: this.comment,
           articleno: this.articleno
+
       };
       registComment(
         param,

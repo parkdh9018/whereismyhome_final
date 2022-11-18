@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.MemberDto;
+import com.ssafy.vue.model.PasswordDto;
 import com.ssafy.vue.model.mapper.MemberMapper;
 
 @Service
@@ -98,6 +99,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String isValidMember(String userid, String email) throws Exception {
 		return sqlSession.getMapper(MemberMapper.class).isValidMember(userid, email);
+	}
+
+	@Override
+	public boolean modifyPassword(PasswordDto passwordDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class)
+				.modifyPassword(passwordDto.getOriginpassword(), passwordDto.getNewpassword(), passwordDto.getUserid())==1;
 	}
 	
 

@@ -88,6 +88,12 @@ const routes = [
             name: "boardmodify",
             component: () => import("../views/Tables/RegularTables/LightTableModify.vue"),
           },
+          {
+            path: "delete/:articleno",
+            name: "boarddelete",
+            beforeEnter: onlyAuthUser,
+            component: () => import("../views/Tables/RegularTables/LightTable.vue"),
+          },
 
         ],
       },
