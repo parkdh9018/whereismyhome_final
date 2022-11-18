@@ -1,37 +1,32 @@
 <template>
     <b-card no-body>
-     <b-container>
-    <b-row class="mt-4">
-      <b-col>
-        <stats-card  type="gradient-red" :sub-title="board.subject" :title="board.regtime" icon="ni ni-active-40" class="mb-4">
-            <template slot="footer">
-              <span class="text-nowrap">{{board.content}}</span>
-            </template>
-          </stats-card>
-       
+      <b-container class="bv-example-row mt-3">
+    <b-row class="mb-1">
+      <b-col class="text-left">
+        <b-button variant="outline-primary" @click="moveList">목록</b-button>
+      </b-col>
+      <b-col class="text-right">
+        <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2">글수정</b-button>
+        <b-button variant="outline-danger" size="sm" @click="deleteArticle">글삭제</b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">
-      <b-col class="text-left">
-        <b-button variant="success" @click="moveList">목록</b-button>
-      </b-col>
-      <b-col class="text-right">
-        <b-button variant="success" @click="moveModifyArticle" class="mr-2">글수정</b-button>
-        <b-button variant="success" @click="deleteArticle">글삭제</b-button>
+      <b-col>
+        <b-card
+          :header-html="`<h3>${article.articleno}.
+          ${article.subject}</h3><div>조회 : ${article.hit}</div><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
+          class="mb-2"
+          border-variant="dark"
+          no-body
+        >
+          <b-card-body class="text-left">
+            <div v-html="message"></div>
+          </b-card-body>
+        </b-card>
       </b-col>
     </b-row>
-      <div class=" mt-3">
-        <b-row>
-          <b-col-6 >
-        <b-form-group label="Comments" label-class="form-control-label" class="mb-0" label-for="about-form-textaria">
-          <b-form-textarea rows="2" value="댓글을 입력해주세요." id="about-form-textaria"></b-form-textarea>
-        </b-form-group>
-      </b-col-6>
-      <b-col-2>
-        <b-button variant="success" @click="moveModifyArticle" class="mr-2">글수정</b-button>
-      </b-col-2>
-      </b-row>
-      </div>
+
+
     <!-- 댓글 -->
     <comment-write :articleno="this.articleno" />
     <comment-write
@@ -40,43 +35,65 @@
       @modify-comment-cancel="onModifyCommentCancel"
     />
     <comment v-for="(comment, index) in comments" :key="index" :comment="comment" @modify-comment="onModifyComment" />
+
+    
   </b-container>
+
     </b-card>
 </template>
 <script>
 
-import { mapGetters } from "vuex";
+// import http from "@/api/http";
+
 import CommentWrite from "@/components/board/item/comment/CommentWrite.vue";
 import Comment from "@/components/board/item/comment/Comment.vue";
-import { Table, TableColumn } from 'element-ui'
-import http from "@/api/http";
-  export default {
-    name: 'light-table',
-    components: {
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn,
-      CommentWrite,
-      Comment
-    },
+import { getArticle,getComments } from "@/api/board";
+import { mapState } from "vuex";
+export default {
+  name: "BoardDetail",
+  data() {
+    return {
+      articleno: "",
+      isModifyShow: false,
+      modifyComment: Object,
+      article: {},
+    };
+  },
 
-    name: "BoardList",
-    computed: {
-      ...mapGetters([ "comments", "board"]),
-        message() {
-        if (this.board.content) return this.board.content.split("\n").join("<br>");
-        return "";
+  created() {
+    let param = this.$route.query.articleno;
+    getArticle(
+      param,
+      ({ data }) => {
+        this.article = data;
       },
-    },
-    created() {
-      this.articleno = this.$route.query.articleno;
-      this.$store.dispatch("getBoard", `/board/${this.articleno}`);
-      this.$store.dispatch("getComments", `/comment/${this.articleno}`);
-    },
-    methods: {
-      moveModifyArticle() {
+      (error) => {
+        console.log(error);
+      }
+    );
+    getComments(
+      param,
+      ({ data }) => {
+        this.modifyComment = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    // http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
+    //   this.article = data;
+    // });
+  },
+  components: {
+    CommentWrite,
+    Comment
+  },
+  methods: {
+    moveModifyArticle() {
       this.$router.replace({
         name: "boardmodify",
-        params: { articleno: this.board.articleno },
+        params: { articleno: this.article.articleno },
       });
       //   this.$router.push({ path: `/board/modify/${this.board.articleno}` });
     },
@@ -88,12 +105,12 @@ import http from "@/api/http";
             msg = "삭제가 완료되었습니다.";
           }
           alert(msg);
-          this.$router.push("/board");
+          this.$router.push("/tables");
         });
       }
     },
     moveList() {
-      this.$router.push("/board");
+      this.$router.push("/tables");
     },
     onModifyComment(comment) {
       this.modifyComment = comment;
@@ -102,16 +119,13 @@ import http from "@/api/http";
     onModifyCommentCancel(isShow) {
       this.isModifyShow = isShow;
     }
-        
-    },
-    data() {
-      return {
-        boards,
-        currentPage: 1,
-        articleno: "",
-        isModifyShow: false,
-        modifyComment: Object
-      };
-    }
-  }
+  },
+  // filters: {
+  //   dateFormat(regtime) {
+  //     return moment(new Date(regtime)).format("YY.MM.DD hh:mm:ss");
+  //   },
+  // },
+};
 </script>
+
+<style></style>

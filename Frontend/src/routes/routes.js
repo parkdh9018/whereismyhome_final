@@ -73,11 +73,22 @@ const routes = [
               import(`../views/Tables/RegularTables/LightTable.vue`),
           },
           {
+            path: "write",
+            name: "boardwrite",
+            component: () => import("../views/Tables/RegularTables/LightTableWrite.vue"),
+          },
+          {
             path: "view",
             name: "boardview",
             component: () =>
               import("../views/Tables/RegularTables/LightTableView.vue"),
           },
+          {
+            path: "modify/:articleno",
+            name: "boardmodify",
+            component: () => import("../views/Tables/RegularTables/LightTableModify.vue"),
+          },
+
         ],
       },
     ],

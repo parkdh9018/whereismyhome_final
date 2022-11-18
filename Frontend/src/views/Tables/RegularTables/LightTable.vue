@@ -3,7 +3,7 @@
     <b-card-header class="border-0">
       <h3 class="mb-0">공지사항</h3>
 
-      <a href="#!" class="btn btn-outline-success float-right">글쓰기</a>
+      <a class="btn btn-outline-success float-right" @click="moveWrite()">글쓰기</a>
     </b-card-header>
 
     <el-table
@@ -63,6 +63,9 @@ export default {
       console.log("hi");
       this.$router.push(`/tables/view?articleno=${row.articleno}`);
     },
+    moveWrite(){
+      this.$router.push("/tables/write");
+    }
   },
   data() {
     return {

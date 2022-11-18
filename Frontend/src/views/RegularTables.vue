@@ -5,7 +5,7 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
-          <light-table/>
+          <router-view></router-view>
         </b-col>
       </b-row>
     </b-container>
