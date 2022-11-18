@@ -32,28 +32,9 @@
       <b-row class="justify-content-center">
         <b-col lg="5" md="7">
           <b-card no-body class="bg-secondary border-0 mb-0">
-            <b-card-header class="bg-transparent pb-5">
-              <div class="text-muted text-center mt-2 mb-3">
-                <small>Sign in with</small>
-              </div>
-              <div class="btn-wrapper text-center">
-                <a href="#" class="btn btn-neutral btn-icon">
-                  <span class="btn-inner--icon"
-                    ><img src="img/icons/common/github.svg"
-                  /></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a href="#" class="btn btn-neutral btn-icon">
-                  <span class="btn-inner--icon"
-                    ><img src="img/icons/common/google.svg"
-                  /></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
-            </b-card-header>
-            <b-card-body class="px-lg-5 py-lg-5">
+            <b-card-header class="bg-transparent pb-3">
               <div class="text-center text-muted mb-4">
-                <small>Or sign in with credentials</small>
+                <small>Sign in with </small>
               </div>
               <validation-observer
                 v-slot="{ handleSubmit }"
@@ -83,7 +64,11 @@
                   >
                   </base-input>
 
-                  <b-form-checkbox v-model="rememberMe"
+                  <span class="text-danger font-weight-500"
+                    ><small>{{ errorMessage }} </small></span
+                  >
+
+                  <b-form-checkbox class="mt-3" v-model="rememberMe"
                     >Remember me</b-form-checkbox
                   >
                   <div class="text-center">
@@ -96,11 +81,30 @@
                   </div>
                 </b-form>
               </validation-observer>
+            </b-card-header>
+            <b-card-body class="px-lg-4 py-lg-5">
+              <div class="text-muted text-center mt-1 mb-3">
+                <small>Sign in with</small>
+              </div>
+              <div class="btn-wrapper text-center">
+                <a href="#" class="btn btn-neutral btn-icon">
+                  <span class="btn-inner--icon"
+                    ><img src="img/icons/common/github.svg"
+                  /></span>
+                  <span class="btn-inner--text">Github</span>
+                </a>
+                <a href="#" class="btn btn-neutral btn-icon">
+                  <span class="btn-inner--icon"
+                    ><img src="img/icons/common/google.svg"
+                  /></span>
+                  <span class="btn-inner--text">Google</span>
+                </a>
+              </div>
             </b-card-body>
           </b-card>
           <b-row class="mt-3">
             <b-col cols="6">
-              <router-link to="/dashboard" class="text-light"
+              <router-link to="/forgotpw" class="text-light"
                 ><small>Forgot password?</small></router-link
               >
             </b-col>
@@ -122,6 +126,7 @@ export default {
   data() {
     return {
       rememberMe: false,
+      errorMessage: "",
       user: {
         userid: null,
         userpwd: null,
@@ -134,7 +139,6 @@ export default {
   methods: {
     ...mapActions("member", ["userConfirm", "getUserInfo"]),
     async onSubmit() {
-      console.log("login");
       await this.userConfirm(this.user);
       let token = sessionStorage.getItem("access-token");
       // console.log("1. confirm() token >> " + token);
@@ -142,6 +146,8 @@ export default {
         await this.getUserInfo(token);
         // console.log("4. confirm() userInfo :: ", this.userInfo);
         this.$router.push({ name: "dashboard" });
+      } else {
+        this.errorMessage = "아이디와 비밀번호를 확인해주세요";
       }
     },
   },

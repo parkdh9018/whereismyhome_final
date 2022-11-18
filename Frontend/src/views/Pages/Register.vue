@@ -26,7 +26,7 @@
       <b-row class="justify-content-center">
         <b-col lg="6" md="8" >
           <b-card no-body class="bg-secondary border-0">
-            <b-card-header class="bg-transparent pb-5">
+            <!-- <b-card-header class="bg-transparent pb-5">
               <div class="text-muted text-center mt-2 mb-4"><small>Sign up with</small></div>
               <div class="text-center">
                 <a href="#" class="btn btn-neutral btn-icon mr-4">
@@ -38,20 +38,32 @@
                   <span class="btn-inner--text">Google</span>
                 </a>
               </div>
-            </b-card-header>
+            </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
                 <small>Or sign up with credentials</small>
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
+
+                  <base-input alternative
+                              class="mb-3"
+                              prepend-icon="ni ni-circle-08"
+                              placeholder="ID"
+                              name="ID"
+                              :rules="{required: true}"
+                              v-model="user.userid">
+                  </base-input>
+                  
+                  <small class="text-danger font-weight-500">{{ errorMessage }} </small>
+
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-hat-3"
                               placeholder="Name"
                               name="Name"
                               :rules="{required: true}"
-                              v-model="model.name">
+                              v-model="user.username">
                   </base-input>
 
                   <base-input alternative
@@ -60,7 +72,7 @@
                               placeholder="Email"
                               name="Email"
                               :rules="{required: true, email: true}"
-                              v-model="model.email">
+                              v-model="user.email">
                   </base-input>
 
                   <base-input alternative
@@ -69,15 +81,15 @@
                               placeholder="password"
                               type="password"
                               name="Password"
-                              :rules="{required: true, min: 6}"
-                              v-model="model.password">
+                              :rules="{required: true, min: 3}"
+                              v-model="user.password">
                   </base-input>
                   <div class="text-muted font-italic"><small>password strength: <span
                     class="text-success font-weight-700">strong</span></small></div>
                   <b-row class=" my-4">
                     <b-col cols="12">
                       <base-input :rules="{ required: { allowFalse: false } }" name=Privacy Policy>
-                        <b-form-checkbox v-model="model.agree">
+                        <b-form-checkbox v-model="user.agree">
                           <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
                         </b-form-checkbox>
                       </base-input>
@@ -96,22 +108,31 @@
   </div>
 </template>
 <script>
+import api from "@/api/http";
 
   export default {
     name: 'register',
     data() {
       return {
-        model: {
-          name: '',
+        errorMessage: "",
+        user: {
+          userid: '',
+          username: '',
+          userpwd: '',
           email: '',
-          password: '',
           agree: false
         }
       }
     },
     methods: {
       onSubmit() {
-        // this will be called only after form is valid. You can do an api call here to register users
+        api.post("/user/idCheck", this.user).then((response) => {
+          if(response.data == 'success') {
+            this.errorMessage = "중복된 아이디입니다";
+          } else {
+
+          }
+        })
       }
     }
 
