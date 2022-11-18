@@ -94,6 +94,11 @@ public class MemberServiceImpl implements MemberService {
 	public boolean modifyMember(MemberDto memberDto) throws Exception {
 		return sqlSession.getMapper(MemberMapper.class).modifyMember(memberDto) ==1;
 	}
+
+	@Override
+	public String isValidMember(String userid, String email) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).isValidMember(userid, email);
+	}
 	
 
 }

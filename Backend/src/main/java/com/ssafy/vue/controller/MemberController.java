@@ -153,10 +153,14 @@ public class MemberController {
 	@PostMapping
 	public ResponseEntity<String> signup(@RequestBody @ApiParam(value = "회원가입", required = true) MemberDto memberDto) throws Exception {
 		logger.info("signup - 호출");
-		if (memberService.signup(memberDto)) {
+		try {
+			if (memberService.signup(memberDto)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}
+		}catch (Exception e) {
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ApiOperation(value = "회원가입 아이디 중복확인", notes = "중복된 아이디면 1 중복되지 않았으면 0을 반환한다.", response = Map.class)
@@ -191,7 +195,7 @@ public class MemberController {
 		if (memberService.deleteMember(userid)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	
@@ -223,16 +227,18 @@ public class MemberController {
 		
 	}
 	
-	@ApiOperation(value = "비밀번호 찾기", notes = "임시 비밀번호를 메일로 보낸다. fail 아니면 success 반환", response = Map.class)
+	@ApiOperation(value = "비밀번호 찾기", notes = "아이디랑 이메일을 받는다. 임시 비밀번호를 메일로 보낸다. fail 아니면 success 반환", response = Map.class)
 	@PostMapping("/passwordFind")
 	public ResponseEntity<?> passwordFind (@RequestBody @ApiParam MemberDto memberDto) throws Exception {
-		Map<String, Object> resultMap = new HashMap<>();
-		MemberDto member = memberService.idFind(memberDto);
-		String userid = member.getUserid();
-		if(userid!=null) {
-			MailDto dto = emailService.createMailAndChangePassword(memberDto.getUsername(), memberDto.getEmail());
+		String getId = memberDto.getUserid();
+		String getEmail = memberDto.getEmail();
+		// 이 사람이 유효한 사용자인가 확인한다. 
+		String getUsername = memberService.isValidMember(getId,getEmail); 
+		System.out.println(getUsername);
+		if(getUsername != null) {
+			MailDto dto = emailService.createMailAndChangePassword(getUsername, getEmail);
 			emailService.mailSend(dto);
-			return new ResponseEntity<String>(userid, HttpStatus.OK);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}

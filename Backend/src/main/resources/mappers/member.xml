@@ -53,6 +53,10 @@
 		select count(*) from member where email = #{email} 
 	</select>
 	
+	<select id="isValidMember" resultType="string">
+		select username from member where email = #{email} and userid = #{userid}
+	</select>
+	
 	<update id="passwordUpdate" parameterType="memberDto">
 		update member
 		set userpwd = #{userpwd}

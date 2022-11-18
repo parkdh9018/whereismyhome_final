@@ -24,5 +24,6 @@ public interface MemberMapper {
 	public int signup(MemberDto memberDto) throws Exception;
 	public int deleteMember(String userid)throws Exception;
 	public int modifyMember(MemberDto memberDto)throws Exception;
+	public String isValidMember(String userid, String email)throws Exception;
 
 }

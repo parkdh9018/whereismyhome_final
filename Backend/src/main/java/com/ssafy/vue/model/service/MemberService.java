@@ -24,6 +24,7 @@ public interface MemberService {
 	public boolean signup(MemberDto memberDto)  throws Exception;
 	public boolean deleteMember(String userid) throws Exception;
 	public boolean modifyMember(MemberDto memberDto)throws Exception;
+	public String isValidMember(String userid, String email)throws Exception;
 
 	
 }
