@@ -110,6 +110,12 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "demo" */ "../views/Pages/Register.vue"),
       },
+      {
+        path: "/forgotpw",
+        name: "forgotpw",
+        component: () =>
+          import(/* webpackChunkName: "demo" */ "../views/Pages/ForgotPw.vue"),
+      },
       { path: "*", component: NotFound },
     ],
   },
