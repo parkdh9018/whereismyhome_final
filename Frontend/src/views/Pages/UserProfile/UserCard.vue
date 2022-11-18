@@ -38,7 +38,7 @@
       </b-row>
       <div class="text-center">
         <h5 class="h3">
-          Jessica Jones<span class="font-weight-light">, 27</span>
+          {{user.username}}<span class="font-weight-light">, 27</span>
         </h5>
         <div class="h5 font-weight-300">
           <i class="ni location_pin mr-2"></i>Bucharest, Romania
@@ -58,6 +58,10 @@
   </b-card>
 </template>
 <script>
-export default {};
+export default {
+  props: {
+    user : Object,
+  }
+};
 </script>
 <style></style>

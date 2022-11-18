@@ -44,10 +44,10 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    name="Email"
+                    name="ID"
                     :rules="{ required: true }"
-                    prepend-icon="ni ni-email-83"
-                    placeholder="Email"
+                    prepend-icon="ni ni-circle-08"
+                    placeholder="ID"
                     v-model="user.userid"
                   >
                   </base-input>
@@ -68,7 +68,7 @@
                     ><small>{{ errorMessage }} </small></span
                   >
 
-                  <b-form-checkbox class="mt-3" v-model="rememberMe"
+                  <b-form-checkbox class="mt-2" v-model="rememberMe"
                     >Remember me</b-form-checkbox
                   >
                   <div class="text-center">

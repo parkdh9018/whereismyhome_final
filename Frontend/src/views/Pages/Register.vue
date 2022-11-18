@@ -41,21 +41,23 @@
             </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Or sign up with credentials</small>
+                <small>Sign up with credentials</small>
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
 
+                  <small class="text-danger font-weight-500">{{ errorMessage }} </small>
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-circle-08"
                               placeholder="ID"
                               name="ID"
                               :rules="{required: true}"
-                              v-model="user.userid">
-                  </base-input>
+                              v-model="member.userid">
+                            </base-input>
+
+
                   
-                  <small class="text-danger font-weight-500">{{ errorMessage }} </small>
 
                   <base-input alternative
                               class="mb-3"
@@ -63,7 +65,7 @@
                               placeholder="Name"
                               name="Name"
                               :rules="{required: true}"
-                              v-model="user.username">
+                              v-model="member.username">
                   </base-input>
 
                   <base-input alternative
@@ -72,7 +74,7 @@
                               placeholder="Email"
                               name="Email"
                               :rules="{required: true, email: true}"
-                              v-model="user.email">
+                              v-model="member.email">
                   </base-input>
 
                   <base-input alternative
@@ -82,14 +84,14 @@
                               type="password"
                               name="Password"
                               :rules="{required: true, min: 3}"
-                              v-model="user.password">
+                              v-model="member.userpwd">
                   </base-input>
-                  <div class="text-muted font-italic"><small>password strength: <span
-                    class="text-success font-weight-700">strong</span></small></div>
+                  <!-- <div class="text-muted font-italic"><small>password strength: <span
+                    class="text-success font-weight-700">strong</span></small></div> -->
                   <b-row class=" my-4">
                     <b-col cols="12">
                       <base-input :rules="{ required: { allowFalse: false } }" name=Privacy Policy>
-                        <b-form-checkbox v-model="user.agree">
+                        <b-form-checkbox v-model="member.agree">
                           <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
                         </b-form-checkbox>
                       </base-input>
@@ -108,14 +110,14 @@
   </div>
 </template>
 <script>
-import api from "@/api/http";
+import {regist, idCheck} from "@/api/memberApi";
 
   export default {
     name: 'register',
     data() {
       return {
         errorMessage: "",
-        user: {
+        member: {
           userid: '',
           username: '',
           userpwd: '',
@@ -126,11 +128,17 @@ import api from "@/api/http";
     },
     methods: {
       onSubmit() {
-        api.post("/user/idCheck", this.user).then((response) => {
+        idCheck(this.member).then((response) => {
           if(response.data == 'success') {
             this.errorMessage = "중복된 아이디입니다";
           } else {
-
+            regist(this.member).then((res) => {
+              if(res.data == 'success') {
+                this.$router.push("/");
+              } else {
+                this.errorMessage = "회원가입이 되지않았습니다."
+              }
+            })
           }
         })
       }

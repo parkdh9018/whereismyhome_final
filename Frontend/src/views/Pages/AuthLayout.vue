@@ -32,7 +32,7 @@
          <b-navbar-nav  class="align-items-lg-center ml-lg-auto">
            <b-nav-item to="/dashboard">
                <i class="ni ni-planet"></i>
-               <span class="nav-link-inner--text">Dashboard</span>
+               <span class="nav-link-inner--text">Main</span>
            </b-nav-item>
            <b-nav-item to="/register">
                <i class="ni ni-circle-08"></i>

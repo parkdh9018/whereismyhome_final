@@ -27,14 +27,14 @@
             <b-card no-body class="bg-secondary border-0">
               <b-card-body class="px-lg-5 py-lg-5">
                 <validation-observer v-slot="{handleSubmit}" ref="formValidator">
-                  <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
+                  <b-form v-if="!findCheck" role="form" @submit.prevent="handleSubmit(onSubmit)">
                     <base-input alternative
                                 class="mb-3"
                                 prepend-icon="ni ni-hat-3"
-                                placeholder="Name"
-                                name="Name"
+                                placeholder="ID"
+                                name="ID"
                                 :rules="{required: true}"
-                                v-model="model.name">
+                                v-model="member.userid">
                     </base-input>
   
                     <base-input alternative
@@ -43,39 +43,69 @@
                                 placeholder="Email"
                                 name="Email"
                                 :rules="{required: true, email: true}"
-                                v-model="model.email">
+                                v-model="member.email">
                     </base-input>
   
-
+                    <span class="text-danger font-weight-500"
+                    ><small>{{ errorMessage }} </small></span
+                  >
                     <div class="text-center">
                       <b-button type="submit" variant="primary" class="mt-4">비밀번호 재설정</b-button>
                     </div>
                   </b-form>
+                  <div v-else>
+                    <p class="h1">메일이 전송되었습니다</p>
+                    <p>3초 후 메인페이지로 이동합니다.</p>
+                  </div>
                 </validation-observer>
               </b-card-body>
             </b-card>
+            <b-row class="mt-3">
+            <b-col cols="6">
+              <router-link to="/login" class="text-light"
+                ><small>Login</small></router-link
+              >
+            </b-col>
+            <b-col cols="6" class="text-right">
+              <router-link to="/register" class="text-light"
+                ><small>Create new account</small></router-link
+              >
+            </b-col>
+          </b-row>
           </b-col>
         </b-row>
       </b-container>
     </div>
   </template>
   <script>
-  
+  import {passwordFind} from '@/api/memberApi';
+
     export default {
       name: 'register',
       data() {
         return {
-          model: {
-            name: '',
+          member: {
+            userid: '',
             email: '',
-            password: '',
-            agree: false
-          }
+          },
+          errorMessage:"",
+          findCheck: false,
         }
       },
       methods: {
         onSubmit() {
-          // this will be called only after form is valid. You can do an api call here to register users
+          passwordFind(this.member)
+          .then((res) => {
+            console.log(res);
+            if(res.data == "fail") {
+              this.errorMessage = "아이디와 이메일을 확인해주세요"
+            } else {
+              this.findCheck = true;
+              setTimeout(() => {
+                this.$router.push("/");
+              }, 3000);
+            }
+          })
         }
       }
   

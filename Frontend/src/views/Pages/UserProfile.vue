@@ -17,7 +17,7 @@
           <b-row>
             <b-col lg="7" md="10">
               <h1 class="display-2 text-white">
-                Hello {{ userInfo.usernmae }}
+                안녕하세요 {{ user.username }}님
               </h1>
               <p class="text-white mt-0 mb-5">
                 This is your profile page. You can see the progress you've made
@@ -33,7 +33,7 @@
     <b-container fluid class="mt--6">
       <b-row>
         <b-col xl="4" class="order-xl-2 mb-5">
-          <user-card></user-card>
+          <user-card :user="user"></user-card>
         </b-col>
         <b-col xl="8" class="order-xl-1">
           <edit-profile-form></edit-profile-form>
@@ -45,15 +45,28 @@
 <script>
 import EditProfileForm from "./UserProfile/EditProfileForm.vue";
 import UserCard from "./UserProfile/UserCard.vue";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-  computed: {
-    ...mapState("member", ["userInfo"]),
-  },
   components: {
     EditProfileForm,
     UserCard,
+  },
+  data() {
+    return {
+      user: {
+        userid: "",
+        username:"",
+        useremail:"",
+        joindate:"",
+      },
+    };
+  },
+  computed: {
+    ...mapGetters("member", ["checkUserInfo"]),
+  },
+  mounted() {
+    this.user = this.checkUserInfo;
   },
 };
 </script>
