@@ -1181,6 +1181,7 @@ org.apache.ibatis.binding.BindingException: Parameter 'userpwd' not found. Avail
 [2m2022-11-18 01:16:51.210[0;39m [32m INFO[0;39m [35m5556[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat started on port(s): 9999 (http) with context path '/vue'
 [2m2022-11-18 01:16:54.706[0;39m [32m INFO[0;39m [35m5556[0;39m [2m---[0;39m [2m[nio-9999-exec-1][0;39m [36mo.s.web.servlet.DispatcherServlet       [0;39m [2m:[0;39m Initializing Servlet 'dispatcherServlet'
 [2m2022-11-18 01:16:54.707[0;39m [32m INFO[0;39m [35m5556[0;39m [2m---[0;39m [2m[nio-9999-exec-1][0;39m [36mo.s.web.servlet.DispatcherServlet       [0;39m [2m:[0;39m Completed initialization in 0 ms
+<<<<<<< HEAD
 [2m2022-11-18 02:04:16.659[0;39m [32mDEBUG[0;39m [35m5556[0;39m [2m---[0;39m [2m[nio-9999-exec-5][0;39m [36mc.ssafy.vue.controller.MemberController [0;39m [2m:[0;39m 로그인 accessToken 정보 : eyJ0eXAiOiJKV1QiLCJyZWdEYXRlIjoxNjY4NzA0NjU2NjMyLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njg3MDQ2NjYsInN1YiI6ImFjY2Vzcy10b2tlbiIsInVzZXJpZCI6InNzYWZ5In0.Zwl68koVx5aVi-R8PwPQFWc3KOIOjSYrxLkahbfWrpU
 [2m2022-11-18 02:04:16.660[0;39m [32mDEBUG[0;39m [35m5556[0;39m [2m---[0;39m [2m[nio-9999-exec-5][0;39m [36mc.ssafy.vue.controller.MemberController [0;39m [2m:[0;39m 로그인 refreshToken 정보 : eyJ0eXAiOiJKV1QiLCJyZWdEYXRlIjoxNjY4NzA0NjU2NjU1LCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Njg3MDQ2ODYsInN1YiI6InJlZnJlc2gtdG9rZW4iLCJ1c2VyaWQiOiJzc2FmeSJ9.MZxWXlV6EDvMIkalTC2A69rUDmWzovVlgWHNz0OQBmM
 [2m2022-11-18 02:04:16.683[0;39m [32m INFO[0;39m [35m5556[0;39m [2m---[0;39m [2m[nio-9999-exec-7][0;39m [36mc.ssafy.vue.controller.MemberController [0;39m [2m:[0;39m 사용 가능한 토큰!!!
@@ -2242,3 +2243,5 @@ Identify and stop the process that's listening on port 9999 or configure this ap
 [2m2022-11-18 11:33:28.424[0;39m [32m INFO[0;39m [35m14976[0;39m [2m---[0;39m [2m[nio-9999-exec-2][0;39m [36mo.s.web.servlet.DispatcherServlet       [0;39m [2m:[0;39m Completed initialization in 1 ms
 [2m2022-11-18 11:33:28.433[0;39m [33m WARN[0;39m [35m14976[0;39m [2m---[0;39m [2m[nio-9999-exec-2][0;39m [36mo.s.web.servlet.PageNotFound            [0;39m [2m:[0;39m No mapping for POST /vue/member
 [2m2022-11-18 11:33:39.447[0;39m [32m INFO[0;39m [35m14976[0;39m [2m---[0;39m [2m[nio-9999-exec-3][0;39m [36mc.ssafy.vue.controller.MemberController [0;39m [2m:[0;39m signup - 호출
+=======
+>>>>>>> fb15276beafd3f69f74e677b3b94575903ea48c5
