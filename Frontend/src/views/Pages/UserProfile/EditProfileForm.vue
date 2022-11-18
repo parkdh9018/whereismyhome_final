@@ -2,10 +2,10 @@
   <card>
     <b-row align-v="center" slot="header">
       <b-col cols="8">
-        <h3 class="mb-0">Edit profile</h3>
+        <h3 class="mb-0">Profile</h3>
       </b-col>
       <b-col cols="4" class="text-right">
-        <a @click="updateProfile" class="btn btn-sm btn-primary">Settings</a>
+        <a @click="updateProfile" class="btn btn-info">회원정보 수정</a>
       </b-col>
     </b-row>
 
@@ -43,7 +43,6 @@
             >
             </base-input>
           </b-col>
-
         </b-row>
       </div>
 
@@ -112,40 +111,97 @@
           ></b-form-textarea>
         </b-form-group>
       </div>
+
+      <hr class="my-4" />
+      <a @click="toggleModal" class="btn btn-info float-right">비밀번호 변경</a>
     </b-form>
+
+    <!-- modal -->
+    <b-modal ref="my-modal" hide-footer title="비밀번호 변경">
+      <span class="text-danger font-weight-500">
+        <small>{{ errorMessage }} </small>
+      </span>
+      <div class="d-block">
+        <base-input
+          type="password"
+          label="기존 비밀번호"
+          v-model="changePw.originpassword"
+          placeholder="password"
+        >
+        </base-input>
+        <base-input
+          type="password"
+          label="변경할 비밀번호"
+          v-model="changePw.newpassword"
+          placeholder="change password"
+        >
+        </base-input>
+      </div>
+      <b-button class="mt-3" variant="outline-danger" block @click="hideModal"
+        >확인</b-button
+      >
+      <b-button class="mt-3" variant="outline-danger" block @click="toggleModal"
+        >취소</b-button
+      >
+    </b-modal>
   </card>
 </template>
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { modifyMember } from "@/api/memberApi"
+import { modifyMember, modifyPassword } from "@/api/memberApi";
 
 export default {
   data() {
     return {
       user: {
         userid: "",
-        username:"",
-        useremail:"",
-        userpwd:"",
-        joindate:"",
+        username: "",
+        useremail: "",
+        userpwd: "",
+        joindate: "",
       },
+      changePw: {
+        userid: "",
+        originpassword: "",
+        newpassword: "",
+      },
+      errorMessage : "",
     };
   },
   computed: {
     ...mapGetters("member", ["checkUserInfo"]),
   },
   mounted() {
-    this.user = {...this.checkUserInfo};
+    this.user = { ...this.checkUserInfo };
+    this.changePw.userid = this.user.userid;
   },
   methods: {
     ...mapMutations("member", ["SET_USER_INFO"]),
     updateProfile() {
-      console.log(this.user)
-      modifyMember(this.user).then(() => {
-        this.SET_USER_INFO(this.user);
-      }).catch(() => {
-        alert("회원정보 수정을 하지못했습니다.")
-      })
+      console.log(this.user);
+      modifyMember(this.user)
+        .then(() => {
+          this.SET_USER_INFO(this.user);
+        })
+        .catch(() => {
+          alert("회원정보 수정을 하지못했습니다.");
+        });
+    },
+    showModal() {
+      this.$refs["my-modal"].show();
+    },
+    hideModal() {
+      modifyPassword(this.changePw).then((res) => {
+        if (res.data == "success") {
+          this.$refs["my-modal"].hide();
+          alert("변경완료");
+        } else {
+          this.errorMessage = "정확한 비밀번호를 입력해주세요";
+        }
+      });
+    },
+    toggleModal() {
+      this.$refs["my-modal"].toggle("#toggle-btn");
     },
   },
 };

@@ -35,4 +35,8 @@ function modifyMember(user) {
   return api.put("/member", user);
 }
 
-export { login, findById, tokenRegeneration, logout, idCheck, regist, passwordFind, modifyMember };
+function modifyPassword(changePw) {
+  return api.put("member/modifyPassword", changePw);
+}
+
+export { login, findById, tokenRegeneration, logout, idCheck, regist, passwordFind, modifyMember, modifyPassword };

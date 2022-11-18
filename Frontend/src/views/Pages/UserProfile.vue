@@ -23,7 +23,6 @@
                 This is your profile page. You can see the progress you've made
                 with your work and manage your projects or assigned tasks
               </p>
-              <a href="#!" class="btn btn-info">Edit profile</a>
             </b-col>
           </b-row>
         </b-container>
