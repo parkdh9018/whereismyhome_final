@@ -134,7 +134,7 @@ import {regist, idCheck} from "@/api/memberApi";
           } else {
             regist(this.member).then((res) => {
               if(res.data == 'success') {
-                this.$router.push("/");
+                this.$router.push({ name: "dashboard" });
               } else {
                 this.errorMessage = "회원가입이 되지않았습니다."
               }

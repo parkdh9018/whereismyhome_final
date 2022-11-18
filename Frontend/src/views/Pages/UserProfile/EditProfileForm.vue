@@ -116,7 +116,7 @@
   </card>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { modifyMember } from "@/api/memberApi"
 
 export default {
@@ -138,10 +138,11 @@ export default {
     this.user = {...this.checkUserInfo};
   },
   methods: {
+    ...mapMutations("member", ["SET_USER_INFO"]),
     updateProfile() {
       console.log(this.user)
       modifyMember(this.user).then(() => {
-
+        this.SET_USER_INFO(this.user);
       }).catch(() => {
         alert("회원정보 수정을 하지못했습니다.")
       })
