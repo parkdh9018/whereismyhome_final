@@ -10,6 +10,11 @@
 		where userid = #{userid} and userpwd = #{userpwd}
 	</select>
 	
+	<insert id="signup" parameterType="boardDto">
+		insert into member (userid, username, userpwd, email, joindate)
+		values (#{userid},  #{username},#{userpwd}, #{email}, now())
+	</insert>
+	
 	<select id="userInfo" parameterType="string" resultType="memberDto">
 		select username, userid, email, joindate
 		from member

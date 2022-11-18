@@ -1,7 +1,5 @@
 import api from "./http";
 
-
-
 function listArticle(param, success, fail) {
   api.get(`/board`, { params: param }).then(success).catch(fail);
 }
@@ -23,8 +21,16 @@ function deleteArticle(articleno, success, fail) {
 }
 
 function getComments(articleno, success, fail) {
-  api.delete(`/comment/${articleno}`).then(success).catch(fail);
+  api.get(`/comment/${articleno}`).then(success).catch(fail);
 }
-export { listArticle, writeArticle, getArticle, modifyArticle, deleteArticle, getComments };
+
+function registComment(comment, success, fail) {
+  api.post(`/comment`, JSON.stringify(comment)).then(success).catch(fail);
+}
+
+function updateComments(comment, success, fail) {
+  api.put(`/comment`, JSON.stringify(comment)).then(success).catch(fail);
+}
+export { listArticle, writeArticle, getArticle, modifyArticle, deleteArticle, getComments, registComment, updateComments };
 
 

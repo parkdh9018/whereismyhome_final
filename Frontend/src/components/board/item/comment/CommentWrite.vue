@@ -13,8 +13,7 @@
 </template>
 
 <script>
-import http from "@/api/http";
-
+import { updateComments,getComments, registComment } from "@/api/boardApi";
 export default {
   name: "CommentWrite",
   data() {
@@ -22,6 +21,7 @@ export default {
       // 차후 작성자 이름은 로그인 구현후 로그인한 사용자로 바꾼다.
       userid: "admin",
       comment: "",
+      comments: {},
       modify_comment: this.modifyComment
     };
   },
@@ -31,43 +31,64 @@ export default {
   },
   methods: {
     registComment() {
-      http
-        .post("/comment/", {
-          userid: this.userid,
+      let param = {
+        userid: this.userid,
           comment: this.comment,
           articleno: this.articleno
-        })
-        .then(({ data }) => {
+      };
+      registComment(
+        param,
+        ({ data }) => {
           let msg = "등록 처리시 문제가 발생했습니다.";
           if (data === "success") {
             msg = "등록이 완료되었습니다.";
           }
           alert(msg);
-
-          // 작성글 지우기
           this.comment = "";
-
           // 도서평(댓글) 얻기.
-          this.$store.dispatch("getComments", `/comment/${this.articleno}`);
-        });
+          this.getComment();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     updateComment() {
-      http
-        .put(`/comment`, {
-          commentno: this.modifyComment.commentno,
-          comment: this.modifyComment.comment
-        })
-        .then(({ data }) => {
+      let param = {
+        commentno: this.modifyComment.commentno,
+        comment: this.modifyComment.comment
+      };
+      updateComments(
+        param,
+        ({ data }) => {
           let msg = "수정 처리시 문제가 발생했습니다.";
           if (data === "success") {
             msg = "수정이 완료되었습니다.";
           }
           alert(msg);
-
-          // 도서평(댓글) 얻기.
-          this.$store.dispatch("getComments", `/comment/${this.modifyComment.articleno}`);
+          this.$router.push({
+                name: 'boardView',
+                params: {
+                  articleno: this.articleno
+                }
+            })
           this.$emit("modify-comment-cancel", false);
-        });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    getComment(){
+      getComments(
+            this.$route.query.articleno,
+            ({ data }) => {
+              this.comments = data;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
     },
     updateCommentCancel() {
       this.$emit("modify-comment-cancel", false);

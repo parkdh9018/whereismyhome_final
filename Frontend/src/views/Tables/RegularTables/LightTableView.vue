@@ -19,9 +19,6 @@
           border-variant="dark"
           no-body
         >
-          <b-card-body class="text-left">
-            <div v-html="message"></div>
-          </b-card-body>
         </b-card>
       </b-col>
     </b-row>
@@ -47,8 +44,8 @@
 
 import CommentWrite from "@/components/board/item/comment/CommentWrite.vue";
 import Comment from "@/components/board/item/comment/Comment.vue";
-import { getArticle,getComments } from "@/api/board";
-import { mapState } from "vuex";
+import { getArticle,getComments } from "@/api/boardApi";
+
 export default {
   name: "BoardDetail",
   data() {
@@ -57,6 +54,7 @@ export default {
       isModifyShow: false,
       modifyComment: Object,
       article: {},
+      comments: {}
     };
   },
 
@@ -74,16 +72,12 @@ export default {
     getComments(
       param,
       ({ data }) => {
-        this.modifyComment = data;
+        this.comments = data;
       },
       (error) => {
         console.log(error);
       }
     );
-
-    // http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
-    //   this.article = data;
-    // });
   },
   components: {
     CommentWrite,

@@ -78,6 +78,11 @@ public class MemberServiceImpl implements MemberService {
 		sqlSession.getMapper(MemberMapper.class).passwordUpdate(userid, userpwd);
 		
 	}
+
+	@Override
+	public boolean signup(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).signup(memberDto) ==1;
+	}
 	
 
 }

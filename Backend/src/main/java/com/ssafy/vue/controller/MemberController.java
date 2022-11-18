@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.MailDto;
 import com.ssafy.vue.model.MemberDto;
 import com.ssafy.vue.model.service.EmailService;
@@ -146,12 +147,21 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	@ApiOperation(value = "회원가입", notes = "입력된 회원 정보에 따라 회원가입을 한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PostMapping
+	public ResponseEntity<String> signup(@RequestBody @ApiParam(value = "회원가입", required = true) MemberDto memberDto) throws Exception {
+		logger.info("signup - 호출");
+		if (memberService.signup(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 	
 	@ApiOperation(value = "회원가입 아이디 중복확인", notes = "중복된 아이디면 1 중복되지 않았으면 0을 반환한다.", response = Map.class)
 	@PostMapping("/idCheck")
 	public ResponseEntity<String> idCheck(
 			@RequestBody @ApiParam(value = "회원가입 아이디 중복확인시 필요한 아이디", required = true) MemberDto memberDto) throws Exception {
-		logger.info("modifyArticle - 호출 {}", memberDto.getUserid());
+		logger.info("idCheck - 호출 {}", memberDto.getUserid());
 		
 		if (memberService.idCheck(memberDto.getUserid())==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);

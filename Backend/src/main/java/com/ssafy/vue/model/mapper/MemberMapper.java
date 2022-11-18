@@ -21,5 +21,6 @@ public interface MemberMapper {
 	public int idFindCheck(String email)throws Exception;
 	public int passwordFind(MemberDto memberDto) throws Exception;
 	public void passwordUpdate(String userid, String userpwd);
+	public int signup(MemberDto memberDto) throws Exception;;
 
 }
