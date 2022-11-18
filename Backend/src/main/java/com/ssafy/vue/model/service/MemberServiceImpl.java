@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.MemberDto;
 import com.ssafy.vue.model.mapper.MemberMapper;
 
@@ -25,8 +26,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberDto userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
+	public MemberDto memberInfo(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).memberInfo(userid);
 	}
 
 	@Override
@@ -82,6 +83,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean signup(MemberDto memberDto) throws Exception {
 		return sqlSession.getMapper(MemberMapper.class).signup(memberDto) ==1;
+	}
+
+	@Override
+	public boolean deleteMember(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).deleteMember(userid) ==1;
+	}
+
+	@Override
+	public boolean modifyMember(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).modifyMember(memberDto) ==1;
 	}
 	
 

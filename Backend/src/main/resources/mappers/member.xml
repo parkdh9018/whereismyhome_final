@@ -15,7 +15,7 @@
 		values (#{userid},  #{username},#{userpwd}, #{email}, now())
 	</insert>
 	
-	<select id="userInfo" parameterType="string" resultType="memberDto">
+	<select id="memberInfo" parameterType="string" resultType="memberDto">
 		select username, userid, email, joindate
 		from member
 		where userid = #{userid}
@@ -56,6 +56,17 @@
 	<update id="passwordUpdate" parameterType="memberDto">
 		update member
 		set userpwd = #{userpwd}
+		where userid = #{userid}
+	</update>
+	
+	<delete id="deleteMember" parameterType="string">
+		delete from member
+		where userid = #{userid}
+	</delete>
+	
+	<update id="modifyMember" parameterType="memberDto">
+		update member
+		set username = #{username}, userpwd = #{userpwd} , email = #{email}
 		where userid = #{userid}
 	</update>
 </mapper>

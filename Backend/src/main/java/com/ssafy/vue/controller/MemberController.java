@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/member")
 @Api("사용자 컨트롤러  API V1")
 public class MemberController {
 
@@ -88,7 +90,7 @@ public class MemberController {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
-				MemberDto memberDto = memberService.userInfo(userid);
+				MemberDto memberDto = memberService.memberInfo(userid);
 				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -161,13 +163,35 @@ public class MemberController {
 	@PostMapping("/idCheck")
 	public ResponseEntity<String> idCheck(
 			@RequestBody @ApiParam(value = "회원가입 아이디 중복확인시 필요한 아이디", required = true) MemberDto memberDto) throws Exception {
-		logger.info("idCheck - 호출 {}", memberDto.getUserid());
+		logger.info("idCheck - 호출 ", memberDto.getUserid());
 		
 		if (memberService.idCheck(memberDto.getUserid())==1) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 	
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+	
+	@ApiOperation(value = "회원 정보 수정", notes = "수정할 회원 정보를 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping
+	public ResponseEntity<String> modifyMember(@RequestBody @ApiParam(value = "수정할 회원 정보.", required = true) MemberDto memberDto) throws Exception {
+		logger.info("modifyMember - 호출", memberDto);
+		
+		if (memberService.modifyMember(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "회원탈퇴", notes = "회원탈퇴 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/{userid}")
+	public ResponseEntity<String> deleteMember(@PathVariable("userid") @ApiParam(value = "살제할 글의 글번호.", required = true) String userid) throws Exception {
+		logger.info("deleteMember - 호출");
+		if (memberService.deleteMember(userid)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
 	
@@ -199,23 +223,18 @@ public class MemberController {
 		
 	}
 	
-	@ApiOperation(value = "비밀번호 찾기", notes = "회원 정보를 담은 Token을 제거한다.", response = Map.class)
+	@ApiOperation(value = "비밀번호 찾기", notes = "임시 비밀번호를 메일로 보낸다. fail 아니면 success 반환", response = Map.class)
 	@PostMapping("/passwordFind")
 	public ResponseEntity<?> passwordFind (@RequestBody @ApiParam MemberDto memberDto) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-		
 		MemberDto member = memberService.idFind(memberDto);
 		String userid = member.getUserid();
 		if(userid!=null) {
 			MailDto dto = emailService.createMailAndChangePassword(memberDto.getUsername(), memberDto.getEmail());
 			emailService.mailSend(dto);
 			return new ResponseEntity<String>(userid, HttpStatus.OK);
-			
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
-		
-
 	}
 	
 

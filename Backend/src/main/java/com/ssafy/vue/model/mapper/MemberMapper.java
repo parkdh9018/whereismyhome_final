@@ -12,7 +12,7 @@ import com.ssafy.vue.model.MemberDto;
 public interface MemberMapper {
 
 	public MemberDto login(MemberDto memberDto) throws SQLException;
-	public MemberDto userInfo(String userid) throws SQLException;
+	public MemberDto memberInfo(String userid) throws SQLException;
 	public void saveRefreshToken(Map<String, String> map) throws SQLException;
 	public Object getRefreshToken(String userid) throws SQLException;
 	public void deleteRefreshToken(Map<String, String> map) throws SQLException;
@@ -21,6 +21,8 @@ public interface MemberMapper {
 	public int idFindCheck(String email)throws Exception;
 	public int passwordFind(MemberDto memberDto) throws Exception;
 	public void passwordUpdate(String userid, String userpwd);
-	public int signup(MemberDto memberDto) throws Exception;;
+	public int signup(MemberDto memberDto) throws Exception;
+	public int deleteMember(String userid)throws Exception;
+	public int modifyMember(MemberDto memberDto)throws Exception;
 
 }
