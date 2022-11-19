@@ -2,8 +2,10 @@
   <div id="map_wrap">
     <div id="map"></div>
     <div>
-      <b-button v-if="!menuToggle" id="menuButton" @click="menuButtonClick"><i class="ni ni-bold-right mr-2"></i>{{center_address}}</b-button>
-      <MapMenu @closeEvent="menuButtonClick" :address="center_address" v-else/>
+      <b-button v-if="!menuToggle" id="menuButton" @click="menuButtonClick"
+        ><i class="ni ni-bold-right mr-2"></i>{{ center_address }}</b-button
+      >
+      <MapMenu @closeEvent="menuButtonClick" :address="address" v-else />
     </div>
   </div>
   <!-- <div>{{ center_address }}</div>
@@ -15,9 +17,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import MapMenu from "./MapMenu.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "KakaoMap",
@@ -25,17 +26,15 @@ export default {
     MapMenu,
   },
   computed: {
-    ...mapGetters("map", ["aptlist"]),
+    ...mapGetters("map", ["aptlist", "center", "address"]),
   },
   data() {
     return {
       menuToggle: false,
-      center_address: "",
       gugunCode: "",
       dongname: "",
       level: "",
-      southwest: "",
-      northeast: "",
+      center_address: "",
       markers: [],
     };
   },
@@ -50,12 +49,46 @@ export default {
       document.head.appendChild(script);
     }
   },
-  // watch: {
-  //   gugunCode: function (val) {
+  watch: {
+    center: function (val) {
+      const bounds = this.map.getBounds();
 
-  //   },
-  // },
+      this.northeast = bounds.getNorthEast();
+      this.southwest = bounds.getSouthWest();
+      this.level = this.map.getLevel();
+
+      //기존 마커 삭제
+      this.markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+      this.clusterer.removeMarkers(this.markers);
+
+      if (this.level > 3) {
+        return;
+      }
+      this.$store.dispatch("map/getaptlist_move", [
+        bounds.getSouthWest(),
+        bounds.getNorthEast(),
+      ])
+      .then(() => {
+        this.aptlist.forEach((apt) => {
+          this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
+        });
+      });
+
+      // 중심 위치 주소 변경
+      this.searchAddress(val).then((data) => {
+        this.center_address = `${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`;
+      });
+    },
+    address : function (val) {
+      this.searchPosition(val).then((data) => {
+        this.map.setCenter(data);
+      });
+    }
+  },
   methods: {
+    ...mapMutations("map", ["setCenter", "setAddress"]),
     initMap() {
       const container = document.getElementById("map");
 
@@ -90,51 +123,7 @@ export default {
     },
 
     moveMap() {
-      this.changeCenter();
-      this.changeGunguncode(this.center);
-    },
-
-    changeGunguncode(latlng) {
-      this.searchAddress(latlng).then((data) => {
-        this.center_address = `${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`;
-        axios
-          .get(
-            `http://localhost:9999/vue/map/code?sido=${data.region_1depth_name}&gugun=${data.region_2depth_name}`
-          )
-          .then((res) => {
-            this.gugunCode = res.data.gugunCode.slice(0, 5);
-            this.dongname = data.region_3depth_name;
-          });
-      });
-    },
-
-    changeCenter() {
-      this.center = this.map.getCenter();
-      const bounds = this.map.getBounds();
-
-      this.northeast = bounds.getNorthEast();
-      this.southwest = bounds.getSouthWest();
-      this.level = this.map.getLevel();
-
-      //기존 마커 삭제
-      this.markers.forEach((marker) => {
-        marker.setMap(null);
-      });
-      this.clusterer.removeMarkers(this.markers);
-
-      if (this.level > 3) {
-        return;
-      }
-      this.$store
-        .dispatch("map/getaptlist_move", [
-          bounds.getSouthWest(),
-          bounds.getNorthEast(),
-        ])
-        .then(() => {
-          this.aptlist.forEach((apt) => {
-            this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
-          });
-        });
+      this.setCenter(this.map.getCenter());
     },
 
     // 마커 만들기

@@ -7,7 +7,6 @@
       <b-breadcrumb-item
         @click="breadGugunClick"
         v-if="tag == 'gugun' || tag == 'dong'"
-        href="#library"
         >{{ bread.gugun }}</b-breadcrumb-item
       >
       <b-breadcrumb-item v-if="tag == 'dong'" href="#data" active>{{
@@ -21,12 +20,13 @@
           </b-col>
       </b-row>
     </b-container>
-    <b-button class="mt-4">지도로 이동</b-button>
+    <b-button v-show="bread.sido != '시/도'" @click="changeCenter" class="mt-4">{{this.btn_address}} 지도로 이동</b-button>
   </div>
 </template>
 
 <script>
 import { areaList } from "@/api/areaApi";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "MapMenuSelectAarea",
@@ -36,7 +36,11 @@ export default {
       tag: "",
       code: "",
       bread: {},
+      btn_address: "",
     };
+  },
+  computed : {
+    ...mapGetters("map", ["address"]),
   },
   watch: {
     tag: function (val) {
@@ -88,6 +92,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations("map", ["setCenter", "setAddress"]),
     btnClick(code, name) {
       if (this.tag == "sido") {
         this.tag = "gugun";
@@ -96,9 +101,10 @@ export default {
         this.tag = "dong";
         this.bread.gugun = name;
       } else if (this.tag == "dong") {
-        console.log(code, name)
+        //뭔가 해야해!
       }
       this.code = code;
+      this.btn_address = `${this.bread.sido == '시/도' ? '' : this.bread.sido} ${this.bread.gugun == '구/군' ? '' : this.bread.gugun}`
     },
     breadSidoClick() {
       this.bread.sido = "시/도";
@@ -108,6 +114,9 @@ export default {
       this.bread.gugun = "구/군";
       this.tag = "gugun";
     },
+    changeCenter() {
+      this.setAddress(this.btn_address);
+    }
   },
 };
 </script>

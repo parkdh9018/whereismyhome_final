@@ -4,18 +4,32 @@ const mapStore = {
   namespaced: true,
   state: ()=>({
     aptlist: [],
+    center: null,
+    address: "",
   }),
 
   getters: {
     aptlist(state) {
       return state.aptlist;
     },
+    center(state) {
+      return state.center;
+    },
+    address(state) {
+      return state.address;
+    }
   },
 
   mutations: {
     setAptlist(state, payload) {
       state.aptlist = payload;
     },
+    setCenter(state, payload) {
+      state.center = payload;
+    },
+    setAddress(state, payload) {
+      state.address = payload;
+    }
   },
 
   actions: {
