@@ -43,10 +43,10 @@ export default {
 <style scoped>
 #map_menu {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 0px;
+  left: 0px;
   z-index: 1;
   width: 350px;
-  height: 80%;
+  height: 100%;
 }
 </style>
