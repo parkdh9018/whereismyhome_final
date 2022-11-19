@@ -1,8 +1,10 @@
 <template>
   <div id="map_wrap">
     <div id="map"></div>
-    <b-button v-if="!menuToggle" id="menuButton" @closeEvent="menuClose" @click="menuButtonClick">{{center_address}}</b-button>
-    <MapMenu :address="center_address" v-else/>
+    <div>
+      <b-button v-if="!menuToggle" id="menuButton" @click="menuButtonClick"><i class="ni ni-bold-right mr-2"></i>{{center_address}}</b-button>
+      <MapMenu @closeEvent="menuButtonClick" :address="center_address" v-else/>
+    </div>
   </div>
   <!-- <div>{{ center_address }}</div>
     <div>코드 : {{ gugunCode }}</div>
@@ -143,9 +145,6 @@ export default {
       this.clusterer.addMarker(marker);
     },
 
-    menuClose() {
-      this.menuToggle = !this.menuToggle;
-    },
     menuButtonClick() {
       this.menuToggle = !this.menuToggle;
     },

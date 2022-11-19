@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
 import com.ssafy.vue.model.service.HouseMapService;
@@ -107,12 +108,12 @@ public class HouseMapController {
 	}
 
 	@GetMapping("/dong")
-	public ResponseEntity<List<HouseInfoDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
-		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
+	public ResponseEntity<List<DongCodeDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
+		return new ResponseEntity<List<DongCodeDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
 	}
 	
-	@GetMapping("/apt/dong/{code}")
-	public ResponseEntity<List<HouseInfoDto>> aptByDong(@PathVariable("code") String code) throws Exception {
+	@GetMapping("/apt/dong")
+	public ResponseEntity<List<HouseInfoDto>> aptByDong(@RequestParam("code") String code) throws Exception {
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInDong(code), HttpStatus.OK);
 	}
 	

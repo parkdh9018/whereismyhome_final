@@ -27,9 +27,9 @@
 	</select>
 
 	<select id="getDongInGugun" parameterType="string"
-		resultType="houseInfoDto">
+		resultType="DongCodeDto">
 		select distinct dongName, dongCode
-		from houseinfo
+		from baseaddress
 		where
 		left(dongCode, 5) = #{gugun}
 		order by dongName
