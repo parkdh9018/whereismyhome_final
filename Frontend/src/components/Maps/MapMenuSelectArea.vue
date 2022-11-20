@@ -20,7 +20,8 @@
           </b-col>
       </b-row>
       <b-row v-else>
-        <b-col class="border rounded text-center"  cols="12" v-for="apt in aptlist" :key="apt.aptCode">{{apt.apartmentName}}</b-col>
+        <b-col class="border rounded text-center"  cols="12" v-for="apt in dongAptlist" :key="apt.aptCode">{{apt.apartmentName}}</b-col>
+        <b-col v-if="dongAptlist.length"></b-col>
       </b-row>
     </b-container>
     <b-button v-show="bread.sido != '시/도'" @click="changeCenter" class="mt-4">{{this.btn_address}} 지도로 이동</b-button>
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import { areaList, searchPosition } from "@/api/areaApi";
+import { areaList, searchPosition, aptListInDong } from "@/api/areaApi";
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
@@ -40,10 +41,11 @@ export default {
       code: "",
       bread: {},
       btn_address: "",
+      dongAptlist: [],
     };
   },
   computed : {
-    ...mapGetters("map", ["address", "aptlist"]),
+    ...mapGetters("map", ["address"]),
   },
   watch: {
     tag: function (val) {
@@ -107,6 +109,8 @@ export default {
       } else if (this.tag == "dong") {
         this.tag = "apt";
         this.bread.dong = name;
+        aptListInDong({code : code}, (res) => this.dongAptlist = res.data);
+        // 동의 아파트 리스트 불러옴
       }
       this.code = code;
       this.btn_address 
