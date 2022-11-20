@@ -2,9 +2,9 @@
   <div id="map_wrap">
     <div id="map"></div>
     <div>
-      <b-button v-if="!menuToggle" id="menuButton" @click="menuButtonClick"
-        ><i class="ni ni-bold-right mr-2"></i>{{ center_address }}</b-button
-      >
+      <b-button v-if="!menuToggle" id="menuButton" @click="menuButtonClick">
+        <i class="ni ni-bold-right mr-2"></i>{{ address }}
+      </b-button>
       <MapMenu @closeEvent="menuButtonClick" :address="address" v-else />
     </div>
   </div>
@@ -18,6 +18,7 @@
 
 <script>
 import MapMenu from "./MapMenu.vue";
+import { searchAddress } from "@/api/areaApi"
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
@@ -34,7 +35,6 @@ export default {
       gugunCode: "",
       dongname: "",
       level: "",
-      center_address: "",
       markers: [],
     };
   },
@@ -50,7 +50,12 @@ export default {
     }
   },
   watch: {
-    center: function (val) {
+    center: function (pos) {
+
+      console.log("center change")
+
+      this.map.setCenter(pos);
+
       const bounds = this.map.getBounds();
 
       this.northeast = bounds.getNorthEast();
@@ -77,15 +82,10 @@ export default {
       });
 
       // 중심 위치 주소 변경
-      this.searchAddress(val).then((data) => {
-        this.center_address = `${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`;
+      searchAddress(pos).then((data) => {
+        this.setAddress(`${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`);
       });
     },
-    address : function (val) {
-      this.searchPosition(val).then((data) => {
-        this.map.setCenter(data);
-      });
-    }
   },
   methods: {
     ...mapMutations("map", ["setCenter", "setAddress"]),
@@ -138,42 +138,6 @@ export default {
       this.menuToggle = !this.menuToggle;
     },
 
-    // 주소로 위도, 경도 찾는 함수
-    searchPosition(address) {
-      return new Promise((resolve, reject) => {
-        const geocoder = new kakao.maps.services.Geocoder();
-
-        geocoder.addressSearch(address, function (result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-            const point = new kakao.maps.LatLng(result[0].y, result[0].x);
-            resolve(point);
-          } else {
-            reject(status);
-          }
-        });
-      });
-    },
-
-    // 위도, 경도로 주소를 찾는 함수
-    searchAddress(position) {
-      return new Promise((resolve, reject) => {
-        const geocoder = new kakao.maps.services.Geocoder();
-
-        geocoder.coord2Address(
-          position.getLng(),
-          position.getLat(),
-          function (result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-              for (var i = 0; i < result.length; i++) {
-                resolve(result[i].address);
-              }
-            } else {
-              reject(status);
-            }
-          }
-        );
-      });
-    },
   },
 };
 </script>

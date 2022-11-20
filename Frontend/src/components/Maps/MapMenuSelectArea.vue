@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { areaList } from "@/api/areaApi";
+import { areaList, searchPosition } from "@/api/areaApi";
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
@@ -70,14 +70,14 @@ export default {
       } else if (val == "gugun") {
         areaList(params, (res) => {
           this.area_list = res.data.regcodes.map((v) => {
-            return { code: v.code, name: v.name.split(" ")[1] };
+            return { code: v.code, name: v.name.split(" ").slice(-1)[0] };
           });
           // this.bread.gugun = name;
         });
       } else {
         areaList(params, (res) => {
           this.area_list = res.data.regcodes.map((v) => {
-            return { code: v.code, name: v.name.split(" ")[2] };
+            return { code: v.code, name: v.name.split(" ").slice(-1)[0] };
           });
         });
       }
@@ -92,7 +92,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("map", ["setCenter", "setAddress"]),
+    ...mapMutations("map", ["setCenter"]),
     btnClick(code, name) {
       if (this.tag == "sido") {
         this.tag = "gugun";
@@ -115,8 +115,13 @@ export default {
       this.tag = "gugun";
     },
     changeCenter() {
-      this.setAddress(this.btn_address);
-    }
+      searchPosition(this.btn_address).then((pos) => {
+        this.setCenter(pos);
+      })
+    },
+
+
+
   },
 };
 </script>

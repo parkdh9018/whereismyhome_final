@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import MapMenuSeletArea from "@/components/Maps/MapMenuSelectArea"
 
 export default {
@@ -28,9 +27,6 @@ export default {
   },
   props : {
     address : String
-  },
-  computed: {
-    ...mapGetters(["aptlist"]),
   },
   methods: {
     closeEvent() {
