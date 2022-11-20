@@ -20,8 +20,7 @@
           </b-col>
       </b-row>
       <b-row v-else>
-        <b-col class="border rounded text-center"  cols="12" v-for="apt in dongAptlist" :key="apt.aptCode">{{apt.apartmentName}}</b-col>
-        <b-col v-if="dongAptlist.length"></b-col>
+        <MapMenuAptList :aptlist="dongAptlist"/>
       </b-row>
     </b-container>
     <b-button v-show="bread.sido != '시/도'" @click="changeCenter" class="mt-4">{{this.btn_address}} 지도로 이동</b-button>
@@ -31,9 +30,13 @@
 <script>
 import { areaList, searchPosition, aptListInDong } from "@/api/areaApi";
 import { mapMutations, mapGetters } from "vuex";
+import MapMenuAptList from "./MapMenuAptList.vue";
 
 export default {
   name: "MapMenuSelectAarea",
+  components : {
+    MapMenuAptList,
+  },
   data() {
     return {
       area_list: [],
