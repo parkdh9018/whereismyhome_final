@@ -31,11 +31,10 @@ export default {
   },
   methods: {
     registComment() {
-      console.log(this.userid);
       let param = {
         userid: this.userid,
           comment: this.comment,
-          articleno: this.articleno
+          articleno: this.$route.query.articleno
 
       };
       registComment(
@@ -47,7 +46,7 @@ export default {
           }
           alert(msg);
           this.comment = "";
-          // 도서평(댓글) 얻기.
+          // 도서평(댓글) 얻기에서 계속 오류 나고 있음.
           this.getComment();
         },
         (error) => {
@@ -68,12 +67,7 @@ export default {
             msg = "수정이 완료되었습니다.";
           }
           alert(msg);
-          this.$router.push({
-                name: 'boardView',
-                params: {
-                  articleno: this.articleno
-                }
-            })
+          this.$router.push(`/tables/view?articleno=${this.$route.query.articleno}`);
           this.$emit("modify-comment-cancel", false);
         },
         (error) => {
