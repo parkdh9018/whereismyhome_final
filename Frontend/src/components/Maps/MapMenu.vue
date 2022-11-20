@@ -26,25 +26,20 @@
           <MapMenuSeletArea />
         </b-tab>
       </b-tabs>
-      <b-container v-else>
-        <b-row>
-          <b-col class="border rounded text-center"  cols="12" v-for="apt in searchAptList" :key="apt.id">{{apt.place_name}}</b-col>
-          <b-col v-if="searchAptList.length == 0">
-            정보가 없습니다.
-          </b-col>
-        </b-row>
-      </b-container>
+      <MapMenuPlaceList v-else :place-list="searchAptList"/>
     </b-card-text>
   </b-card>
 </template>
 
 <script>
 import MapMenuSeletArea from "@/components/Maps/MapMenuSelectArea";
+import MapMenuPlaceList from "./MapMenuPlaceList.vue";
 import { keywordSearch } from "@/api/areaApi";
 
 export default {
   components: {
   MapMenuSeletArea,
+  MapMenuPlaceList,
 },
   data() {
     return {
@@ -62,8 +57,18 @@ export default {
     },
     searchKeyword() {
       keywordSearch(this.keyword).then(([data, pagenation]) => {
-        this.searchAptList = data;
         console.log(this.searchAptList)
+        this.searchAptList = data.map(place => {
+            return {
+              id : place.id,
+              name : place.place_name,
+              address : place.address_name,
+              category : place.category_group_name,
+              lng : place.x,
+              lat : place.y,
+              place_url : place.place_url
+            }
+          });
         this.serchResult = true;
       });
     },

@@ -13,29 +13,37 @@
         bread.dong
       }}</b-breadcrumb-item>
     </b-breadcrumb>
-    <b-container class="overflow-auto" style="height : 400px">
+    <b-container style="height : 400px;" class="overflow-auto">
       <b-row v-if="tag != 'apt'">
-        <b-col class="border rounded text-center" cols="6" @click="btnClick(area.code, area.name)"  v-for="area in area_list" :key="area.code">
-            {{ area.name}}
-          </b-col>
+        <b-col
+          class="border rounded text-center"
+          cols="6"
+          @click="btnClick(area.code, area.name)"
+          v-for="area in area_list"
+          :key="area.code"
+        >
+          {{ area.name }}
+        </b-col>
       </b-row>
       <b-row v-else>
-        <MapMenuAptList :aptlist="dongAptlist"/>
+        <MapMenuPlaceList :placeList="dongAptlist"/>
       </b-row>
     </b-container>
-    <b-button v-show="bread.sido != '시/도'" @click="changeCenter" class="mt-4">{{this.btn_address}} 지도로 이동</b-button>
+    <b-button v-show="bread.sido != '시/도'" @click="changeCenter" class="mt-4"
+      >{{ this.btn_address }} 지도로 이동</b-button
+    >
   </div>
 </template>
 
 <script>
 import { areaList, searchPosition, aptListInDong } from "@/api/areaApi";
 import { mapMutations, mapGetters } from "vuex";
-import MapMenuAptList from "./MapMenuAptList.vue";
+import MapMenuPlaceList from "./MapMenuPlaceList.vue";
 
 export default {
   name: "MapMenuSelectAarea",
-  components : {
-    MapMenuAptList,
+  components: {
+    MapMenuPlaceList,
   },
   data() {
     return {
@@ -47,7 +55,7 @@ export default {
       dongAptlist: [],
     };
   },
-  computed : {
+  computed: {
     ...mapGetters("map", ["address"]),
   },
   watch: {
@@ -112,12 +120,27 @@ export default {
       } else if (this.tag == "dong") {
         this.tag = "apt";
         this.bread.dong = name;
-        aptListInDong({code : code}, (res) => this.dongAptlist = res.data);
+
         // 동의 아파트 리스트 불러옴
+        aptListInDong({ code: code }, (res) => {
+          this.dongAptlist = res.data.map(apt => {
+            return {
+              id : apt.aptCode,
+              name : apt.apartmentName,
+              address : `${this.btn_address} ${apt.jibun}`,
+              category : '아파트',
+              lng : apt.lng,
+              lat : apt.lat,
+            }
+          });
+        })
       }
       this.code = code;
-      this.btn_address 
-        = `${this.bread.sido == '시/도' ? '' : this.bread.sido} ${this.bread.gugun == '구/군' ? '' : this.bread.gugun} ${this.bread.dong == '읍/면/동' ? '' : this.bread.dong}`
+      this.btn_address = `${
+        this.bread.sido == "시/도" ? "" : this.bread.sido
+      } ${this.bread.gugun == "구/군" ? "" : this.bread.gugun} ${
+        this.bread.dong == "읍/면/동" ? "" : this.bread.dong
+      }`;
     },
     breadSidoClick() {
       this.bread.sido = "시/도";
@@ -130,11 +153,8 @@ export default {
     changeCenter() {
       searchPosition(this.btn_address).then((pos) => {
         this.setCenter(pos);
-      })
+      });
     },
-
-
-
   },
 };
 </script>
