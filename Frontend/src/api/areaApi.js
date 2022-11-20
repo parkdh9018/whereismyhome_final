@@ -16,9 +16,15 @@ function sidoList(success, fail) {
     api.get(`map/apt/dong/`, { params: params }).then(success).catch(fail);
   }
 
+  function aptListInDong(params, success, fail) {
+    api.get('map/apt/dong', {params : params}).then(success).then(fail);
+  }
+
+  // 지역 코드 받아오는 함수
   function areaList(params, success, fail) {
     axios.get('https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/v1/regcodes', {params : params}).then(success).then(fail);
   }
+
 
   // 주소로 위도, 경도 찾는 함수
   function searchPosition(address) {
@@ -57,5 +63,5 @@ function sidoList(success, fail) {
     });
   }
   
-  export { sidoList, gugunList, houseList, dongList, areaList, searchPosition, searchAddress };
+  export { sidoList, gugunList, houseList, dongList, areaList, searchPosition, searchAddress, aptListInDong };
   

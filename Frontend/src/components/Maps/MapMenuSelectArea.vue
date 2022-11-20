@@ -6,18 +6,21 @@
       }}</b-breadcrumb-item>
       <b-breadcrumb-item
         @click="breadGugunClick"
-        v-if="tag == 'gugun' || tag == 'dong'"
+        v-if="tag == 'gugun' || tag == 'dong' || tag == 'apt'"
         >{{ bread.gugun }}</b-breadcrumb-item
       >
-      <b-breadcrumb-item v-if="tag == 'dong'" href="#data" active>{{
+      <b-breadcrumb-item v-if="tag == 'dong' || tag == 'apt'">{{
         bread.dong
       }}</b-breadcrumb-item>
     </b-breadcrumb>
     <b-container class="overflow-auto" style="height : 400px">
-      <b-row>
+      <b-row v-if="tag != 'apt'">
         <b-col class="border rounded text-center" cols="6" @click="btnClick(area.code, area.name)"  v-for="area in area_list" :key="area.code">
             {{ area.name}}
           </b-col>
+      </b-row>
+      <b-row v-else>
+        <b-col class="border rounded text-center"  cols="12" v-for="apt in aptlist" :key="apt.aptCode">{{apt.apartmentName}}</b-col>
       </b-row>
     </b-container>
     <b-button v-show="bread.sido != '시/도'" @click="changeCenter" class="mt-4">{{this.btn_address}} 지도로 이동</b-button>
@@ -40,7 +43,7 @@ export default {
     };
   },
   computed : {
-    ...mapGetters("map", ["address"]),
+    ...mapGetters("map", ["address", "aptlist"]),
   },
   watch: {
     tag: function (val) {
@@ -94,6 +97,7 @@ export default {
   methods: {
     ...mapMutations("map", ["setCenter"]),
     btnClick(code, name) {
+      console.log(name);
       if (this.tag == "sido") {
         this.tag = "gugun";
         this.bread.sido = name;
@@ -101,10 +105,12 @@ export default {
         this.tag = "dong";
         this.bread.gugun = name;
       } else if (this.tag == "dong") {
-        //뭔가 해야해!
+        this.tag = "apt";
+        this.bread.dong = name;
       }
       this.code = code;
-      this.btn_address = `${this.bread.sido == '시/도' ? '' : this.bread.sido} ${this.bread.gugun == '구/군' ? '' : this.bread.gugun}`
+      this.btn_address 
+        = `${this.bread.sido == '시/도' ? '' : this.bread.sido} ${this.bread.gugun == '구/군' ? '' : this.bread.gugun} ${this.bread.dong == '읍/면/동' ? '' : this.bread.dong}`
     },
     breadSidoClick() {
       this.bread.sido = "시/도";
