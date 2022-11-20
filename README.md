@@ -45,3 +45,8 @@
 ## 11월20일(일) 진행 사항
 ### FRONT-END
 - 검색 기능, 동 내의 아파트 목록 보여주는 기능
+### BACK-END
+- 서울시 전월세 부동산가 csv 다운로드
+- csv file to mysql db
+- rentapi 생성
+- ![image](https://user-images.githubusercontent.com/53232881/202917955-a44ef31d-de7a-428d-a6fd-4a0505fbdc40.png)
