@@ -2,14 +2,29 @@
   <div id="map_wrap">
     <div id="map"></div>
     <div>
+      <b-button-group v-if="!menuToggle" id="button_group" class="p-1">
+        <b-button v-b-toggle.collapse-1 @click="menuButtonClick">
+          <i class="ni ni-bold-right mr-2"></i>{{ address }}
+        </b-button>
+        <b-button v-b-toggle.collapse-1 class="ml-3">Button 2</b-button>
+        <b-button class="ml-3">Button 3</b-button>
+      </b-button-group>
+
+      <b-collapse id="collapse-1" class="mt-2">
+        <b-card>
+          <p class="card-text">Collapse contents Here</p>
+          <b-button v-b-toggle.collapse-1-inner size="sm"
+            >Toggle Inner Collapse</b-button
+          >
+          <b-collapse id="collapse-1-inner" class="mt-2">
+            <b-card>Hello!</b-card>
+          </b-collapse>
+        </b-card>
+      </b-collapse>
+
       <b-container>
         <b-row id="menu_container">
-          <b-col v-if="!menuToggle">
-            <b-button id="menuButton" @click="menuButtonClick">
-              <i class="ni ni-bold-right mr-2"></i>{{ address }}
-            </b-button>
-          </b-col>
-          <b-col v-else>
+          <b-col v-if="menuToggle">
             <MapMenu @closeEvent="menuButtonClick" :address="address" />
           </b-col>
           <b-col v-if="detailToggle">
@@ -182,15 +197,24 @@ export default {
   position: relative;
 }
 
-#menuButton {
+#button_group {
+  position: absolute;
   top: 10px;
   left: 10px;
+  z-index: 1;
 }
 
 #menu_container {
   position: absolute;
   top: 0px;
   left: 0px;
+  z-index: 1;
+}
+
+#collapse-1 {
+  position: absolute;
+  top: 60px;
+  left: 217px;
   z-index: 1;
 }
 </style>

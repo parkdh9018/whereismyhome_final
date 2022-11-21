@@ -3,7 +3,7 @@
     <b-row>
       <b-col
         cols="12"
-        @click="placeClickEvent"
+        @click="placeClickEvent(place.address)"
         v-for="place in placeList"
         :key="place.id"
       >
@@ -26,6 +26,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import { searchPosition } from "@/api/areaApi";
 
 export default {
   props: {
@@ -33,9 +34,12 @@ export default {
     // id, name, address, category, pos(lng, ltg), place_url
   },
   methods: {
-    ...mapMutations("map", ["setDetailToggle"]),
-    placeClickEvent() {
+    ...mapMutations("map", ["setCenter", "setDetailToggle"]),
+    placeClickEvent(address) {
       this.setDetailToggle(true);
+      searchPosition(address).then((pos) => {
+        this.setCenter(pos);
+      });
     },
   },
 };

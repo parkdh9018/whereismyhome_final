@@ -1,5 +1,5 @@
 <template>
-  <b-card id="map_menu" class="mb-2">
+  <b-card id="map_menu">
     <b-card-text class="position-relative">
       <b-form @submit.prevent="searchKeyword">
         <b-input-group>
