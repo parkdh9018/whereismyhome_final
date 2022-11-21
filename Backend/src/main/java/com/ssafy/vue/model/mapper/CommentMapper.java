@@ -7,13 +7,10 @@ import com.ssafy.vue.model.CommentDto;
 
 public interface CommentMapper {
 
-	List<CommentDto> list(String articleno);
-
-	int create(CommentDto commentDto);
-
-	int modify(CommentDto commentDto);
-
-	int delete(int commentno);
+	public List<CommentDto> list(String articleno);
+	public int create(CommentDto commentDto);
+	public int modify(CommentDto commentDto);
+	public int delete(int commentno);
  
 }
  
