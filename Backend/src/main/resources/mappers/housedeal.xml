@@ -4,6 +4,15 @@
 	
 <mapper namespace="com.ssafy.vue.model.mapper.HouseDealMapper">
 
+
+	<select id="getAptByaptCode" parameterType="map" resultType="apartDealDto">
+	    SELECT D.no, D.dealAmount, D.dealYear, D.dealMonth, D.dealDay, D.area, D.floor, B.aptCode, B.buildyear, B.dong, B.roadName, B.roadNameBonbun, B.apartmentName, B.lng, B.lat
+		FROM Housedeal as D                      
+	        LEFT OUTER JOIN houseinfo B ON D.aptCode = B.aptCode
+       	where D.aptCode = #{aptCode}
+	    
+	</select> 
+	
 	<select id="listPrivateHouseDeal" parameterType="map" resultType="houseDealDto">
 		select * from privatehousedeal
 	</select>
@@ -20,21 +29,28 @@
 	<select id="getPrivateHouseDeal" parameterType="map" resultType="houseDealDto">
 		select *
 		from privatehousedeal
-		where bjdong_nm = #{bjdongNm}
+		where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd}
 	</select>
 	
 	
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
 		select *
 		from multiplexhousedeal
-		where bjdong_nm = #{bjdongNm}
+		where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd}
 	</select>
 	
 	<select id="getOfficetelHouseDeal" parameterType="map" resultType="houseDealDto">
 		select *
 		from officetelhousedeal
-		where bjdong_nm = #{bjdongNm}
+		where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd}
 	</select>
+	
+	<select id="getMultiplexHouseDealDetail" parameterType="map" resultType="houseDealDto">
+		select *
+		from multiplexhousedeal
+		where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd} and bubn = #{bubn}
+	</select>
+	
 	
 </mapper>
 

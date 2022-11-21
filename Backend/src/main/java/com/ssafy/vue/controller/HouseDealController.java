@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.HouseDealDto;
-import com.ssafy.vue.model.service.ApartDealService;
 import com.ssafy.vue.model.service.HouseDealService;
 
 import io.swagger.annotations.Api;
@@ -39,9 +38,13 @@ public class HouseDealController {
 	@Autowired
 	private HouseDealService houseDealService;
 	
-	@Autowired
-	private ApartDealService apartDealService;
-
+	@ApiOperation(value = "아파트 상세조회", notes = "아파트 상세조회 정보를 반환한다.", response = List.class)
+	@GetMapping("/apartdeal/{aptCode}")
+	public ResponseEntity<List<ApartDealDto>> getApartDealByaptCode(@PathVariable("aptCode") String aptCode) throws Exception {
+		System.out.println(aptCode);
+		return new ResponseEntity<List<ApartDealDto>>(houseDealService.getAptByaptCode(aptCode),HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "단독다가구 목록", notes = "모든 단독다가구의 정보를 반환한다.", response = List.class)
 	@GetMapping("/privatehousedeal")
 	public ResponseEntity<List<HouseDealDto>> privatehousedeal() throws Exception {
@@ -64,31 +67,38 @@ public class HouseDealController {
 	}
 	
 	@ApiOperation(value = "동으로 검색한 단독다가구 목록", notes = "동에 해당하는 단독다가구의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/privatehousedeal/{bjdong_nm}")
-	public ResponseEntity<List<HouseDealDto>> getPrivateHouseDeal(@PathVariable("bjdong_nm") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_nm) throws Exception {
-		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_nm);
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getPrivateHouseDeal(bjdong_nm), HttpStatus.OK);
+	@GetMapping("/privatehousedeal/{sgg_cd}/{bjdong_cd}")
+	public ResponseEntity<List<HouseDealDto>> getPrivateHouseDeal(@PathVariable("bjdong_cd") @ApiParam(value = "얻어올 동코드.", required = true) String bjdong_cd, @PathVariable("sgg_cd") @ApiParam(value = "얻어올 시구군 코드", required = true) String sgg_cd) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_cd);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getPrivateHouseDeal(sgg_cd, bjdong_cd ), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "동으로 검색한 다세대주택 목록", notes = "동에 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/multiplexhousedeal/{bjdong_nm}")
-	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDeal(@PathVariable("bjdong_nm") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_nm) throws Exception {
-		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_nm);
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDeal(bjdong_nm), HttpStatus.OK);
+	@GetMapping("/multiplexhousedeal/{sgg_cd}/{bjdong_cd}")
+	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDeal(@PathVariable("bjdong_cd") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_cd, @PathVariable("sgg_cd") @ApiParam(value = "얻어올 시구군 코드", required = true) String sgg_cd) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_cd);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDeal(sgg_cd, bjdong_cd), HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "동으로 검색한 다세대주택 목록", notes = "동에 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
+	@GetMapping("/multiplexhousedealdetail/{sgg_cd}/{bjdong_cd}/{bubn}")
+	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@PathVariable("bjdong_cd") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_cd, @PathVariable("sgg_cd") @ApiParam(value = "얻어올 시구군 코드", required = true) String sgg_cd, @PathVariable("bubn") @ApiParam(value = "얻어올 글의 부번.", required = true) String bubn) throws Exception {
+		logger.info("getMultiplexHouseDealDetail - 호출 : " );
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDealDetail(sgg_cd, bjdong_cd, bubn), HttpStatus.OK);
+	}
+	
 	
 	@ApiOperation(value = "동으로 검색한 오피스텔 목록", notes = "동에 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/officetelhousedeal/{bjdong_nm}")
-	public ResponseEntity<List<HouseDealDto>> getOfiicetelHouseDeal(@PathVariable("bjdong_nm") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_nm) throws Exception {
-		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_nm);
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelHouseDeal(bjdong_nm), HttpStatus.OK);
+	@GetMapping("/officetelhousedeal/{sgg_cd}/{bjdong_cd}")
+	public ResponseEntity<List<HouseDealDto>> getOfiicetelHouseDeal(@PathVariable("bjdong_cd") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_cd, @PathVariable("sgg_cd") @ApiParam(value = "얻어올 시구군 코드", required = true) String sgg_cd) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_cd);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelHouseDeal(sgg_cd, bjdong_cd), HttpStatus.OK);
 	}
 	
-	@GetMapping("/apartdeal/{aptCode}")
-	public ResponseEntity<List<ApartDealDto>> getApartDealByaptCode(@PathVariable("aptCode") String aptCode) throws Exception {
-		Map<String , String> param = new HashMap<>();
-		param.put("aptCode", aptCode);
-		return new ResponseEntity<List<ApartDealDto>>(apartDealService.getAptByaptCode(param),HttpStatus.OK);
-	}
+	
+	
+
+	
+
 	
 }

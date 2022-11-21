@@ -40,13 +40,25 @@ public class RentController {
 	@Autowired
 	private RentService rentService;
 
-	@ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
+	@ApiOperation(value = "rent 목록", notes = "모든 rent의 정보를 반환한다.", response = List.class)
 	@GetMapping
-	public ResponseEntity<List<RentDto>> listArticle() throws Exception {
-		logger.info("listArticle - 호출");
+	public ResponseEntity<List<RentDto>> listRent() throws Exception {
+		logger.info("listRent - 호출");
 		return new ResponseEntity<List<RentDto>>(rentService.listRent(), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "rent 목록", notes = "모든 rent의 정보를 반환한다.", response = List.class)
+	@PostMapping
+	public ResponseEntity<List<RentDto>> listDongRent(@RequestBody @ApiParam(value = "rent정보를 얻기위한 부가정보.", required = true) RentDto rentDto) throws Exception {
+		logger.info("listDongRent - 호출");
+		String house_gbn_nm = rentDto.getHouse_gbn_nm();
+		String bjdong_cd = rentDto.getBjdong_cd();
+		String rent_division = rentDto.getRent_division();
+		String sgg_cd = rentDto.getSgg_cd();
+		return new ResponseEntity<List<RentDto>>(rentService.listDongRent(house_gbn_nm,bjdong_cd,rent_division, sgg_cd), HttpStatus.OK);
+	}
 	
+	
+
 	
 }

@@ -11,12 +11,20 @@
 	<select id="listDongRent" parameterType="map" resultType="rentDto">
 		select *
 		from rent
-		<if test="word != null and word != ''">
-			<if test="key == 'monthly'">
-				where subject like concat('%', #{word}, '%')
+		<if test="rent_division == null or rent_division == ''">
+			<if test="house_gbn_nm == null or house_gbn_nm == ''">
+				where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd}
 			</if>
-			<if test="key != 'yearly'">
-				where ${key} = #{word}
+			<if test="house_gbn_nm != null and house_gbn_nm != ''">
+				where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd} and house_gbn_nm = #{house_gbn_nm}
+			</if>
+		</if>
+		<if test="rent_division != null and rent_division != ''">
+			<if test="house_gbn_nm == null or house_gbn_nm == ''">
+				where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd} and rent_division = #{rent_division}
+			</if>
+			<if test="house_gbn_nm != null and house_gbn_nm != ''">
+				where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd} and house_gbn_nm = #{house_gbn_nm} and rent_division = #{rent_division}
 			</if>
 		</if>
 	</select>

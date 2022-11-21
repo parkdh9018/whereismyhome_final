@@ -23,5 +23,11 @@ public class RentServiceImpl implements RentService {
 	public List<RentDto> listRent() throws Exception{
 		return sqlSession.getMapper(RentMapper.class).listRent();
 	}
+
+
+	@Override
+	public List<RentDto> listDongRent(String house_gbn_nm, String bjdong_cd, String rent_division, String sgg_cd) {
+		return sqlSession.getMapper(RentMapper.class).listDongRent(house_gbn_nm, bjdong_cd, rent_division, sgg_cd);
+	}
 	
 }

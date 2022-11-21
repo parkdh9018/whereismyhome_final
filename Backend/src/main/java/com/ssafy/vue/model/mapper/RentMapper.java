@@ -11,6 +11,7 @@ import com.ssafy.vue.model.RentDto;
 public interface RentMapper {
 
 	public List<RentDto> listRent();
+	public List<RentDto> listDongRent(String house_gbn_nm, String bjdong_cd, String rent_division, String sgg_cd);
 
 
 }
