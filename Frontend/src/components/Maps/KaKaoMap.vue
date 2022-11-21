@@ -2,23 +2,36 @@
   <div id="map_wrap">
     <div id="map"></div>
     <div>
-      <b-button-group v-if="!menuToggle" id="button_group" class="p-1">
-        <b-button v-b-toggle.collapse-1 @click="menuButtonClick">
+      <b-button-group v-if="!menuToggle" id="button_group">
+        <b-button pill v-b-toggle.collapse-1 @click="menuButtonClick">
           <i class="ni ni-bold-right mr-2"></i>{{ address }}
         </b-button>
-        <b-button v-b-toggle.collapse-1 class="ml-3">Button 2</b-button>
-        <b-button class="ml-3">Button 3</b-button>
+        <b-button
+          pill
+          v-b-toggle.collapse-1
+          @click="filterClick(0)"
+          class="ml-3"
+          >{{ filterStr0 == "," ? '전체' : filterStr0 }}</b-button
+        >
+        <b-button
+          pill
+          v-b-toggle.collapse-1
+          @click="filterClick(1)"
+          class="ml-3"
+          >{{ filterStr1 == ",," ? '전체' : filterStr1 }}</b-button
+        >
       </b-button-group>
 
       <b-collapse id="collapse-1" class="mt-2">
         <b-card>
-          <p class="card-text">Collapse contents Here</p>
-          <b-button v-b-toggle.collapse-1-inner size="sm"
-            >Toggle Inner Collapse</b-button
+          <b-button
+            v-for="(btn, idx) in filter_buttons[filter_num]"
+            :key="idx"
+            :pressed.sync="btn.state"
+            variant="primary"
           >
-          <b-collapse id="collapse-1-inner" class="mt-2">
-            <b-card>Hello!</b-card>
-          </b-collapse>
+            {{ btn.caption }}
+          </b-button>
         </b-card>
       </b-collapse>
 
@@ -34,12 +47,6 @@
       </b-container>
     </div>
   </div>
-  <!-- <div>{{ center_address }}</div>
-    <div>코드 : {{ gugunCode }}</div>
-    <div>동 : {{ dongname }}</div>
-    <div>레벨 : {{ level }}</div>
-    <div>왼쪽 아래 : {{ southwest }}</div>
-    <div>오른쪽 위 : {{ northeast }}</div> -->
 </template>
 
 <script>
@@ -56,6 +63,20 @@ export default {
   },
   computed: {
     ...mapGetters("map", ["aptlist", "center", "address", "detailToggle"]),
+    filterStr0() {
+      return this.filter_buttons[0]
+        .map((v) => {
+          if (v.state) return v.caption;
+        })
+        .join(",");
+    },
+    filterStr1() {
+      return this.filter_buttons[1]
+        .map((v) => {
+          if (v.state) return v.caption;
+        })
+        .join(",");
+    },
   },
   data() {
     return {
@@ -64,6 +85,18 @@ export default {
       dongname: "",
       level: "",
       markers: [],
+      filter_num: 0,
+      filter_buttons: [
+        [
+          { caption: "전세", state: true },
+          { caption: "월세", state: true },
+        ],
+        [
+          { caption: "아파트", state: true },
+          { caption: "오피스텔", state: true },
+          { caption: "다세대", state: true },
+        ],
+      ],
     };
   },
   mounted() {
@@ -182,6 +215,10 @@ export default {
       this.menuToggle = !this.menuToggle;
       this.setDetailToggle(false);
     },
+
+    filterClick(num) {
+      this.filter_num = num;
+    },
   },
 };
 </script>
@@ -214,7 +251,7 @@ export default {
 #collapse-1 {
   position: absolute;
   top: 60px;
-  left: 217px;
+  left: 10px;
   z-index: 1;
 }
 </style>
