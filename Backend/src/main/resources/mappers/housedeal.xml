@@ -8,5 +8,33 @@
 		select * from privatehousedeal
 	</select>
 	
+	<select id="listMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
+		select * from multiplexhousedeal
+	</select>
+	
+	<select id="listOfficetelHouseDeal" parameterType="map" resultType="houseDealDto">
+		select * from officetelhousedeal
+	</select>
+	
+	
+	<select id="getPrivateHouseDeal" parameterType="map" resultType="houseDealDto">
+		select *
+		from privatehousedeal
+		where bjdong_nm = #{bjdongNm}
+	</select>
+	
+	
+	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
+		select *
+		from multiplexhousedeal
+		where bjdong_nm = #{bjdongNm}
+	</select>
+	
+	<select id="getOfficetelHouseDeal" parameterType="map" resultType="houseDealDto">
+		select *
+		from officetelhousedeal
+		where bjdong_nm = #{bjdongNm}
+	</select>
+	
 </mapper>
 

@@ -9,15 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.vue.model.HousedealDto;
-import com.ssafy.vue.model.RentDto;
+import com.ssafy.vue.model.BoardDto;
+import com.ssafy.vue.model.HouseDealDto;
 import com.ssafy.vue.model.service.HouseDealService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 //http://localhost:9999/vue/swagger-ui.html
 //@CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.POST} , maxAge = 6000)
@@ -33,13 +35,46 @@ public class HouseDealController {
 	@Autowired
 	private HouseDealService houseDealService;
 
-	@ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
+	@ApiOperation(value = "단독다가구 목록", notes = "모든 단독다가구의 정보를 반환한다.", response = List.class)
 	@GetMapping("/privatehousedeal")
-	public ResponseEntity<List<HousedealDto>> listArticle() throws Exception {
+	public ResponseEntity<List<HouseDealDto>> privatehousedeal() throws Exception {
 		logger.info("listArticle - 호출");
-		return new ResponseEntity<List<HousedealDto>>(houseDealService.listPrivateHouseDeal(), HttpStatus.OK);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listPrivateHouseDeal(), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "다세대주택 목록", notes = "모든 다세대주택의 정보를 반환한다.", response = List.class)
+	@GetMapping("/multiplexhousedeal")
+	public ResponseEntity<List<HouseDealDto>> multiplexhousedeal() throws Exception {
+		logger.info("listArticle - 호출");
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listMultiplexHouseDeal(), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "오피스텔 목록", notes = "모든 오피스텔의 정보를 반환한다.", response = List.class)
+	@GetMapping("/officetelhousedeal")
+	public ResponseEntity<List<HouseDealDto>> officetelhousedeal() throws Exception {
+		logger.info("listArticle - 호출");
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listOfiicetelHouseDeal(), HttpStatus.OK);
+	}
 	
+	@ApiOperation(value = "동으로 검색한 단독다가구 목록", notes = "동에 해당하는 단독다가구의 정보를 반환한다.", response = BoardDto.class)
+	@GetMapping("/privatehousedeal/{bjdong_nm}")
+	public ResponseEntity<List<HouseDealDto>> getPrivateHouseDeal(@PathVariable("bjdong_nm") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_nm) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_nm);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getPrivateHouseDeal(bjdong_nm), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "동으로 검색한 다세대주택 목록", notes = "동에 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
+	@GetMapping("/multiplexhousedeal/{bjdong_nm}")
+	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDeal(@PathVariable("bjdong_nm") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_nm) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_nm);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDeal(bjdong_nm), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "동으로 검색한 오피스텔 목록", notes = "동에 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
+	@GetMapping("/officetelhousedeal/{bjdong_nm}")
+	public ResponseEntity<List<HouseDealDto>> getOfiicetelHouseDeal(@PathVariable("bjdong_nm") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_nm) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_nm);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelHouseDeal(bjdong_nm), HttpStatus.OK);
+	}
 	
 }

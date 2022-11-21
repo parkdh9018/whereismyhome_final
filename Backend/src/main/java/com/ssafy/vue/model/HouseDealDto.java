@@ -1,6 +1,6 @@
 package com.ssafy.vue.model;
 
-public class HousedealDto {
+public class HouseDealDto {
 	private String acc_year;
 	private String sgg_cd;
 	private String sgg_nm;

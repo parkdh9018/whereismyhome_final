@@ -10,7 +10,7 @@ import com.ssafy.vue.model.RentDto;
 @Mapper
 public interface RentMapper {
 
-	List<RentDto> listRent();
+	public List<RentDto> listRent();
 
 
 }

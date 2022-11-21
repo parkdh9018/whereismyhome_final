@@ -5,8 +5,22 @@
 <mapper namespace="com.ssafy.vue.model.mapper.RentMapper">
 
 	<select id="listRent" parameterType="map" resultType="rentDto">
-		select * from rentest
+		select * from rent
 	</select>
+	
+	<select id="listDongRent" parameterType="map" resultType="rentDto">
+		select *
+		from rent
+		<if test="word != null and word != ''">
+			<if test="key == 'monthly'">
+				where subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'yearly'">
+				where ${key} = #{word}
+			</if>
+		</if>
+	</select>
+	
 	
 </mapper>
 
