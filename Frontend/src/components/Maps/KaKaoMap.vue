@@ -11,14 +11,14 @@
           v-b-toggle.collapse-1
           @click="filterClick(0)"
           class="ml-3"
-          >{{ filterStr0 == "," ? '전체' : filterStr0 }}</b-button
+          >{{ filterStr0 == "" ? '전체' : filterStr0 }}</b-button
         >
         <b-button
           pill
           v-b-toggle.collapse-1
           @click="filterClick(1)"
           class="ml-3"
-          >{{ filterStr1 == ",," ? '전체' : filterStr1 }}</b-button
+          >{{ filterStr1 == "" ? '전체' : filterStr1 }}</b-button
         >
       </b-button-group>
 
@@ -64,17 +64,11 @@ export default {
   computed: {
     ...mapGetters("map", ["aptlist", "center", "address", "detailToggle"]),
     filterStr0() {
-      return this.filter_buttons[0]
-        .map((v) => {
-          if (v.state) return v.caption;
-        })
+      return this.filter_buttons[0].filter(v => v.state).map(v => v.caption)
         .join(",");
     },
     filterStr1() {
-      return this.filter_buttons[1]
-        .map((v) => {
-          if (v.state) return v.caption;
-        })
+      return this.filter_buttons[1].filter(v => v.state).map(v => v.caption)
         .join(",");
     },
   },
