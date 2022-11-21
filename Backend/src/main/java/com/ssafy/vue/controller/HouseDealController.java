@@ -1,7 +1,9 @@
 package com.ssafy.vue.controller;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.HouseDealDto;
+import com.ssafy.vue.model.service.ApartDealService;
 import com.ssafy.vue.model.service.HouseDealService;
 
 import io.swagger.annotations.Api;
@@ -34,6 +38,9 @@ public class HouseDealController {
 
 	@Autowired
 	private HouseDealService houseDealService;
+	
+	@Autowired
+	private ApartDealService apartDealService;
 
 	@ApiOperation(value = "단독다가구 목록", notes = "모든 단독다가구의 정보를 반환한다.", response = List.class)
 	@GetMapping("/privatehousedeal")
@@ -75,6 +82,13 @@ public class HouseDealController {
 	public ResponseEntity<List<HouseDealDto>> getOfiicetelHouseDeal(@PathVariable("bjdong_nm") @ApiParam(value = "얻어올 글의 동이름.", required = true) String bjdong_nm) throws Exception {
 		logger.info("getPrivateHouseDeal - 호출 : " + bjdong_nm);
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelHouseDeal(bjdong_nm), HttpStatus.OK);
+	}
+	
+	@GetMapping("/apartdeal/{aptCode}")
+	public ResponseEntity<List<ApartDealDto>> getApartDealByaptCode(@PathVariable("aptCode") String aptCode) throws Exception {
+		Map<String , String> param = new HashMap<>();
+		param.put("aptCode", aptCode);
+		return new ResponseEntity<List<ApartDealDto>>(apartDealService.getAptByaptCode(param),HttpStatus.OK);
 	}
 	
 }

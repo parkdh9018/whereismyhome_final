@@ -60,5 +60,9 @@
 		(lat between #{lat1} and #{lat2}) and
 		(lng between #{lng1} and #{lng2});
 	</select>
+	
+	<select id="getAptByaptCode" parameterType="map" resultType="housedealDto">
+		select * from housedeal where aptCode = #{aptCode};
+	</select>
 
 </mapper>
