@@ -2,10 +2,21 @@
   <div id="map_wrap">
     <div id="map"></div>
     <div>
-      <b-button v-if="!menuToggle" id="menuButton" @click="menuButtonClick">
-        <i class="ni ni-bold-right mr-2"></i>{{ address }}
-      </b-button>
-      <MapMenu @closeEvent="menuButtonClick" :address="address" v-else />
+      <b-container>
+        <b-row id="menu_container">
+          <b-col v-if="!menuToggle">
+            <b-button id="menuButton" @click="menuButtonClick">
+              <i class="ni ni-bold-right mr-2"></i>{{ address }}
+            </b-button>
+          </b-col>
+          <b-col v-else>
+            <MapMenu @closeEvent="menuButtonClick" :address="address" />
+          </b-col>
+          <b-col v-if="detailToggle">
+            <MapMenuDetail />
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
   </div>
   <!-- <div>{{ center_address }}</div>
@@ -18,16 +29,18 @@
 
 <script>
 import MapMenu from "./MapMenu.vue";
-import { searchAddress } from "@/api/areaApi"
+import MapMenuDetail from "@/components/Maps/MapMenuDetail";
+import { searchAddress } from "@/api/areaApi";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "KakaoMap",
   components: {
     MapMenu,
+    MapMenuDetail,
   },
   computed: {
-    ...mapGetters("map", ["aptlist", "center", "address"]),
+    ...mapGetters("map", ["aptlist", "center", "address", "detailToggle"]),
   },
   data() {
     return {
@@ -39,6 +52,7 @@ export default {
     };
   },
   mounted() {
+    this.setDetailToggle(false);
     if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {
@@ -51,8 +65,7 @@ export default {
   },
   watch: {
     center: function (pos) {
-
-      console.log("center change")
+      console.log("center change");
 
       this.map.setCenter(pos);
 
@@ -71,24 +84,32 @@ export default {
       if (this.level > 3) {
         return;
       }
-      this.$store.dispatch("map/getaptlist_move", [
-        bounds.getSouthWest(),
-        bounds.getNorthEast(),
-      ])
-      .then(() => {
-        this.aptlist.forEach((apt) => {
-          this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
+      this.$store
+        .dispatch("map/getaptlist_move", [
+          bounds.getSouthWest(),
+          bounds.getNorthEast(),
+        ])
+        .then(() => {
+          this.aptlist.forEach((apt) => {
+            this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
+          });
         });
-      });
 
       // 중심 위치 주소 변경
       searchAddress(pos).then((data) => {
-        this.setAddress(`${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`);
+        this.setAddress(
+          `${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`
+        );
       });
     },
   },
   methods: {
-    ...mapMutations("map", ["setCenter", "setAddress"]),
+    ...mapMutations("map", [
+      "setCenter",
+      "setAddress",
+      "setDetailToggle",
+      "setDetailToggle",
+    ]),
     initMap() {
       const container = document.getElementById("map");
 
@@ -128,16 +149,24 @@ export default {
 
     // 마커 만들기
     makeMarker(position) {
-      const marker = new kakao.maps.Marker({ position });
+      const marker = new kakao.maps.Marker({ position, clickable: true });
       marker.setMap(this.map);
       this.markers.push(marker);
       this.clusterer.addMarker(marker);
+
+      //마커 클릭 이벤트
+      kakao.maps.event.addListener(marker, "click", this.markerClickEvent);
+    },
+
+    markerClickEvent() {
+      console.log("marker click");
+      this.setDetailToggle(true);
     },
 
     menuButtonClick() {
       this.menuToggle = !this.menuToggle;
+      this.setDetailToggle(false);
     },
-
   },
 };
 </script>
@@ -154,9 +183,14 @@ export default {
 }
 
 #menuButton {
-  position: absolute;
   top: 10px;
   left: 10px;
+}
+
+#menu_container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
   z-index: 1;
 }
 </style>

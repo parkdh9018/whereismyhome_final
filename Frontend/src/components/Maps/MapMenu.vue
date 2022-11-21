@@ -3,17 +3,22 @@
     <b-card-text class="position-relative">
       <b-form @submit.prevent="searchKeyword">
         <b-input-group>
-          <i class="ni ni-bold-left mr-2 mt-3" @click="closeEvent"></i>         
+          <i class="ni ni-bold-left mr-2 mt-3" @click="closeEvent"></i>
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-search"></i></span>
           </div>
 
-          <b-form-input :placeholder="address" type="text" v-model="keyword"></b-form-input>
+          <b-form-input
+            :placeholder="address"
+            type="text"
+            v-model="keyword"
+          ></b-form-input>
 
           <b-input-group-append v-if="serchResult">
-            <span @click="searchResultClose" class="input-group-text"><i class="ni ni-fat-remove"></i></span>
+            <span @click="searchResultClose" class="input-group-text"
+              ><i class="ni ni-fat-remove"></i
+            ></span>
           </b-input-group-append>
-
         </b-input-group>
       </b-form>
     </b-card-text>
@@ -26,7 +31,7 @@
           <MapMenuSeletArea />
         </b-tab>
       </b-tabs>
-      <MapMenuPlaceList v-else :place-list="searchAptList"/>
+      <MapMenuPlaceList v-else :place-list="searchAptList" />
     </b-card-text>
   </b-card>
 </template>
@@ -38,14 +43,14 @@ import { keywordSearch } from "@/api/areaApi";
 
 export default {
   components: {
-  MapMenuSeletArea,
-  MapMenuPlaceList,
-},
+    MapMenuSeletArea,
+    MapMenuPlaceList,
+  },
   data() {
     return {
-      keyword : "",
+      keyword: "",
       searchAptList: [],
-      serchResult : false,
+      serchResult: false,
     };
   },
   props: {
@@ -57,34 +62,30 @@ export default {
     },
     searchKeyword() {
       keywordSearch(this.keyword).then(([data, pagenation]) => {
-        console.log(this.searchAptList)
-        this.searchAptList = data.map(place => {
-            return {
-              id : place.id,
-              name : place.place_name,
-              address : place.address_name,
-              category : place.category_group_name,
-              lng : place.x,
-              lat : place.y,
-              place_url : place.place_url
-            }
-          });
+        console.log(this.searchAptList);
+        this.searchAptList = data.map((place) => {
+          return {
+            id: place.id,
+            name: place.place_name,
+            address: place.address_name,
+            category: place.category_group_name,
+            lng: place.x,
+            lat: place.y,
+            place_url: place.place_url,
+          };
+        });
         this.serchResult = true;
       });
     },
     searchResultClose() {
       this.serchResult = false;
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
 #map_menu {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 1;
   width: 350px;
   height: 100%;
 }

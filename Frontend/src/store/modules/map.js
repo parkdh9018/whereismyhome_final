@@ -2,10 +2,12 @@ import http from "@/api/http";
 
 const mapStore = {
   namespaced: true,
-  state: ()=>({
+  state: () => ({
     aptlist: [],
     center: null,
     address: "",
+    detailToggle: false,
+    detailData: null,
   }),
 
   getters: {
@@ -17,7 +19,13 @@ const mapStore = {
     },
     address(state) {
       return state.address;
-    }
+    },
+    detailToggle(state) {
+      return state.detailToggle;
+    },
+    detailData(state) {
+      return state.detailData;
+    },
   },
 
   mutations: {
@@ -29,11 +37,17 @@ const mapStore = {
     },
     setAddress(state, payload) {
       state.address = payload;
-    }
+    },
+    setDetailToggle(state, payload) {
+      state.detailToggle = payload;
+    },
+    setDetailData(state, payload) {
+      state.detailData = payload;
+    },
   },
 
   actions: {
-    getaptlist_move({commit}, positions) {
+    getaptlist_move({ commit }, positions) {
       http
         .get(
           `/map/apt/nearby?lat1=${positions[0].getLat()}&lng1=${positions[0].getLng()}&lat2=${positions[1].getLat()}&lng2=${positions[1].getLng()}`
