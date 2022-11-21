@@ -2,7 +2,7 @@
   <div id="map_wrap">
     <div id="map"></div>
     <div>
-      <b-button-group v-if="!menuToggle" id="button_group">
+      <b-button-group v-if="!detailToggle && !menuToggle" id="button_group">
         <b-button pill v-b-toggle.collapse-1 @click="menuButtonClick">
           <i class="ni ni-bold-right mr-2"></i>{{ address }}
         </b-button>
@@ -11,14 +11,14 @@
           v-b-toggle.collapse-1
           @click="filterClick(0)"
           class="ml-3"
-          >{{ filterStr0 == "" ? '전체' : filterStr0 }}</b-button
+          >{{ filterStr0 == "" ? "전체" : filterStr0 }}</b-button
         >
         <b-button
           pill
           v-b-toggle.collapse-1
           @click="filterClick(1)"
           class="ml-3"
-          >{{ filterStr1 == "" ? '전체' : filterStr1 }}</b-button
+          >{{ filterStr1 == "" ? "전체" : filterStr1 }}</b-button
         >
       </b-button-group>
 
@@ -64,11 +64,15 @@ export default {
   computed: {
     ...mapGetters("map", ["aptlist", "center", "address", "detailToggle"]),
     filterStr0() {
-      return this.filter_buttons[0].filter(v => v.state).map(v => v.caption)
+      return this.filter_buttons[0]
+        .filter((v) => v.state)
+        .map((v) => v.caption)
         .join(",");
     },
     filterStr1() {
-      return this.filter_buttons[1].filter(v => v.state).map(v => v.caption)
+      return this.filter_buttons[1]
+        .filter((v) => v.state)
+        .map((v) => v.caption)
         .join(",");
     },
   },
@@ -117,13 +121,12 @@ export default {
       this.southwest = bounds.getSouthWest();
       this.level = this.map.getLevel();
 
-      //기존 마커 삭제
-      this.markers.forEach((marker) => {
-        marker.setMap(null);
-      });
-      this.clusterer.removeMarkers(this.markers);
-
-      if (this.level > 3) {
+      if (this.level > 4) {
+        //기존 마커 삭제
+        this.clusterer.removeMarkers(this.markers);
+        this.markers.forEach((marker) => {
+          marker.setMap(null);
+        });
         return;
       }
       this.$store
@@ -132,6 +135,12 @@ export default {
           bounds.getNorthEast(),
         ])
         .then(() => {
+          //기존 마커 삭제
+          this.clusterer.removeMarkers(this.markers);
+          this.markers.forEach((marker) => {
+            marker.setMap(null);
+          });
+
           this.aptlist.forEach((apt) => {
             this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
           });
@@ -176,7 +185,7 @@ export default {
         map: this.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
         minLevel: 3, // 클러스터 할 최소 지도 레벨
-        gridSize: 200, //클러스터의 격자 크기. 화면 픽셀 단위이며 해당 격자 영역 안에 마커가 포함되면 클러스터에 포함시킨다
+        gridSize: 60, //클러스터의 격자 크기. 화면 픽셀 단위이며 해당 격자 영역 안에 마커가 포함되면 클러스터에 포함시킨다
       });
 
       this.moveMap();
