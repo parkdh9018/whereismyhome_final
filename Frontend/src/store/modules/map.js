@@ -6,6 +6,7 @@ import {
   getOfficetels,
   getOffiecetelDetail,
 } from "@/api/dealApi";
+import { keywordSearch } from "@/api/areaApi";
 
 const mapStore = {
   namespaced: true,
@@ -90,6 +91,25 @@ const mapStore = {
   },
 
   actions: {
+    getStructByKeyword({ commit, state }, keyword) {
+      commit("structClear");
+
+      keywordSearch(keyword, state.center).then(([data]) => {
+        const data_worked = data.map((place) => {
+          return {
+            id: place.id,
+            name: place.place_name,
+            address: place.address_name,
+            category: place.category_group_name,
+            lng: place.x,
+            lat: place.y,
+            place_url: place.place_url,
+          };
+        });
+
+        commit("addStructList", data_worked);
+      });
+    },
     getStructInDong({ commit }, [address_init, dongcode]) {
       console.log(dongcode);
 
