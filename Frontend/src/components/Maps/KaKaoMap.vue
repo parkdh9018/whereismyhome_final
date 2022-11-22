@@ -52,7 +52,7 @@
 <script>
 import MapMenu from "./MapMenu.vue";
 import MapMenuDetail from "@/components/Maps/MapMenuDetail";
-import { getaptlist_move, searchAddress } from "@/api/areaApi";
+import { getaptlist_move, searchAddress, searchPosition } from "@/api/areaApi";
 import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
@@ -141,9 +141,7 @@ export default {
       "setCenter",
       "setAddress",
       "setDetailToggle",
-      "setDetailToggle",
-      "setFilterType",
-      "setFilterSale",
+      "setStructDetailPos",
     ]),
     initMap() {
       const container = document.getElementById("map");
@@ -190,13 +188,21 @@ export default {
       this.clusterer.addMarker(marker);
 
       //마커 클릭 이벤트
-      kakao.maps.event.addListener(marker, "click", this.markerClickEvent);
+      const setDetailToggle = this.setDetailToggle;
+      const setCenter = this.setCenter;
+      const setStructDetailPos = this.setStructDetailPos;
+      kakao.maps.event.addListener(marker, "click", function () {
+        setDetailToggle(true);
+        setCenter(marker.getPosition());
+        setStructDetailPos(marker.getPosition());
+      });
     },
 
-    markerClickEvent() {
-      console.log("marker click");
-      this.setDetailToggle(true);
-    },
+    // markerClickEvent(e) {
+    //   console.log("marker click");
+    //   console.log(e);
+    //   this.setDetailToggle(true);
+    // },
 
     menuButtonClick() {
       this.menuToggle = !this.menuToggle;
