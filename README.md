@@ -55,3 +55,12 @@
 - csv file to mysql db
 - rentapi 생성
 - ![image](https://user-images.githubusercontent.com/53232881/202917955-a44ef31d-de7a-428d-a6fd-4a0505fbdc40.png)
+
+## 11월22일(화) 진행 사항
+### FRONT-END
+### BACK-END
+- 서울시 오피스텔, 다세대주택 db 생성, 데이터 setting
+- 오피스텔, 다세대주택 api 완성
+- 관심지역 설정, 리스트, 삭제 api 완성 
+- api 정리중 (https://www.notion.so/api-71af5423524947dba10b438ca4c42f68)
+
