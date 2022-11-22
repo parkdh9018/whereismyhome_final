@@ -1,7 +1,7 @@
 <template>
   <div>
     <base-header class="pb-2 pt-6 bg-gradient-success">
-<!--     
+      <!--     
       <b-row>
         <b-col xl="3" md="6">
         </b-col>
@@ -23,7 +23,6 @@
         </b-col>
       </b-row> -->
     </b-container>
-
   </div>
 </template>
 <script>
@@ -32,15 +31,20 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "MapView",
-  computed : {
-    ...mapGetters("map",["aptlist"]),
+  computed: {
+    ...mapGetters("map", ["aptlist"]),
     getAptdata() {
-      return this.aptlist.map(({apartmentName,dong, roadName, jibun, buildYear}) => {return {apartmentName,dong, roadName, jibun, buildYear}});
-    }
+      return this.aptlist.map(
+        ({ apartmentName, dong, roadName, jibun, buildYear }) => {
+          return { apartmentName, dong, roadName, jibun, buildYear };
+        }
+      );
+    },
   },
   components: {
-    KaKaoMap
+    KaKaoMap,
   },
-  
 };
 </script>
+
+<style scoped></style>

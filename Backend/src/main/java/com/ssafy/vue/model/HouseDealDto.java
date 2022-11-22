@@ -16,6 +16,14 @@ public class HouseDealDto {
 	private String floor;
 	private String build_year;
 	private String house_type;
+	private String code;
+	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 	public String getAcc_year() {
 		return acc_year;
 	}

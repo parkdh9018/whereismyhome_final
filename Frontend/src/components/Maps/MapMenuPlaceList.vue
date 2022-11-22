@@ -4,7 +4,7 @@
       <b-col
         cols="12"
         @click="placeClickEvent(place.address)"
-        v-for="place in placeList"
+        v-for="place in structList"
         :key="place.id"
       >
         <stats-card
@@ -19,25 +19,29 @@
           </template>
         </stats-card>
       </b-col>
-      <b-col v-if="placeList.length == 0"> 정보가 없습니다. </b-col>
+      <b-col v-if="structList.length == 0"> 정보가 없습니다. </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 import { searchPosition } from "@/api/areaApi";
 
 export default {
-  props: {
-    placeList: Array,
-    // id, name, address, category, pos(lng, ltg), place_url
+  computed: {
+    ...mapGetters("map", ["structList"]),
   },
   methods: {
-    ...mapMutations("map", ["setCenter", "setDetailToggle"]),
+    ...mapMutations("map", [
+      "setCenter",
+      "setDetailToggle",
+      "setStructDetailPos",
+    ]),
     placeClickEvent(address) {
       this.setDetailToggle(true);
       searchPosition(address).then((pos) => {
+        this.setStructDetailPos(pos);
         this.setCenter(pos);
       });
     },

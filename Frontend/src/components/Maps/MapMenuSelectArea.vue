@@ -13,7 +13,7 @@
         bread.dong
       }}</b-breadcrumb-item>
     </b-breadcrumb>
-    <b-container style="height : 400px;" class="overflow-auto">
+    <b-container style="height: 400px" class="overflow-auto">
       <b-row v-if="tag != 'apt'">
         <b-col
           class="border rounded text-center"
@@ -26,17 +26,17 @@
         </b-col>
       </b-row>
       <b-row v-else>
-        <MapMenuPlaceList :placeList="dongAptlist"/>
+        <MapMenuPlaceList />
       </b-row>
     </b-container>
     <b-button v-show="bread.sido != '시/도'" @click="changeCenter" class="mt-4"
-      >{{ this.btn_address }} 지도로 이동</b-button
+      >{{ this.total_address }} 지도로 이동</b-button
     >
   </div>
 </template>
 
 <script>
-import { areaList, searchPosition, aptListInDong } from "@/api/areaApi";
+import { areaList, searchPosition } from "@/api/areaApi";
 import { mapMutations, mapGetters } from "vuex";
 import MapMenuPlaceList from "./MapMenuPlaceList.vue";
 
@@ -51,12 +51,16 @@ export default {
       tag: "",
       code: "",
       bread: {},
-      btn_address: "",
       dongAptlist: [],
     };
   },
   computed: {
     ...mapGetters("map", ["address"]),
+    total_address() {
+      return `${this.bread.sido == "시/도" ? "" : this.bread.sido} ${
+        this.bread.gugun == "구/군" ? "" : this.bread.gugun
+      } ${this.bread.dong == "읍/면/동" ? "" : this.bread.dong}`;
+    },
   },
   watch: {
     tag: function (val) {
@@ -110,7 +114,7 @@ export default {
   methods: {
     ...mapMutations("map", ["setCenter"]),
     btnClick(code, name) {
-      console.log(name);
+      this.code = code;
       if (this.tag == "sido") {
         this.tag = "gugun";
         this.bread.sido = name;
@@ -121,26 +125,9 @@ export default {
         this.tag = "apt";
         this.bread.dong = name;
 
-        // 동의 아파트 리스트 불러옴
-        aptListInDong({ code: code }, (res) => {
-          this.dongAptlist = res.data.map(apt => {
-            return {
-              id : apt.aptCode,
-              name : apt.apartmentName,
-              address : `${this.btn_address} ${apt.jibun}`,
-              category : '아파트',
-              lng : apt.lng,
-              lat : apt.lat,
-            }
-          });
-        })
+        // 동 리스트들
+        this.$store.dispatch("map/getStructInDong", [this.total_address, code]);
       }
-      this.code = code;
-      this.btn_address = `${
-        this.bread.sido == "시/도" ? "" : this.bread.sido
-      } ${this.bread.gugun == "구/군" ? "" : this.bread.gugun} ${
-        this.bread.dong == "읍/면/동" ? "" : this.bread.dong
-      }`;
     },
     breadSidoClick() {
       this.bread.sido = "시/도";
@@ -151,7 +138,7 @@ export default {
       this.tag = "gugun";
     },
     changeCenter() {
-      searchPosition(this.btn_address).then((pos) => {
+      searchPosition(this.total_address).then((pos) => {
         this.setCenter(pos);
       });
     },
@@ -159,7 +146,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
 }

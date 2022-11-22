@@ -37,7 +37,7 @@
 
       <b-container>
         <b-row id="menu_container">
-          <b-col v-if="menuToggle">
+          <b-col style="width: 350px" v-if="menuToggle">
             <MapMenu @closeEvent="menuButtonClick" :address="address" />
           </b-col>
           <b-col v-if="detailToggle">
@@ -52,8 +52,8 @@
 <script>
 import MapMenu from "./MapMenu.vue";
 import MapMenuDetail from "@/components/Maps/MapMenuDetail";
-import { searchAddress } from "@/api/areaApi";
-import { mapGetters, mapMutations } from "vuex";
+import { getaptlist_move, searchAddress } from "@/api/areaApi";
+import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "KakaoMap",
@@ -62,7 +62,8 @@ export default {
     MapMenuDetail,
   },
   computed: {
-    ...mapGetters("map", ["aptlist", "center", "address", "detailToggle"]),
+    ...mapState("map", ["filter_buttons"]),
+    ...mapGetters("map", ["center", "address", "detailToggle"]),
     filterStr0() {
       return this.filter_buttons[0]
         .filter((v) => v.state)
@@ -84,29 +85,12 @@ export default {
       level: "",
       markers: [],
       filter_num: 0,
-      filter_buttons: [
-        [
-          { caption: "전세", state: true },
-          { caption: "월세", state: true },
-        ],
-        [
-          { caption: "아파트", state: true },
-          { caption: "오피스텔", state: true },
-          { caption: "다세대", state: true },
-        ],
-      ],
     };
   },
   mounted() {
     this.setDetailToggle(false);
     if (window.kakao && window.kakao.maps) {
       this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=79d74002f45b6b303a05b55e13f3d458&libraries=services,clusterer`;
-      document.head.appendChild(script);
     }
   },
   watch: {
@@ -129,22 +113,20 @@ export default {
         });
         return;
       }
-      this.$store
-        .dispatch("map/getaptlist_move", [
-          bounds.getSouthWest(),
-          bounds.getNorthEast(),
-        ])
-        .then(() => {
+      getaptlist_move(
+        [bounds.getSouthWest(), bounds.getNorthEast()],
+        ({ data }) => {
           //기존 마커 삭제
           this.clusterer.removeMarkers(this.markers);
           this.markers.forEach((marker) => {
             marker.setMap(null);
           });
 
-          this.aptlist.forEach((apt) => {
+          data.forEach((apt) => {
             this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
           });
-        });
+        }
+      );
 
       // 중심 위치 주소 변경
       searchAddress(pos).then((data) => {
@@ -160,6 +142,8 @@ export default {
       "setAddress",
       "setDetailToggle",
       "setDetailToggle",
+      "setFilterType",
+      "setFilterSale",
     ]),
     initMap() {
       const container = document.getElementById("map");

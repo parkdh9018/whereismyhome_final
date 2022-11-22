@@ -40,6 +40,7 @@
 import MapMenuSeletArea from "@/components/Maps/MapMenuSelectArea";
 import MapMenuPlaceList from "./MapMenuPlaceList.vue";
 import { keywordSearch } from "@/api/areaApi";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -56,12 +57,15 @@ export default {
   props: {
     address: String,
   },
+  computed: {
+    ...mapGetters("map", ["center"]),
+  },
   methods: {
     closeEvent() {
       this.$emit("closeEvent");
     },
     searchKeyword() {
-      keywordSearch(this.keyword).then(([data, pagenation]) => {
+      keywordSearch(this.keyword, this.center).then(([data]) => {
         console.log(this.searchAptList);
         this.searchAptList = data.map((place) => {
           return {
@@ -86,7 +90,7 @@ export default {
 
 <style scoped>
 #map_menu {
-  width: 350px;
+  width: 400px;
   height: 100%;
 }
 </style>

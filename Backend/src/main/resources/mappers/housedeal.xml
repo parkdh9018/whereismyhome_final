@@ -21,13 +21,14 @@
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
 		select *
 		from multiplex
-		where multiplexhouseCode LIKE CONCAT(#{sgdong_cd}, '%')
+		where code LIKE CONCAT(#{sgdong_cd}, '%')
+		group by code
 	</select>
 	
 	<select id="getMultiplexHouseDealDetail" parameterType="map" resultType="houseDealDto">
 		select *
 		from multiplex
-		where multiplexhouseCode = #{multiplexhouseCode}
+		where code = #{code}
 	</select>
 	
 	<!-- 오피스텔 -->
@@ -38,12 +39,12 @@
 	<select id="getOfficetelDeal" parameterType="map" resultType="houseDealDto">
 		select *
 		from officetel
-		where officetelCode LIKE CONCAT(#{sgdong_cd}, '%')
+		where code LIKE CONCAT(#{sgdong_cd}, '%')
 	</select>
 	<select id="getOfficetelDealDetail" parameterType="map" resultType="houseDealDto">
 		select *
 		from officetel
-		where officetelCode = #{officetelCode}
+		where code = #{code}
 	</select>
 	
 	<!-- 단독주택 -->
