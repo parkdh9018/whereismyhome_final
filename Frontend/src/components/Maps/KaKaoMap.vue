@@ -52,7 +52,8 @@
 <script>
 import MapMenu from "./MapMenu.vue";
 import MapMenuDetail from "@/components/Maps/MapMenuDetail";
-import { getaptlist_move, searchAddress, searchPosition } from "@/api/areaApi";
+import { getaptlist_move, searchAddress } from "@/api/areaApi";
+import { markerSido, markerGugun, markerDong } from "@/api/markerApi";
 import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
@@ -100,33 +101,52 @@ export default {
       this.map.setCenter(pos);
 
       const bounds = this.map.getBounds();
+      const level = this.map.getLevel();
 
-      this.northeast = bounds.getNorthEast();
-      this.southwest = bounds.getSouthWest();
-      this.level = this.map.getLevel();
+      //기존 마커 삭제
+      // this.clusterer.removeMarkers(this.markers);
+      this.markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+      this.markers = [];
 
-      if (this.level > 4) {
-        //기존 마커 삭제
-        this.clusterer.removeMarkers(this.markers);
-        this.markers.forEach((marker) => {
-          marker.setMap(null);
-        });
-        return;
-      }
-      getaptlist_move(
-        [bounds.getSouthWest(), bounds.getNorthEast()],
-        ({ data }) => {
-          //기존 마커 삭제
-          this.clusterer.removeMarkers(this.markers);
-          this.markers.forEach((marker) => {
-            marker.setMap(null);
-          });
+      const params = {
+        lat1: bounds.getSouthWest().Ma,
+        lng1: bounds.getSouthWest().La,
+        lat2: bounds.getNorthEast().Ma,
+        lng2: bounds.getNorthEast().La,
+      };
 
+      // 마커 찍기
+      if (level <= 4) {
+        // 일반 마커
+        getaptlist_move(params, ({ data }) => {
           data.forEach((apt) => {
             this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
           });
-        }
-      );
+        });
+      } else if (level >= 5 && level <= 6) {
+        // 동 마커
+        markerDong(params).then(({ data }) => {
+          data.forEach((v) => {
+            this.makeClusterMarker(v, 'dongName');
+          });
+        });
+      } else if (level >= 7 && level <= 8) {
+        // 구/군 마커
+        markerGugun(params).then(({ data }) => {
+          data.forEach((v) => {
+            this.makeClusterMarker(v, 'gugunName');
+          });
+        });
+      } else {
+        // 구/군 마커
+        markerSido(params).then(({ data }) => {
+          data.forEach((v) => {
+            this.makeClusterMarker(v, 'sidoName');
+          });
+        });
+      } 
 
       // 중심 위치 주소 변경
       searchAddress(pos).then((data) => {
@@ -185,7 +205,7 @@ export default {
       const marker = new kakao.maps.Marker({ position, clickable: true });
       marker.setMap(this.map);
       this.markers.push(marker);
-      this.clusterer.addMarker(marker);
+      // this.clusterer.addMarker(marker);
 
       //마커 클릭 이벤트
       const setDetailToggle = this.setDetailToggle;
@@ -198,11 +218,27 @@ export default {
       });
     },
 
-    // markerClickEvent(e) {
-    //   console.log("marker click");
-    //   console.log(e);
-    //   this.setDetailToggle(true);
-    // },
+    // 클러스터 마커 만들기
+    makeClusterMarker(data, type) {
+      console.log(data)
+      const content = 
+      `<span class="p-2 font-weight-bold badge badge-pill bg-white" style="font-size: 14px;">
+        ${data[type]}
+        <span class="badge font-weight-bold bg-red text-white" style="font-size: 14px;">14.5억</span>
+      </span>`;
+
+      // 커스텀 오버레이를 생성합니다
+      const customOverlay = new kakao.maps.CustomOverlay({
+        position: new kakao.maps.LatLng(data.lat, data.lng),
+        content: content,
+        xAnchor: 0.3,
+        yAnchor: 0.91,
+      });
+      this.markers.push(customOverlay);
+
+      // 커스텀 오버레이를 지도에 표시합니다
+      customOverlay.setMap(this.map);
+    },
 
     menuButtonClick() {
       this.menuToggle = !this.menuToggle;
@@ -247,4 +283,6 @@ export default {
   left: 10px;
   z-index: 1;
 }
+
+
 </style>

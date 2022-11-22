@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.model.BaseAddressDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -131,6 +132,41 @@ public class HouseMapController {
 		param.put("lng2", lng2);
 		logger.info("aptNearbyDong - 호출 {} {}", lat1, lng1);
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptNearbyDong(param), HttpStatus.OK);
+	}
+	
+	// cluster marker
+	
+	@GetMapping("/marker/sido")
+	public ResponseEntity<List<BaseAddressDto>> markerSido(@RequestParam("lat1") String lat1, @RequestParam("lat2") String lat2, @RequestParam("lng1") String lng1, @RequestParam("lng2") String lng2) throws Exception {
+		Map<String , String> param = new HashMap<>();
+		param.put("lat1", lat1);
+		param.put("lat2", lat2);
+		param.put("lng1", lng1);
+		param.put("lng2", lng2);
+		logger.info("markerSido - 호출 {} {}", lat1, lng1);
+		return new ResponseEntity<List<BaseAddressDto>>(haHouseMapService.markerSido(param), HttpStatus.OK);
+	}
+	
+	@GetMapping("/marker/gugun")
+	public ResponseEntity<List<BaseAddressDto>> markerGugun(@RequestParam("lat1") String lat1, @RequestParam("lat2") String lat2, @RequestParam("lng1") String lng1, @RequestParam("lng2") String lng2) throws Exception {
+		Map<String , String> param = new HashMap<>();
+		param.put("lat1", lat1);
+		param.put("lat2", lat2);
+		param.put("lng1", lng1);
+		param.put("lng2", lng2);
+		logger.info("markerGugun - 호출 {} {}", lat1, lng1);
+		return new ResponseEntity<List<BaseAddressDto>>(haHouseMapService.markerGugun(param), HttpStatus.OK);
+	}
+	
+	@GetMapping("/marker/dong")
+	public ResponseEntity<List<BaseAddressDto>> markerDong(@RequestParam("lat1") String lat1, @RequestParam("lat2") String lat2, @RequestParam("lng1") String lng1, @RequestParam("lng2") String lng2) throws Exception {
+		Map<String , String> param = new HashMap<>();
+		param.put("lat1", lat1);
+		param.put("lat2", lat2);
+		param.put("lng1", lng1);
+		param.put("lng2", lng2);
+		logger.info("markerDong - 호출 {} {}", lat1, lng1);
+		return new ResponseEntity<List<BaseAddressDto>>(haHouseMapService.markerDong(param), HttpStatus.OK);
 	}
 	
 	

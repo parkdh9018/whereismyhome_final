@@ -6,25 +6,24 @@ function sidoList(success, fail) {
 }
 
 function gugunList(params, success, fail) {
-  api.get(`/map/gugun`, { params: params }).then(success).catch(fail);
+  api.get(`/map/gugun`, { params }).then(success).catch(fail);
 }
 function dongList(params, success, fail) {
-  api.get(`/map/dong`, { params: params }).then(success).catch(fail);
+  api.get(`/map/dong`, { params }).then(success).catch(fail);
 }
 
 function houseList(params, success, fail) {
-  api.get(`map/apt/dong/`, { params: params }).then(success).catch(fail);
+  api.get(`map/apt/dong/`, { params }).then(success).catch(fail);
 }
 
 function aptListInDong(params, success, fail) {
-  api.get("map/apt/dong", { params: params }).then(success).catch(fail);
+  api.get("map/apt/dong", { params}).then(success).catch(fail);
 }
 
-function getaptlist_move(positions, success, fail) {
+// 지도 중심 움직였을 때
+function getaptlist_move(params, success, fail) {
   api
-    .get(
-      `/map/apt/nearby?lat1=${positions[0].getLat()}&lng1=${positions[0].getLng()}&lat2=${positions[1].getLat()}&lng2=${positions[1].getLng()}`
-    )
+    .get("/map/apt/nearby", {params})
     .then(success)
     .catch(fail);
 }
