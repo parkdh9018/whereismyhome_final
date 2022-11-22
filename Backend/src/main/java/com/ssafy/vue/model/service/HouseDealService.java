@@ -11,16 +11,19 @@ public interface HouseDealService {
 	//아파트
 	public List<ApartDealDto> getAptByaptCode(String aptCode) throws Exception;
 	
-	
-	public List<HouseDealDto> listPrivateHouseDeal() throws Exception;
+	//다세대주택
 	public List<HouseDealDto> listMultiplexHouseDeal() throws Exception;
-	public List<HouseDealDto> listOfiicetelHouseDeal() throws Exception;
+	public List<HouseDealDto> getMultiplexHouseDeal(String sgdong_cd) throws SQLException;
+	public List<HouseDealDto> getMultiplexHouseDealDetail(String multiplexhouseCode) throws SQLException;
 	
+	//오피스텔
+	public List<HouseDealDto> listOfiicetelHouseDeal() throws Exception;
+	public List<HouseDealDto> getOfficetelHouseDeal(String sgdong_cd) throws SQLException;
+	public List<HouseDealDto> getOfficetelHouseDealDetail(String officetelhouseCode) throws SQLException;
+	
+	//단독주택
+	public List<HouseDealDto> listPrivateHouseDeal() throws Exception;
 	public List<HouseDealDto> getPrivateHouseDeal(String sgg_cd, String bjdong_nm ) throws SQLException;
-	public List<HouseDealDto> getMultiplexHouseDeal(String sgg_cd, String bjdong_nm) throws SQLException;
-	public List<HouseDealDto> getOfficetelHouseDeal(String sgg_cd, String bjdong_nm) throws SQLException;
 
-
-	public List<HouseDealDto> getMultiplexHouseDealDetail(String sgg_cd, String bjdong_cd, String bubn) throws SQLException;
 	
 }
