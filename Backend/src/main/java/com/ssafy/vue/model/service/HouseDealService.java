@@ -17,9 +17,9 @@ public interface HouseDealService {
 	public List<HouseDealDto> getMultiplexHouseDealDetail(String multiplexhouseCode) throws SQLException;
 	
 	//오피스텔
-	public List<HouseDealDto> listOfiicetelHouseDeal() throws Exception;
-	public List<HouseDealDto> getOfficetelHouseDeal(String sgdong_cd) throws SQLException;
-	public List<HouseDealDto> getOfficetelHouseDealDetail(String officetelhouseCode) throws SQLException;
+	public List<HouseDealDto> listOfiicetelDeal() throws Exception;
+	public List<HouseDealDto> getOfficetelDeal(String sgdong_cd) throws SQLException;
+	public List<HouseDealDto> getOfficetelDealDetail(String officetelCode) throws SQLException;
 	
 	//단독주택
 	public List<HouseDealDto> listPrivateHouseDeal() throws Exception;

@@ -79,4 +79,24 @@
 		set userpwd = #{newpassword}
 		where userpwd = #{originpassword} and userid = #{userid}
 	</update>
+	
+	
+	<insert id="insertFavorite" parameterType="favoriteDto">
+		insert into favorite (userid, house_type, code, name, address)
+		values (#{userid}, #{house_type}, #{code}, #{name}, #{address})
+	</insert>
+	
+	
+	<select id="listFavorite" parameterType="map" resultType="favoriteDto">
+		select *
+		from favorite
+		where userid = #{userid}
+	</select>
+	
+	
+	<delete id="deleteFavorite" parameterType="String">
+		delete from favorite
+		where code = #{sgdbbCode}
+	</delete>
+	
 </mapper>

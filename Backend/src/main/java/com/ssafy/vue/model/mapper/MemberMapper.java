@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.vue.model.FavoriteDto;
 import com.ssafy.vue.model.MemberDto;
 
 @Mapper
@@ -26,5 +27,8 @@ public interface MemberMapper {
 	public int modifyMember(MemberDto memberDto)throws Exception;
 	public String isValidMember(String userid, String email)throws Exception;
 	public int modifyPassword(String originpassword, String newpassword, String userid)throws Exception;
-
+	public int insertFavorite(FavoriteDto favoriteDto)throws Exception;
+	public List<FavoriteDto> listFavorite(String userid) throws Exception;
+	public int deleteFavorite(String sgdbbCode) throws SQLException;
+	
 }

@@ -45,19 +45,19 @@ public class HouseDealServiceImpl implements HouseDealService{
 	
 //	오피스텔
 	@Override
-	public List<HouseDealDto> listOfiicetelHouseDeal() throws Exception {
-		return sqlSession.getMapper(HouseDealMapper.class).listOfficetelHouseDeal();
+	public List<HouseDealDto> listOfiicetelDeal() throws Exception {
+		return sqlSession.getMapper(HouseDealMapper.class).listOfficetelDeal();
 	}
 	
 	@Override
-	public List<HouseDealDto> getOfficetelHouseDeal(String sgdong_cd) throws SQLException {
-		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelHouseDeal(sgdong_cd);
+	public List<HouseDealDto> getOfficetelDeal(String sgdong_cd) throws SQLException {
+		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDeal(sgdong_cd);
 	}
 	
 	@Override
-	public List<HouseDealDto> getOfficetelHouseDealDetail(String officetelhouseCode) throws SQLException {
+	public List<HouseDealDto> getOfficetelDealDetail(String officetelCode) throws SQLException {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelHouseDealDetail(officetelhouseCode);
+		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDealDetail(officetelCode);
 	}
 	
 

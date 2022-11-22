@@ -15,35 +15,35 @@
 	
 	<!-- 다세대주택 -->
 	<select id="listMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
-		select * from multiplexhousedeal
+		select * from multiplex
 	</select>
 	
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
 		select *
-		from multiplexhousedeal
+		from multiplex
 		where multiplexhouseCode LIKE CONCAT(#{sgdong_cd}, '%')
 	</select>
 	
 	<select id="getMultiplexHouseDealDetail" parameterType="map" resultType="houseDealDto">
 		select *
-		from multiplexhousedeal
+		from multiplex
 		where multiplexhouseCode = #{multiplexhouseCode}
 	</select>
 	
 	<!-- 오피스텔 -->
-	<select id="listOfficetelHouseDeal" parameterType="map" resultType="houseDealDto">
-		select * from officetelhousedeal
+	<select id="listOfficetelDeal" parameterType="map" resultType="houseDealDto">
+		select * from officetel
 	</select>
 	
-	<select id="getOfficetelHouseDeal" parameterType="map" resultType="houseDealDto">
+	<select id="getOfficetelDeal" parameterType="map" resultType="houseDealDto">
 		select *
-		from officetelhousedeal
-		where officetelhouseCode LIKE CONCAT(#{sgdong_cd}, '%')
+		from officetel
+		where officetelCode LIKE CONCAT(#{sgdong_cd}, '%')
 	</select>
-	<select id="getOfficetelHouseDealDetail" parameterType="map" resultType="houseDealDto">
+	<select id="getOfficetelDealDetail" parameterType="map" resultType="houseDealDto">
 		select *
-		from officetelhousedeal
-		where officetelhouseCode = #{officetelhouseCode}
+		from officetel
+		where officetelCode = #{officetelCode}
 	</select>
 	
 	<!-- 단독주택 -->

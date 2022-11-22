@@ -41,7 +41,7 @@ public class HouseDealController {
 	
 //	아파트
 	@ApiOperation(value = "아파트 상세조회", notes = "아파트 상세조회 정보를 반환한다.", response = List.class)
-	@GetMapping("/apartdeal/{aptCode}")
+	@GetMapping("/apart/{aptCode}")
 	public ResponseEntity<List<ApartDealDto>> getApartDealByaptCode(@PathVariable("aptCode") String aptCode) throws Exception {
 		System.out.println(aptCode);
 		return new ResponseEntity<List<ApartDealDto>>(houseDealService.getAptByaptCode(aptCode),HttpStatus.OK);
@@ -49,21 +49,21 @@ public class HouseDealController {
 	
 //	다세대주택
 	@ApiOperation(value = "다세대주택 전체 목록", notes = "모든 다세대주택의 정보를 반환한다.", response = List.class)
-	@GetMapping("/multiplexhousedeal")
+	@GetMapping("/multiplex")
 	public ResponseEntity<List<HouseDealDto>> multiplexhousedeal() throws Exception {
 		logger.info("listArticle - 호출");
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listMultiplexHouseDeal(), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "동으로 검색한 다세대주택 목록", notes = "동에 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/multiplexhousedeal/{sgdong_cd}")
+	@GetMapping("/multiplex/{sgdong_cd}")
 	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDeal(@PathVariable("sgdong_cd") @ApiParam(value = "얻어올 글의 동이름.", required = true) String sgdong_cd) throws Exception {
 		logger.info("getPrivateHouseDeal - 호출 : " + sgdong_cd);
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDeal(sgdong_cd), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Detail 다세대주택 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/multiplexhousedealdetail/{multiplexhouseCode}")
+	@GetMapping("/multiplexDeatil/{multiplexhouseCode}")
 	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@PathVariable("multiplexhouseCode") @ApiParam(value = "얻어올 글의 동이름.", required = true) String multiplexhouseCode ) throws Exception {
 		logger.info("getMultiplexHouseDealDetail - 호출 : " );
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDealDetail(multiplexhouseCode), HttpStatus.OK);
@@ -72,26 +72,26 @@ public class HouseDealController {
 	
 //	오피스텔
 	@ApiOperation(value = "오피스텔 목록", notes = "모든 오피스텔의 정보를 반환한다.", response = List.class)
-	@GetMapping("/officetelhousedeal")
-	public ResponseEntity<List<HouseDealDto>> officetelhousedeal() throws Exception {
-		logger.info("listArticle - 호출");
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listOfiicetelHouseDeal(), HttpStatus.OK);
+	@GetMapping("/officetel")
+	public ResponseEntity<List<HouseDealDto>> officeteldeal() throws Exception {
+		logger.info("officeteldeal - 호출");
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listOfiicetelDeal(), HttpStatus.OK);
 	}
 	
 	
 	@ApiOperation(value = "동으로 검색한 오피스텔 목록", notes = "동에 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/officetelhousedeal/{sgdong_cd}")
-	public ResponseEntity<List<HouseDealDto>> getOfiicetelHouseDeal(@PathVariable("sgdong_cd") @ApiParam(value = "얻어올 글의 시군동 코드.", required = true) String sgdong_cd) throws Exception {
-		logger.info("getPrivateHouseDeal - 호출 : " + sgdong_cd);
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelHouseDeal(sgdong_cd), HttpStatus.OK);
+	@GetMapping("/officetel/{sgdong_cd}")
+	public ResponseEntity<List<HouseDealDto>> getOfiicetelDeal(@PathVariable("sgdong_cd") @ApiParam(value = "얻어올 글의 시군동 코드.", required = true) String sgdong_cd) throws Exception {
+		logger.info("getPrivateDeal - 호출 : " + sgdong_cd);
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDeal(sgdong_cd), HttpStatus.OK);
 	}
 	
 	
 	@ApiOperation(value = "Detail 오피스텔 목록", notes = "정확히 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/officetelhousedealdetail/{ofiicetelhouseCode}")
-	public ResponseEntity<List<HouseDealDto>> getOfiicetelHouseDealDetail(@PathVariable("officetelhouseCode") @ApiParam(value = "얻어올 글의 동이름.", required = true) String officetelhouseCode ) throws Exception {
-		logger.info("getOfficetelHouseDealDetail - 호출 : " );
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelHouseDealDetail(officetelhouseCode), HttpStatus.OK);
+	@GetMapping("/officetelDeatil/{officetelCode}")
+	public ResponseEntity<List<HouseDealDto>> getOfiicetelDealDetail(@PathVariable("officetelCode") @ApiParam(value = "얻어올 글의 동이름.", required = true) String officetelCode ) throws Exception {
+		logger.info("getOfficetelDealDetail - 호출 : " );
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDealDetail(officetelCode), HttpStatus.OK);
 	}
 	
 	

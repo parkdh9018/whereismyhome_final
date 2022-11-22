@@ -19,10 +19,10 @@ public interface HouseDealMapper {
 	
 	
 	//오피스텔
-	public List<HouseDealDto> listOfficetelHouseDeal();
+	public List<HouseDealDto> listOfficetelDeal();
 	// 동으로 검색해서 특정 오피스텔 리스트 가져오기 
-	public List<HouseDealDto> getOfficetelHouseDeal(String sgdong_cd) throws SQLException;
-	public List<HouseDealDto> getOfficetelHouseDealDetail(String officetelhouseCode) throws SQLException;
+	public List<HouseDealDto> getOfficetelDeal(String sgdong_cd) throws SQLException;
+	public List<HouseDealDto> getOfficetelDealDetail(String officetelCode) throws SQLException;
 	
 	
 	

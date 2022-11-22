@@ -7,10 +7,13 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.vue.model.BoardDto;
+import com.ssafy.vue.model.FavoriteDto;
 import com.ssafy.vue.model.MemberDto;
 import com.ssafy.vue.model.PasswordDto;
+import com.ssafy.vue.model.mapper.BoardMapper;
 import com.ssafy.vue.model.mapper.MemberMapper;
 
 @Service
@@ -106,6 +109,26 @@ public class MemberServiceImpl implements MemberService {
 		return sqlSession.getMapper(MemberMapper.class)
 				.modifyPassword(passwordDto.getOriginpassword(), passwordDto.getNewpassword(), passwordDto.getUserid())==1;
 	}
+
+	@Override
+	public boolean insertFavorite(FavoriteDto favoriteDto) throws Exception {
+		if(favoriteDto.getCode() == null || favoriteDto.getHouse_type() == null || favoriteDto.getUserid() == null) {
+			throw new Exception();
+		}
+		return sqlSession.getMapper(MemberMapper.class).insertFavorite(favoriteDto) == 1;
+	}
+
+	@Override
+	public List<FavoriteDto> listFavorite(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).listFavorite(userid);
+	}
+
+	@Override
+	public boolean deleteFavorite(String sgdbbCode) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).deleteFavorite(sgdbbCode) == 1;
+	}
 	
 
+	
+	
 }

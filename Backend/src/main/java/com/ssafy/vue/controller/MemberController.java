@@ -1,6 +1,7 @@
 package com.ssafy.vue.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.vue.model.BoardDto;
+import com.ssafy.vue.model.BoardParameterDto;
+import com.ssafy.vue.model.FavoriteDto;
 import com.ssafy.vue.model.MailDto;
 import com.ssafy.vue.model.MemberDto;
 import com.ssafy.vue.model.PasswordDto;
@@ -255,5 +258,30 @@ public class MemberController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "관심지역 작성", notes = "새로운 게시글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PostMapping("/favorite")
+	public ResponseEntity<String> insertFavorite(@RequestBody @ApiParam(value = "게시글 정보.", required = true) FavoriteDto favoriteDto) throws Exception {
+		logger.info("insertFavorite - 호출");
+		if (memberService.insertFavorite(favoriteDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "관심지역 목록", notes = "모든 관심지역의 정보를 반환한다.", response = List.class)
+	@GetMapping("/favorite/{userid}")
+	public ResponseEntity<List<FavoriteDto>> listFavorite(@PathVariable("userid") @ApiParam(value = "userid.", required = true) String userid) throws Exception {
+		logger.info("listFavorite - 호출");
+		return new ResponseEntity<List<FavoriteDto>>(memberService.listFavorite(userid), HttpStatus.OK);
+	}
 
+	@ApiOperation(value = "게시판 글삭제", notes = "글번호에 해당하는 게시글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/favorite/{sgdbbCode}")
+	public ResponseEntity<String> deleteFavorite(@PathVariable("sgdbbCode") @ApiParam(value = "살제할 글의 글번호.", required = true) String sgdbbCode) throws Exception {
+		logger.info("deleteFavorite - 호출");
+		if (memberService.deleteFavorite(sgdbbCode)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 }
