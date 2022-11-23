@@ -35,16 +35,16 @@
         </b-card>
       </b-collapse>
 
-      <b-container>
-        <b-row id="menu_container">
-          <b-col style="width: 350px" v-if="menuToggle">
+      <div id="menu_container">
+        <b-row>
+          <b-col style="width: 400px" v-if="menuToggle">
             <MapMenu @closeEvent="menuButtonClick" :address="address" />
           </b-col>
-          <b-col v-if="detailToggle">
+          <b-col style="width: 550px" v-if="detailToggle">
             <MapMenuDetail />
           </b-col>
         </b-row>
-      </b-container>
+      </div>
     </div>
   </div>
 </template>
@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     ...mapState("map", ["filter_buttons"]),
-    ...mapGetters("map", ["center", "address", "detailToggle"]),
+    ...mapGetters("map", ["center", "address", "detailToggle", "level"]),
     filterStr0() {
       return this.filter_buttons[0]
         .filter((v) => v.state)
@@ -80,15 +80,16 @@ export default {
   },
   data() {
     return {
+      map: null,
       menuToggle: false,
       gugunCode: "",
       dongname: "",
-      level: "",
       markers: [],
       filter_num: 0,
     };
   },
   mounted() {
+    console.log("---mout");
     this.setDetailToggle(false);
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -98,6 +99,7 @@ export default {
     center: function (pos) {
       console.log("center change");
 
+      this.setLevel(this.map.getLevel());
       this.map.setCenter(pos);
 
       const bounds = this.map.getBounds();
@@ -129,24 +131,24 @@ export default {
         // 동 마커
         markerDong(params).then(({ data }) => {
           data.forEach((v) => {
-            this.makeClusterMarker(v, 'dongName');
+            this.makeClusterMarker(v, "dongName");
           });
         });
       } else if (level >= 7 && level <= 8) {
         // 구/군 마커
         markerGugun(params).then(({ data }) => {
           data.forEach((v) => {
-            this.makeClusterMarker(v, 'gugunName');
+            this.makeClusterMarker(v, "gugunName");
           });
         });
       } else {
         // 구/군 마커
         markerSido(params).then(({ data }) => {
           data.forEach((v) => {
-            this.makeClusterMarker(v, 'sidoName');
+            this.makeClusterMarker(v, "sidoName");
           });
         });
-      } 
+      }
 
       // 중심 위치 주소 변경
       searchAddress(pos).then((data) => {
@@ -155,9 +157,14 @@ export default {
         );
       });
     },
+    level: function (val) {
+      console.log("level change" + val);
+      this.map.setLevel(val);
+    },
   },
   methods: {
     ...mapMutations("map", [
+      "setLevel",
       "setCenter",
       "setAddress",
       "setDetailToggle",
@@ -194,6 +201,7 @@ export default {
 
       //지도 중심 변경 이벤트 리스너
       kakao.maps.event.addListener(this.map, "idle", this.moveMap);
+      kakao.maps.event.addListener(this.map, "click", this.detailClose);
     },
 
     moveMap() {
@@ -201,7 +209,7 @@ export default {
     },
 
     // 마커 만들기
-    makeMarker(position) {
+    makeMarker: function (position) {
       const marker = new kakao.maps.Marker({ position, clickable: true });
       marker.setMap(this.map);
       this.markers.push(marker);
@@ -211,18 +219,18 @@ export default {
       const setDetailToggle = this.setDetailToggle;
       const setCenter = this.setCenter;
       const setStructDetailPos = this.setStructDetailPos;
+      const setLevel = this.setLevel;
       kakao.maps.event.addListener(marker, "click", function () {
         setDetailToggle(true);
         setCenter(marker.getPosition());
+        setLevel(2);
         setStructDetailPos(marker.getPosition());
       });
     },
 
     // 클러스터 마커 만들기
     makeClusterMarker(data, type) {
-      console.log(data)
-      const content = 
-      `<span class="p-2 font-weight-bold badge badge-pill bg-white" style="font-size: 14px;">
+      const content = `<span class="p-2 font-weight-bold badge badge-pill bg-white" style="font-size: 14px;">
         ${data[type]}
         <span class="badge font-weight-bold bg-red text-white" style="font-size: 14px;">14.5억</span>
       </span>`;
@@ -247,6 +255,11 @@ export default {
 
     filterClick(num) {
       this.filter_num = num;
+    },
+
+    detailClose() {
+      console.log("detail close");
+      this.setDetailToggle(false);
     },
   },
 };
@@ -283,6 +296,4 @@ export default {
   left: 10px;
   z-index: 1;
 }
-
-
 </style>

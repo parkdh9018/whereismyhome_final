@@ -37,12 +37,14 @@ export default {
       "setCenter",
       "setDetailToggle",
       "setStructDetailPos",
+      "setLevel",
     ]),
     placeClickEvent(address) {
-      this.setDetailToggle(true);
       searchPosition(address).then((pos) => {
-        this.setStructDetailPos(pos);
+        this.setDetailToggle(true);
+        this.setLevel(2);
         this.setCenter(pos);
+        this.setStructDetailPos(pos);
       });
     },
   },

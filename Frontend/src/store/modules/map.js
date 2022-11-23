@@ -13,6 +13,7 @@ const mapStore = {
   state: () => ({
     structList: [], // 이름, 주소, 타입, 좌표(lng, lat)
     center: null,
+    level: 2,
     address: "",
     detailToggle: false,
     structDetailPos: null,
@@ -21,16 +22,20 @@ const mapStore = {
       [
         { caption: "전세", state: true },
         { caption: "월세", state: true },
+        { caption: "매매", state: true },
       ],
       [
         { caption: "아파트", state: true },
         { caption: "오피스텔", state: true },
-        { caption: "다세대", state: true },
+        { caption: "다가구", state: true },
       ],
     ],
   }),
 
   getters: {
+    level(state) {
+      return state.level;
+    },
     structDetailPos(state) {
       return state.structDetailPos;
     },
@@ -58,6 +63,9 @@ const mapStore = {
   },
 
   mutations: {
+    setLevel(state, payload) {
+      state.level = payload;
+    },
     structClear(state) {
       state.structList = [];
     },

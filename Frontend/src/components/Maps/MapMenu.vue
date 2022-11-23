@@ -73,9 +73,4 @@ export default {
 };
 </script>
 
-<style scoped>
-#map_menu {
-  width: 400px;
-  height: 100%;
-}
-</style>
+<style scoped></style>
