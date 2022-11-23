@@ -7,7 +7,7 @@
       <b-col md="12">
         <b-card-header>
           <span
-            ><b-badge pill variant="info"> {{ type }} </b-badge>
+            ><b-badge pill variant="info"> 이름 </b-badge>
             {{ bldg_name }}</span
           >
           <span class="float-right"
@@ -16,42 +16,74 @@
           >
         </b-card-header>
         <b-card-body>
-          <b-card-text class="text-center">
-            {{ bldg_area }} | {{ tot_area }} m²
-          </b-card-text>
-          <b-card-text>
-            <stats-card
-              title="매매"
-              type="gradient-red"
-              sub-title="18억 8,000만"
-              class="mb-1"
-            >
-              <template slot="footer">
-                <span class="text-success mr-2">최대가 : 18억 8,000만</span>
-              </template>
-            </stats-card>
-            <stats-card
-              title="전세"
-              type="gradient-red"
-              sub-title="18억 8,000만"
-              class="mb-1"
-            >
-              <template slot="footer">
-                <span class="text-success mr-2">최대가 : 18억 8,000만</span>
-              </template>
-            </stats-card>
-            <stats-card
-              title="월세"
-              type="gradient-red"
-              sub-title="18억 8,000만"
-              class="mb-1"
-            >
-              <template slot="footer">
-                <span class="text-success mr-2">최대가 : 18억 8,000만</span>
-              </template>
-            </stats-card>
+          <b-card-text class=" font-weight-bold">
+            <span>면적 : {{ bldg_area }} m² | {{ tot_area }} m²</span>
+            <h2 class="float-right mr-2"><b-badge variant="info">{{type}}</b-badge></h2>
           </b-card-text>
           <b-card-text class="border p-3">
+            <h2> 시세</h2>
+            <stats-card class="bg-gradient-primary mb-2">
+              <h5 class="card-title text-uppercase text-white mb-1">
+                <b-badge class="bg-green text-white"> 매매 </b-badge>
+              </h5>
+              <div class="text-white">
+                최근실거래가
+              </div>
+              <span class="h2 font-weight-bold mb-0 text-white">
+                18억 8,000만 (22.07 / 4층)
+              </span>
+              <template slot="footer">
+                <div>
+                  <span class="text-white mr-2">최고가</span>
+                  <span class="text-nowrap text-white">10억 9,000</span>
+                </div>
+                <div>
+                  <span class="text-white mr-2">최저가</span>
+                  <span class="text-nowrap text-white">10억 9,000</span>
+                  <span class="float-right">
+                    <span class="text-white mr-2">평균가</span>
+                    <span class="text-nowrap text-white">10억 9,000</span>
+                  </span>
+                </div>
+              </template>
+            </stats-card>
+            <stats-card class="bg-gradient-primary mb-2">
+              <h5 class="card-title text-uppercase text-white mb-1">
+                <b-badge class="bg-orange text-white"> 전세 </b-badge>
+              </h5>
+              <div class="text-white">
+                최근실거래가
+              </div>
+              <span class="h2 font-weight-bold mb-0 text-white">
+                7억 8,000만 (22.07 / 4층)
+              </span>
+              <template slot="footer">
+                <div>
+                  <span class="text-white mr-2">최고가</span>
+                  <span class="text-nowrap text-white">10억 9,000</span>
+                </div>
+                <div>
+                  <span class="text-white mr-2">최저가</span>
+                  <span class="text-nowrap text-white">10억 9,000</span>
+                  <span class="float-right">
+                    <span class="text-white mr-2">평균가</span>
+                    <span class="text-nowrap text-white">10억 9,000</span>
+                  </span>
+                </div>
+              </template>
+            </stats-card>
+            <stats-card class="bg-gradient-info mb-2">
+              <h5 class="card-title text-uppercase text-white mb-0">
+                <b-badge class="bg-gray text-white"> 월세 </b-badge>
+              </h5>
+              <span class="h2 font-weight-bold mb-0 text-white"
+                >5000만 / 255만</span
+              >
+            </stats-card>
+
+          </b-card-text>
+          <b-card-text class="border p-3">
+            <h2>시세추이</h2>
             <card type="default" header-classes="bg-transparent">
               <b-row align-v="center" slot="header">
                 <b-col>
@@ -88,6 +120,11 @@
               >
               </line-chart>
             </card>
+          </b-card-text>
+          <b-card-text class="border p-3">
+            <h2>실거래가</h2>
+            <b-table class="text-center" striped hover :items="tableData">
+            </b-table>
           </b-card-text>
         </b-card-body>
       </b-col>
@@ -127,12 +164,21 @@ export default {
         },
         extraOptions: chartConfigs.blueChartOptions,
       },
+      tableData : [
+          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
+          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
+          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
+          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
+          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
+        ]
     };
   },
   components: {
     LineChart,
   },
-  mounted() {},
+  updated : {
+    
+  },
   watch: {
     structDetailPos: function (val) {
       var roadviewContainer = document.getElementById("roadview"); //로드뷰를 표시할 div
