@@ -14,7 +14,7 @@
 
         <sidebar-item
           :link="{
-            name: 'notice',
+            name: 'Notice',
             path: '/tables',
             icon: 'ni ni-bullet-list-67 text-red',
           }"
@@ -32,7 +32,7 @@
 
         <sidebar-item
           :link="{
-            name: 'map',
+            name: 'Map',
             path: '/maps',
             icon: 'ni ni-pin-3 text-orange',
           }"

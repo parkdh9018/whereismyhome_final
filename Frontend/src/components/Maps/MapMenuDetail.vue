@@ -214,7 +214,7 @@ export default {
 
 <style scoped>
 #detail_card {
-  max-height: 730px;
+  max-height: 75vh;
   overflow: auto;
 }
 </style>

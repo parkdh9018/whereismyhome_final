@@ -269,7 +269,8 @@ export default {
 <style scoped>
 #map {
   width: 100%;
-  height: 730px;
+  height: 75vh;
+  z-index: inherit;
 }
 
 #map_wrap {
