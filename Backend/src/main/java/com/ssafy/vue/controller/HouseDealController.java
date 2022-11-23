@@ -88,7 +88,7 @@ public class HouseDealController {
 	}
 	
 	@ApiOperation(value = "Detail 다세대주택 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/multiplexDeatil/{multiplexhouseCode}")
+	@GetMapping("/multiplexDeatil")
 	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
@@ -102,7 +102,7 @@ public class HouseDealController {
 	
 //	오피스텔
 	@ApiOperation(value = "동으로 검색한 오피스텔 목록", notes = "동에 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/officetel/{sgd_cd}")
+	@GetMapping("/officetel")
 	public ResponseEntity<List<HouseDealDto>> getOfficetelDeal(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getPrivateHouseDeal - 호출 : ");
 		Map<String, Object> resultMap = new HashMap<>();
@@ -117,7 +117,7 @@ public class HouseDealController {
 	
 	
 	@ApiOperation(value = "Detail 오피스텔 목록", notes = "정확히 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/officetelDeatil/{officetelCode}")
+	@GetMapping("/officetelDeatil")
 	public ResponseEntity<List<HouseDealDto>> getOfficetelDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();

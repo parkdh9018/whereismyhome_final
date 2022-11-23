@@ -40,7 +40,7 @@
 
 	<!-- 연립다세대 -->
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
-		select *
+		select *  , min(obj_amt) as min_amt
 		from deal
 		where bjdong_cd = #{bjd_cd}
 		<if test="cell == null or cell == ''">

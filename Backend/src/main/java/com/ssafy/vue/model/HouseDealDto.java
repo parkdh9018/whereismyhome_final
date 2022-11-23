@@ -18,7 +18,9 @@ public class HouseDealDto {
 	private String deal_type;
 	private String rent_gtn;
 	private String rent_fee;
-
+	private String max_amt; 
+	private String min_amt; 
+	private String mean_amt; 
 	private String code;
 	
 	public String getCode() {
@@ -129,6 +131,24 @@ public class HouseDealDto {
 	}
 	public void setRent_fee(String rent_fee) {
 		this.rent_fee = rent_fee;
+	}
+	public String getMax_amt() {
+		return max_amt;
+	}
+	public void setMax_amt(String max_amt) {
+		this.max_amt = max_amt;
+	}
+	public String getMin_amt() {
+		return min_amt;
+	}
+	public void setMin_amt(String min_amt) {
+		this.min_amt = min_amt;
+	}
+	public String getMean_amt() {
+		return mean_amt;
+	}
+	public void setMean_amt(String mean_amt) {
+		this.mean_amt = mean_amt;
 	}
 	
 	
