@@ -37,7 +37,7 @@ export default {
           }
           alert(msg);
           // 도서평(댓글) 얻기.
-          this.$store.dispatch("getComments", `/comment/${this.comment.articleno}`);
+          this.$store.dispatch("board/getComments", `/comment/${this.$route.query.articleno}`);
         });
       }
     },

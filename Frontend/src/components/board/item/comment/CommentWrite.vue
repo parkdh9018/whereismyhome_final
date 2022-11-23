@@ -13,30 +13,42 @@
 </template>
 
 <script>
-import { updateComments,getComments, registComment } from "@/api/boardApi";
+import { updateComments, registComment } from "@/api/boardApi";
+import { dispatch } from "d3";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "CommentWrite",
   data() {
     return {
       // 차후 작성자 이름은 로그인 구현후 로그인한 사용자로 바꾼다.
-      userid: "admin",
+      userid: "",
       comment: "",
       comments: {},
       modify_comment: this.modifyComment
     };
+  },
+ 
+  computed: {
+    ...mapGetters("member", ["checkUserInfo"]),
   },
   props: {
     articleno: { type: String },
     modifyComment: { type: Object }
   },
   methods: {
+    ...mapMutations("board",["addComments"]),
     registComment() {
+      
       let param = {
-        userid: this.userid,
-          comment: this.comment,
-          articleno: this.$route.query.articleno
+        userid: this.checkUserInfo.userid,
+        comment: this.comment,
+        articleno: this.$route.query.articleno
 
       };
+
+      console.log(this.userid);
+      console.log(this.comment);
+      console.log(this.$route.query.articleno);
       registComment(
         param,
         ({ data }) => {
@@ -47,7 +59,9 @@ export default {
           alert(msg);
           this.comment = "";
           // 도서평(댓글) 얻기에서 계속 오류 나고 있음.
-          this.getComment();
+          // this.addComments("",this.comment);
+          this.$store.dispatch("board/getComments", `/comment/${this.$route.query.articleno}`);
+        
         },
         (error) => {
           console.log(error);
@@ -67,7 +81,7 @@ export default {
             msg = "수정이 완료되었습니다.";
           }
           alert(msg);
-          this.$router.push(`/tables/view?articleno=${this.$route.query.articleno}`);
+          this.$store.dispatch("board/getComments", `/comment/${this.$route.query.articleno}`);
           this.$emit("modify-comment-cancel", false);
         },
         (error) => {

@@ -23,7 +23,6 @@
     </b-col>
   </b-row>
 
-
   <!-- 댓글 -->
   <comment-write :articleno="this.articleno" />
   <comment-write
@@ -44,8 +43,8 @@
 
 import CommentWrite from "@/components/board/item/comment/CommentWrite.vue";
 import Comment from "@/components/board/item/comment/Comment.vue";
-import { getArticle,getComments ,deleteArticle} from "@/api/boardApi";
-
+import { getArticle,deleteArticle} from "@/api/boardApi";
+import { mapGetters } from "vuex";
 export default {
 name: "BoardDetail",
 data() {
@@ -54,12 +53,23 @@ data() {
     isModifyShow: false,
     modifyComment: Object,
     article: {},
-    comments: {}
-  };
-},
 
-created() {
-  let param = this.$route.query.articleno;
+  };
+  },
+  computed: {
+    ...mapGetters("board",["comments"])
+  }, 
+  components: {
+    CommentWrite,
+    Comment
+},
+  updated() {
+    console.log("지금 된다.")
+  },
+  created() {
+    let param = this.$route.query.articleno;
+     this.$store.dispatch("board/getComments", `/comment/${param}`);
+  
   getArticle(
     param,
     ({ data }) => {
@@ -69,25 +79,16 @@ created() {
       console.log(error);
     }
   );
-  getComments(
-    param,
-    ({ data }) => {
-      this.comments = data;
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+  
 },
-components: {
-  CommentWrite,
-  Comment
-},
-methods: {
+
+  methods: {
+
+   
   moveModifyArticle() {
     this.$router.replace({
       name: "boardmodify",
-      params: { articleno: this.article.articleno },
+      params: { articleno: this.$route.query.articleno},
     });
     //   this.$router.push({ path: `/board/modify/${this.board.articleno}` });
   },

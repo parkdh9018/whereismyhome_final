@@ -162,8 +162,8 @@
       return {
         bigLineChart: {
           allData: [
-            [0, 20, 10, 30, 15, 40, 20, 60, 60],
-            [0, 20, 5, 25, 10, 30, 15, 40, 40]
+            [0, 20, 10, 30],
+            [0, 20, 5, 25]
           ],
           activeIndex: 0,
           chartData: {
@@ -173,7 +173,7 @@
                 data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
               }
             ],
-            labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: ['2019', '2020', '2021', '2022'],
           },
           extraOptions: chartConfigs.blueChartOptions,
         },
@@ -198,7 +198,7 @@
               data: this.bigLineChart.allData[index]
             }
           ],
-          labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          labels: ['2019', '2020', '2021', '2022'],
         };
         this.bigLineChart.chartData = chartData;
         this.bigLineChart.activeIndex = index;

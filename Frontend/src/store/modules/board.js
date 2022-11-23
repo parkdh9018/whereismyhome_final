@@ -25,29 +25,34 @@ const boardStore = {
     setBoard(state, payload) {
       state.board = payload;
     },
+    addComments(state, payload) {
+      state.comments.push(payload);
+    },
     setComments(state, payload) {
       state.comments = payload;
     },
   },
   actions: {
-    getBoards({commit}) {
+    getBoards(context) {
       http
         .get("/board")
         .then(({ data }) => {
-          commit("setBoards", data);
+          context.commit("setBoards", data);
         })
         .catch(() => {
           alert("에러발생!");
         });
     },
-    getBoard({commit}, payload) {
+    getBoard(context, payload) {
       http.get(payload).then(({ data }) => {
-        commit("setBoard", data);
+        context.commit("setBoard", data);
       });
     },
-    getComments({commit}, payload) {
+    getComments(context, payload) {
       http.get(payload).then(({ data }) => {
-        commit("setComments", data);
+        console.log("dsds");
+        context.commit("setComments", data);
+
       });
     },
   },

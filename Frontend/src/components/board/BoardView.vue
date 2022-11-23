@@ -28,14 +28,6 @@
     </b-row>
 
 
-    <!-- 댓글 -->
-    <comment-write :articleno="this.articleno" />
-    <comment-write
-      v-if="isModifyShow && this.modifyComment != null"
-      :modifyComment="this.modifyComment"
-      @modify-comment-cancel="onModifyCommentCancel"
-    />
-    <comment v-for="(comment, index) in comments" :key="index" :comment="comment" @modify-comment="onModifyComment" />
 
     
   </b-container>
@@ -58,16 +50,17 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["comments","board"]),
+    // ...mapGetters("board",["comments","board"]),
     message() {
       if (this.board.content) return this.board.content.split("\n").join("<br>");
       return "";
     },
+
   },
   created() {
     this.articleno = this.$route.query.articleno;
     this.$store.dispatch("getBoard", `/board/${this.articleno}`);
-    this.$store.dispatch("getComments", `/comment/${this.articleno}`);
+    this.$store.dispatch("getComment", `/comment/${this.articleno}`);
 
     // http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
     //   this.article = data;

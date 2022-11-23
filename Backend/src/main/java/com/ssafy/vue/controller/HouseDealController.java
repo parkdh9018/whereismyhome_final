@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.BoardDto;
+import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseDealDto;
+import com.ssafy.vue.model.MemberDto;
 import com.ssafy.vue.model.service.HouseDealService;
 
 import io.swagger.annotations.Api;
@@ -41,84 +49,86 @@ public class HouseDealController {
 	
 //	아파트
 	@ApiOperation(value = "아파트 상세조회", notes = "아파트 상세조회 정보를 반환한다.", response = List.class)
-	@GetMapping("/apart/{aptCode}")
-	public ResponseEntity<List<ApartDealDto>> getApartDealByaptCode(@PathVariable("aptCode") String aptCode) throws Exception {
-		System.out.println(aptCode);
-		return new ResponseEntity<List<ApartDealDto>>(houseDealService.getAptByaptCode(aptCode),HttpStatus.OK);
+	@GetMapping("/apart")
+	public ResponseEntity<List<HouseDealDto>> getApartDeal(@RequestParam HashMap<String, String> param) throws Exception {
+		logger.info("getApartDeal - 호출 : ");
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put("sell", param.get("sell"));
+		resultMap.put("year", param.get("year"));
+		resultMap.put("month", param.get("month"));
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getApartDeal(resultMap), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "Detail 다세대주택 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
+	@GetMapping("/apartDetail")
+	public ResponseEntity<List<HouseDealDto>> getApartDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
+		logger.info("getApartDealDetail - 호출 : " );
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put("sell", param.get("sell"));
+		resultMap.put("year", param.get("year"));
+		resultMap.put("month", param.get("month"));
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getApartDealDetail(resultMap), HttpStatus.OK);
 	}
 	
 //	다세대주택
-	@ApiOperation(value = "다세대주택 전체 목록", notes = "모든 다세대주택의 정보를 반환한다.", response = List.class)
-	@GetMapping("/multiplex")
-	public ResponseEntity<List<HouseDealDto>> multiplexhousedeal() throws Exception {
-		logger.info("listArticle - 호출");
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listMultiplexHouseDeal(), HttpStatus.OK);
-	}
-	
 	@ApiOperation(value = "동으로 검색한 다세대주택 목록", notes = "동에 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/multiplex/{sgdong_cd}")
-	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDeal(@PathVariable("sgdong_cd") @ApiParam(value = "얻어올 글의 동이름.", required = true) String sgdong_cd) throws Exception {
-		logger.info("getPrivateHouseDeal - 호출 : " + sgdong_cd);
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDeal(sgdong_cd), HttpStatus.OK);
+	@GetMapping("/multiplex")
+	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDeal(@RequestParam HashMap<String, String> param) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : ");
+		Map<String, Object> resultMap = new HashMap<>();
+		System.out.println("di");
+		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put("sell", param.get("sell"));
+		resultMap.put("year", param.get("year"));
+		resultMap.put("month", param.get("month"));
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDeal(resultMap), HttpStatus.OK);
+
 	}
 	
 	@ApiOperation(value = "Detail 다세대주택 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
 	@GetMapping("/multiplexDeatil/{multiplexhouseCode}")
-	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@PathVariable("multiplexhouseCode") @ApiParam(value = "얻어올 글의 동이름.", required = true) String multiplexhouseCode ) throws Exception {
-		logger.info("getMultiplexHouseDealDetail - 호출 : " );
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDealDetail(multiplexhouseCode), HttpStatus.OK);
+	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
+		logger.info("getApartDealDetail - 호출 : " );
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put("sell", param.get("sell"));
+		resultMap.put("year", param.get("year"));
+		resultMap.put("month", param.get("month"));
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDealDetail(resultMap), HttpStatus.OK);
 	}
 	
 	
 //	오피스텔
-	@ApiOperation(value = "오피스텔 목록", notes = "모든 오피스텔의 정보를 반환한다.", response = List.class)
-	@GetMapping("/officetel")
-	public ResponseEntity<List<HouseDealDto>> officeteldeal() throws Exception {
-		logger.info("officeteldeal - 호출");
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.listOfiicetelDeal(), HttpStatus.OK);
-	}
-	
-	
 	@ApiOperation(value = "동으로 검색한 오피스텔 목록", notes = "동에 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/officetel/{sgdong_cd}")
-	public ResponseEntity<List<HouseDealDto>> getOfiicetelDeal(@PathVariable("sgdong_cd") @ApiParam(value = "얻어올 글의 시군동 코드.", required = true) String sgdong_cd) throws Exception {
-		logger.info("getPrivateDeal - 호출 : " + sgdong_cd);
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDeal(sgdong_cd), HttpStatus.OK);
+	@GetMapping("/officetel/{sgd_cd}")
+	public ResponseEntity<List<HouseDealDto>> getOfficetelDeal(@RequestParam HashMap<String, String> param) throws Exception {
+		logger.info("getPrivateHouseDeal - 호출 : ");
+		Map<String, Object> resultMap = new HashMap<>();
+		System.out.println("di");
+		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put("sell", param.get("sell"));
+		resultMap.put("year", param.get("year"));
+		resultMap.put("month", param.get("month"));
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDeal(resultMap), HttpStatus.OK);
+
 	}
 	
 	
 	@ApiOperation(value = "Detail 오피스텔 목록", notes = "정확히 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
 	@GetMapping("/officetelDeatil/{officetelCode}")
-	public ResponseEntity<List<HouseDealDto>> getOfiicetelDealDetail(@PathVariable("officetelCode") @ApiParam(value = "얻어올 글의 동이름.", required = true) String officetelCode ) throws Exception {
-		logger.info("getOfficetelDealDetail - 호출 : " );
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDealDetail(officetelCode), HttpStatus.OK);
+	public ResponseEntity<List<HouseDealDto>> getOfficetelDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
+		logger.info("getApartDealDetail - 호출 : " );
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put("sell", param.get("sell"));
+		resultMap.put("year", param.get("year"));
+		resultMap.put("month", param.get("month"));
+		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDealDetail(resultMap), HttpStatus.OK);
 	}
 	
-	
-	/*
-	 * // 아래부터는 단독다가구 코드. 나중에 쓸것임.
-	 * 
-	 * @ApiOperation(value = "단독다가구 목록", notes = "모든 단독다가구의 정보를 반환한다.", response =
-	 * List.class)
-	 * 
-	 * @GetMapping("/privatehousedeal") public ResponseEntity<List<HouseDealDto>>
-	 * privatehousedeal() throws Exception { logger.info("listArticle - 호출"); return
-	 * new
-	 * ResponseEntity<List<HouseDealDto>>(houseDealService.listPrivateHouseDeal(),
-	 * HttpStatus.OK); }
-	 * 
-	 * @ApiOperation(value = "동으로 검색한 단독다가구 목록", notes = "동에 해당하는 단독다가구의 정보를 반환한다.",
-	 * response = BoardDto.class)
-	 * 
-	 * @GetMapping("/privatehousedeal/{sgg_cd}/{bjdong_cd}") public
-	 * ResponseEntity<List<HouseDealDto>>
-	 * getPrivateHouseDeal(@PathVariable("bjdong_cd") @ApiParam(value = "얻어올 동코드.",
-	 * required = true) String bjdong_cd, @PathVariable("sgg_cd") @ApiParam(value =
-	 * "얻어올 시구군 코드", required = true) String sgg_cd) throws Exception {
-	 * logger.info("getPrivateHouseDeal - 호출 : " + bjdong_cd); return new
-	 * ResponseEntity<List<HouseDealDto>>(houseDealService.getPrivateHouseDeal(
-	 * sgg_cd, bjdong_cd ), HttpStatus.OK); }
-	 */
 
+	
 	
 }

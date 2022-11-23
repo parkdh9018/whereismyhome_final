@@ -5,58 +5,106 @@
 <mapper namespace="com.ssafy.vue.model.mapper.HouseDealMapper">
 
 	<!-- 아파트  -->
-	<select id="getAptByaptCode" parameterType="map" resultType="apartDealDto">
-	    SELECT D.no, D.dealAmount, D.dealYear, D.dealMonth, D.dealDay, D.area, D.floor, B.aptCode, B.buildyear, B.dong, B.roadName, B.roadNameBonbun, B.apartmentName, B.lng, B.lat
-		FROM Housedeal as D                      
-	        LEFT OUTER JOIN houseinfo B ON D.aptCode = B.aptCode
-       	where D.aptCode = #{aptCode}
-	    
-	</select> 
-	
-	<!-- 다세대주택 -->
-	<select id="listMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
-		select * from multiplex
+	<select id="getApartDeal" parameterType="map" resultType="houseDealDto">
+		select * 
+		from deal
+		where sgd_cd = #{sgd_cd}
+		<if test="cell == null or cell == ''">
+			or deal_type = "매매"
+		</if>
+		<if test="year != null and year != ''">
+			or deal_type = "전세"
+		</if>
+		<if test="month != null and month != ''">
+			or deal_type = "월세"
+		</if>
+		and house_type="아파트"
 	</select>
-	
+
+	<select id="getApartDealDetail" parameterType="map" resultType="houseDealDto">
+		select *
+		from deal
+		where sgdbb_cd = #{sgdbb_cd}
+		<if test="cell == null or cell == ''">
+			or deal_type = "매매"
+		</if>
+		<if test="year != null and year != ''">
+			or deal_type = "전세"
+		</if>
+		<if test="month != null and month != ''">
+			or deal_type = "월세"
+		</if>
+		and house_type="아파트"
+	</select>
+
+
+	<!-- 연립다세대 -->
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
 		select *
-		from multiplex
-		where multiplexhouseCode LIKE CONCAT(#{sgdong_cd}, '%')
+		from deal
+		where bjdong_cd = #{bjd_cd}
+		<if test="cell == null or cell == ''">
+			or deal_type = "매매"
+		</if>
+		<if test="year != null and year != ''">
+			or deal_type = "전세"
+		</if>
+		<if test="month != null and month != ''">
+			or deal_type = "월세"
+		</if>
+		and house_type="연립다세대"
 	</select>
 	
 	<select id="getMultiplexHouseDealDetail" parameterType="map" resultType="houseDealDto">
 		select *
-		from multiplex
-		where multiplexhouseCode = #{multiplexhouseCode}
+		from deal
+		where sgdbb_cd = #{sgdbb_cd}
+		<if test="cell == null or cell == ''">
+			or deal_type = "매매"
+		</if>
+		<if test="year != null and year != ''">
+			or deal_type = "전세"
+		</if>
+		<if test="month != null and month != ''">
+			or deal_type = "월세"
+		</if>
+		and house_type="연립다세대"
 	</select>
 	
 	<!-- 오피스텔 -->
-	<select id="listOfficetelDeal" parameterType="map" resultType="houseDealDto">
-		select * from officetel
-	</select>
-	
 	<select id="getOfficetelDeal" parameterType="map" resultType="houseDealDto">
 		select *
-		from officetel
-		where officetelCode LIKE CONCAT(#{sgdong_cd}, '%')
+		from deal
+		where sgd_cd = #{sgd_cd}
+		<if test="cell == null or cell == ''">
+			or deal_type = "매매"
+		</if>
+		<if test="year != null and year != ''">
+			or deal_type = "전세"
+		</if>
+		<if test="month != null and month != ''">
+			or deal_type = "월세"
+		</if>
+		and house_type="오피스텔"
 	</select>
+	
 	<select id="getOfficetelDealDetail" parameterType="map" resultType="houseDealDto">
-		select *
-		from officetel
-		where officetelCode = #{officetelCode}
+			select *
+		from deal
+		where sgdbb_cd = #{sgdbb_cd}
+		<if test="cell == null or cell == ''">
+			or deal_type = "매매"
+		</if>
+		<if test="year != null and year != ''">
+			or deal_type = "전세"
+		</if>
+		<if test="month != null and month != ''">
+			or deal_type = "월세"
+		</if>
+		and house_type="오피스텔"
 	</select>
 	
-	<!-- 단독주택 -->
-	<select id="listPrivateHouseDeal" parameterType="map" resultType="houseDealDto">
-		select * from privatehousedeal
-	</select>
-	
-	<select id="getPrivateHouseDeal" parameterType="map" resultType="houseDealDto">
-		select *
-		from privatehousedeal
-		where bjdong_cd = #{bjdong_cd} and sgg_cd = #{sgg_cd}
-	</select>
-	
+
 	
 </mapper>
 

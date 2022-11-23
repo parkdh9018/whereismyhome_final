@@ -20,57 +20,46 @@ public class HouseDealServiceImpl implements HouseDealService{
 
 //	아파트
 	@Override
-	public List<ApartDealDto> getAptByaptCode(String aptCode) throws Exception {
-		return sqlSession.getMapper(HouseDealMapper.class).getAptByaptCode(aptCode);
+	public List<HouseDealDto> getApartDeal(Map<String, Object> resultMap) throws SQLException {
+		return sqlSession.getMapper(HouseDealMapper.class).getApartDeal(resultMap);
 	}
 	
-	
+	@Override
+	public List<HouseDealDto> getApartDealDetail(Map<String, Object> resultMap) throws SQLException {
+		return sqlSession.getMapper(HouseDealMapper.class).getApartDealDetail(resultMap);
+	}
+
 //	다세대주택
 	@Override
-	public List<HouseDealDto> listMultiplexHouseDeal() throws Exception {
-		return sqlSession.getMapper(HouseDealMapper.class).listMultiplexHouseDeal();
+	public List<HouseDealDto> getMultiplexHouseDeal(Map<String, Object> resultMap) throws SQLException {
+		return sqlSession.getMapper(HouseDealMapper.class).getMultiplexHouseDeal(resultMap);
 	}
-
 	@Override
-	public List<HouseDealDto> getMultiplexHouseDeal(String sgdong_cd) throws SQLException {
-		return sqlSession.getMapper(HouseDealMapper.class).getMultiplexHouseDeal(sgdong_cd);
-	}
-
-	@Override
-	public List<HouseDealDto> getMultiplexHouseDealDetail(String multiplexhouseCode)
+	public List<HouseDealDto> getMultiplexHouseDealDetail(Map<String, Object> resultMap)
 			throws SQLException {
-		return sqlSession.getMapper(HouseDealMapper.class).getMultiplexHouseDealDetail(multiplexhouseCode);
+		return sqlSession.getMapper(HouseDealMapper.class).getMultiplexHouseDealDetail(resultMap);
 	}
 	
 	
 //	오피스텔
-	@Override
-	public List<HouseDealDto> listOfiicetelDeal() throws Exception {
-		return sqlSession.getMapper(HouseDealMapper.class).listOfficetelDeal();
-	}
 	
 	@Override
-	public List<HouseDealDto> getOfficetelDeal(String sgdong_cd) throws SQLException {
-		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDeal(sgdong_cd);
+	public List<HouseDealDto> getOfficetelDeal(Map<String, Object> resultMap) throws SQLException {
+		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDeal(resultMap);
 	}
-	
 	@Override
-	public List<HouseDealDto> getOfficetelDealDetail(String officetelCode) throws SQLException {
+	public List<HouseDealDto> getOfficetelDealDetail(Map<String, Object> resultMap) throws SQLException {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDealDetail(officetelCode);
+		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDealDetail(resultMap);
 	}
+
+
 	
 
-//	단독주택
-	@Override
-	public List<HouseDealDto> getPrivateHouseDeal(String sgg_cd, String bjdong_cd) throws SQLException {
-		return sqlSession.getMapper(HouseDealMapper.class).getPrivateHouseDeal(sgg_cd,bjdong_cd);
-	}
+
 	
-	@Override
-	public List<HouseDealDto> listPrivateHouseDeal(){
-		return sqlSession.getMapper(HouseDealMapper.class).listPrivateHouseDeal();
-	}
+
+
 
 
 	

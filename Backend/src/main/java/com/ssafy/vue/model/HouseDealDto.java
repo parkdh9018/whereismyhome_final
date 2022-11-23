@@ -1,7 +1,6 @@
 package com.ssafy.vue.model;
 
 public class HouseDealDto {
-	private String acc_year;
 	private String sgg_cd;
 	private String sgg_nm;
 	private String bjdong_cd;
@@ -16,12 +15,9 @@ public class HouseDealDto {
 	private String floor;
 	private String build_year;
 	private String house_type;
-	public String getAcc_year() {
-		return acc_year;
-	}
-	public void setAcc_year(String acc_year) {
-		this.acc_year = acc_year;
-	}
+	private String deal_type;
+	private String rent_gtn;
+	private String rent_fee;
 	public String getSgg_cd() {
 		return sgg_cd;
 	}
@@ -105,6 +101,24 @@ public class HouseDealDto {
 	}
 	public void setHouse_type(String house_type) {
 		this.house_type = house_type;
+	}
+	public String getDeal_type() {
+		return deal_type;
+	}
+	public void setDeal_type(String deal_type) {
+		this.deal_type = deal_type;
+	}
+	public String getRent_gtn() {
+		return rent_gtn;
+	}
+	public void setRent_gtn(String rent_gtn) {
+		this.rent_gtn = rent_gtn;
+	}
+	public String getRent_fee() {
+		return rent_fee;
+	}
+	public void setRent_fee(String rent_fee) {
+		this.rent_fee = rent_fee;
 	}
 	
 	
