@@ -17,31 +17,41 @@
         </b-card-header>
         <b-card-body>
           <b-card-text class="text-center">
-            <h1 class="align-middle">
-              <b-badge variant="dark">
-                {{ sell_type }}
-              </b-badge>
-              {{ dealAmount }}
-            </h1>
-          </b-card-text>
-          <b-card-text class="text-center">
             {{ bldg_area }} | {{ tot_area }} m²
           </b-card-text>
           <b-card-text>
             <stats-card
-              title="efe"
+              title="매매"
               type="gradient-red"
-              sub-title="place.name"
-              icon="ni ni-active-40"
+              sub-title="18억 8,000만"
               class="mb-1"
             >
               <template slot="footer">
-                <span class="text-success mr-2">place.address</span>
+                <span class="text-success mr-2">최대가 : 18억 8,000만</span>
+              </template>
+            </stats-card>
+            <stats-card
+              title="전세"
+              type="gradient-red"
+              sub-title="18억 8,000만"
+              class="mb-1"
+            >
+              <template slot="footer">
+                <span class="text-success mr-2">최대가 : 18억 8,000만</span>
+              </template>
+            </stats-card>
+            <stats-card
+              title="월세"
+              type="gradient-red"
+              sub-title="18억 8,000만"
+              class="mb-1"
+            >
+              <template slot="footer">
+                <span class="text-success mr-2">최대가 : 18억 8,000만</span>
               </template>
             </stats-card>
           </b-card-text>
           <b-card-text class="border p-3">
-            <h2>시세</h2>
             <card type="default" header-classes="bg-transparent">
               <b-row align-v="center" slot="header">
                 <b-col>
@@ -121,9 +131,6 @@ export default {
   },
   components: {
     LineChart,
-  },
-  updated() {
-    console.log("udpate");
   },
   mounted() {},
   watch: {

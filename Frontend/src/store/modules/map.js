@@ -1,12 +1,35 @@
-import {
-  getApartDetail,
-  getMultiplexes,
-  getMultiplexDetail,
-  getApts,
-  getOfficetels,
-  getOffiecetelDetail,
-} from "@/api/dealApi";
+import { getMultiplexes } from "@/api/dealApi";
 import { keywordSearch } from "@/api/areaApi";
+
+const doFilter = (button) => {
+  let result = [];
+  button.forEach((v) => {
+    if (v.state) result.push(v.caption);
+  });
+  console.log(result);
+  return result;
+};
+
+const getBuildings = (commit, type, address_init, dongcode, filter) => {
+  // 이름 바꿔야함
+  getMultiplexes(
+    {
+      //데이터 형식
+      type,
+    },
+    ({ data }) => {
+      const data_worked = data.map((v) => {
+        return {
+          id: v.sgdbb_cd,
+          name: v.bldg_nm,
+          category: v.house_type,
+          address: `${address_init} ${v.bobn}-${v.bubn}`,
+        };
+      });
+      commit("addStructList", data_worked);
+    }
+  );
+};
 
 const mapStore = {
   namespaced: true,
@@ -99,6 +122,7 @@ const mapStore = {
   },
 
   actions: {
+    // 키워드 검색 액션
     getStructByKeyword({ commit, state }, keyword) {
       commit("structClear");
 
@@ -118,46 +142,60 @@ const mapStore = {
         commit("addStructList", data_worked);
       });
     },
-    getStructInDong({ commit }, [address_init, dongcode]) {
-      console.log(dongcode);
 
+    // 동 안에 있는 건축물들
+    getStructInDong({ commit, state }, [address_init, dongcode]) {
       commit("structClear");
 
-      getApts(
-        { code: dongcode },
-        ({ data }) => {
-          const data_worked = data.map((v) => {
-            return {
-              id: v.aptCode,
-              name: v.apartmentName,
-              category: "아파트",
-              address: `${address_init} ${v.jibun}`,
-              lat: v.lat,
-              lng: v.lng,
-            };
-          });
-          commit("addStructList", data_worked);
-        },
-        (err) => console.log(err)
-      );
-      getMultiplexes(dongcode.slice(0, 8), ({ data }) => {
-        const data_worked = data.map((v) => {
-          return {
-            id: v.code,
-            name: v.bldg_nm,
-            category: v.house_type,
-            address: `${address_init} ${v.bobn}-${v.bubn}`,
-          };
-        });
-        commit("addStructList", data_worked);
-      });
+      const filter1 = doFilter(state.filter_buttons[0]);
+      const filter2 = doFilter(state.filter_buttons[1]);
+
+      // 다가구주택 정보들 불러옴
+      if (filter2.length == 0 || filter2.includes("다가구")) {
+        getBuildings(commit, "다가구", address_init, dongcode, filter1);
+      }
+      // 아파트
+      if (filter2.length == 0 || filter2.includes("아파트")) {
+        getBuildings(commit, "아파트", address_init, dongcode, filter1);
+      }
+      // 오피스텔
+      if (filter2.length == 0 || filter2.includes("오피스텔")) {
+        getBuildings(commit, "오피스텔", address_init, dongcode, filter1);
+      }
+
+      //// 예전 아파트 정보 불러옴
+      // if (filter2.length == 0 || filter2.includes("아파트")) {
+      //   console.log("아파트");
+      //   getApts(
+      //     { code: dongcode },
+      //     ({ data }) => {
+      //       const data_worked = data.map((v) => {
+      //         return {
+      //           id: v.aptCode,
+      //           name: v.apartmentName,
+      //           category: "아파트",
+      //           address: `${address_init} ${v.jibun}`,
+      //           lat: v.lat,
+      //           lng: v.lng,
+      //         };
+      //       });
+      //       commit("addStructList", data_worked);
+      //     },
+      //     (err) => console.log(err)
+      //   );
+      // }
     },
 
-    getDetail({ commit }, [type, code]) {
-      if (type == "아파트") {
-      } else if (type == "연립다세대") {
-      } else if (type == "오피스텔") {
-      }
+    // 상세 정보
+    getDetail({ commit }, code) {
+      getDeals(
+        {
+          code: code,
+        },
+        ({ data }) => {
+          commit("setStructDetail", data);
+        }
+      );
     },
   },
 };
