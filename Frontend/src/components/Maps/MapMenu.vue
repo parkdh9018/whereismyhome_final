@@ -31,7 +31,7 @@
           <MapMenuSeletArea />
         </b-tab>
       </b-tabs>
-      <MapMenuPlaceList v-else :place-list="searchAptList" />
+      <MapMenuPlaceList v-else />
     </b-card-text>
   </b-card>
 </template>
@@ -39,7 +39,7 @@
 <script>
 import MapMenuSeletArea from "@/components/Maps/MapMenuSelectArea";
 import MapMenuPlaceList from "./MapMenuPlaceList.vue";
-import { keywordSearch } from "@/api/areaApi";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -49,33 +49,22 @@ export default {
   data() {
     return {
       keyword: "",
-      searchAptList: [],
       serchResult: false,
     };
   },
   props: {
     address: String,
   },
+  computed: {
+    ...mapGetters("map", ["center"]),
+  },
   methods: {
     closeEvent() {
       this.$emit("closeEvent");
     },
     searchKeyword() {
-      keywordSearch(this.keyword).then(([data, pagenation]) => {
-        console.log(this.searchAptList);
-        this.searchAptList = data.map((place) => {
-          return {
-            id: place.id,
-            name: place.place_name,
-            address: place.address_name,
-            category: place.category_group_name,
-            lng: place.x,
-            lat: place.y,
-            place_url: place.place_url,
-          };
-        });
-        this.serchResult = true;
-      });
+      this.$store.dispatch("map/getStructByKeyword", this.keyword);
+      this.serchResult = true;
     },
     searchResultClose() {
       this.serchResult = false;
@@ -84,9 +73,4 @@ export default {
 };
 </script>
 
-<style scoped>
-#map_menu {
-  width: 350px;
-  height: 100%;
-}
-</style>
+<style scoped></style>

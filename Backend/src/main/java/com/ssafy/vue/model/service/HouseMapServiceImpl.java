@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.vue.model.BaseAddressDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -96,6 +97,24 @@ public class HouseMapServiceImpl implements HouseMapService {
 	@Override
 	public List<HouseInfoDto> getAptNearbyDong(Map<String, String> param) throws Exception {
 		return sqlSession.getMapper(HouseMapMapper.class).getAptNearbyDong(param);
+	}
+
+
+	@Override
+	public List<BaseAddressDto> markerSido(Map<String, String> param) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).markerSido(param);
+	}
+
+
+	@Override
+	public List<BaseAddressDto> markerGugun(Map<String, String> param) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).markerGugun(param);
+	}
+
+
+	@Override
+	public List<BaseAddressDto> markerDong(Map<String, String> param) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).markerDong(param);
 	}
 
 

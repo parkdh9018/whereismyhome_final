@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.vue.model.BaseAddressDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -22,4 +23,7 @@ public interface HouseMapMapper {
 	SidoGugunCodeDto getGuguncodeByName(Map<String, String> param) throws SQLException;
 	List<DongCodeDto> selectnearbydongBydong(Map<String, String> param) throws SQLException;
 	
+	List<BaseAddressDto> markerSido(Map<String, String> param) throws SQLException;
+	List<BaseAddressDto> markerGugun(Map<String, String> param) throws SQLException;
+	List<BaseAddressDto> markerDong(Map<String, String> param) throws SQLException;
 }

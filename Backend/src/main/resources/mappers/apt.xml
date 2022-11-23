@@ -64,5 +64,29 @@
 	<select id="getAptByaptCode" parameterType="map" resultType="housedealDto">
 		select * from housedeal where aptCode = #{aptCode};
 	</select>
+	
+	
+	<!-- Cluster Marker -->
+	<select id="markerSido" parameterType="map" resultType="baseaddressDto">
+		select * from baseaddress
+		where (gugunName is null and dongName is null)
+		and (lat between #{lat1} and #{lat2}) and
+		(lng between #{lng1} and #{lng2})
+	</select>
+	
+	<select id="markerGugun" parameterType="map" resultType="baseaddressDto">
+		select * from baseaddress 
+		where (gugunName is not null and dongName is null)
+		and (lat between #{lat1} and #{lat2}) and
+		(lng between #{lng1} and #{lng2})
+	</select>
+	
+	<select id="markerDong" parameterType="map" resultType="baseaddressDto">
+		select * from baseaddress
+		where (gugunName is not null and dongName is not null)
+		and (lat between #{lat1} and #{lat2}) and
+		(lng between #{lng1} and #{lng2})
+	</select>
+	
 
 </mapper>

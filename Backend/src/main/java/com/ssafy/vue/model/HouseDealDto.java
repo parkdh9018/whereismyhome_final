@@ -18,6 +18,16 @@ public class HouseDealDto {
 	private String deal_type;
 	private String rent_gtn;
 	private String rent_fee;
+
+	private String code;
+	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public String getSgg_cd() {
 		return sgg_cd;
 	}
