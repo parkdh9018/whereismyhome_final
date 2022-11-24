@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.vue.model.BaseAddressDto;
+import com.ssafy.vue.model.CountDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -26,5 +27,6 @@ public interface HouseMapService {
 	List<HouseInfoDto> searchGugunAvg(Map<String, String> param)throws Exception;
 	List<HouseInfoDto> searchSidoAvg(Map<String, String> param) throws Exception;
 	List<HouseInfoDto> searchDongAvg(Map<String, String> param)throws Exception;
+	List<CountDto> countsido()throws Exception;;
 	
 }

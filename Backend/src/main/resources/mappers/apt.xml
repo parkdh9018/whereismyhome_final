@@ -132,5 +132,9 @@
         and dc.dongName is not null
         group by dc.dongName;
     </select>
+    <select id="countsido" parameterType="Map" resultType="countDto">
+        select * 
+        from countsido
+    </select>
 
 </mapper>

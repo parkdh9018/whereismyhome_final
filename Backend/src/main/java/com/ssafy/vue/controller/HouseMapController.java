@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.vue.model.BaseAddressDto;
+import com.ssafy.vue.model.CountDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -203,7 +204,11 @@ public class HouseMapController {
 	}
 	
 	
-	
+	@GetMapping("/countsido")
+	public ResponseEntity<List<CountDto>> countsido() throws Exception {
+		
+		return new ResponseEntity<List<CountDto>>(haHouseMapService.countsido(), HttpStatus.OK);
+	}
 //	@GetMapping("/donglist/{guguncode}/{dongname}")
 //	public ResponseEntity<List<DongCodeDto>> donglist(@PathVariable("guguncode") String guguncode, @PathVariable("dongname") String dongname) throws Exception {
 //		Map<String , String> param = new HashMap<>();

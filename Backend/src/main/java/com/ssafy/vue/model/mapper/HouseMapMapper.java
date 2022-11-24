@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.vue.model.BaseAddressDto;
+import com.ssafy.vue.model.CountDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -29,5 +30,6 @@ public interface HouseMapMapper {
 	List<HouseInfoDto> searchGugunAvg(Map<String, String> param) throws SQLException;
 	List<HouseInfoDto> searchSidoAvg(Map<String, String> param) throws SQLException;
 	List<HouseInfoDto> searchDongAvg(Map<String, String> param) throws SQLException;
+	List<CountDto> countsido() throws SQLException;
 
 }

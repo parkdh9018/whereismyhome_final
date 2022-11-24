@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.vue.model.BaseAddressDto;
+import com.ssafy.vue.model.CountDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -133,6 +134,12 @@ public class HouseMapServiceImpl implements HouseMapService {
 	@Override
 	public List<HouseInfoDto> searchDongAvg(Map<String, String> param) throws Exception {
 		return sqlSession.getMapper(HouseMapMapper.class).searchDongAvg(param);
+	}
+
+
+	@Override
+	public List<CountDto> countsido() throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).countsido();
 	}
 
 
