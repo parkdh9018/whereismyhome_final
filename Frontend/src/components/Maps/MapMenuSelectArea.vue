@@ -85,14 +85,15 @@ export default {
           this.area_list = res.data.regcodes.map((v) => {
             return { code: v.code, name: v.name };
           });
-          // this.bread.sido = name;
+          this.bread.gugun = "구/군";
+          this.bread.dong = "읍/면/동";
         });
       } else if (val == "gugun") {
         areaList(params, (res) => {
           this.area_list = res.data.regcodes.map((v) => {
             return { code: v.code, name: v.name.split(" ").slice(-1)[0] };
           });
-          // this.bread.gugun = name;
+          this.bread.dong = "읍/면/동";
         });
       } else {
         areaList(params, (res) => {
@@ -112,7 +113,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("map", ["setCenter"]),
+    ...mapMutations("map", ["setCenter", "levelMove"]),
     btnClick(code, name) {
       this.code = code;
       if (this.tag == "sido") {
@@ -139,6 +140,7 @@ export default {
     },
     changeCenter() {
       searchPosition(this.total_address).then((pos) => {
+        this.levelMove(3);
         this.setCenter(pos);
       });
     },

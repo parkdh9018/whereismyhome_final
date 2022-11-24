@@ -36,7 +36,7 @@ const mapStore = {
   state: () => ({
     structList: [], // 이름, 주소, 타입, 좌표(lng, lat)
     center: null,
-    level: 2,
+    level: 0,
     address: "",
     detailToggle: false,
     structDetailPos: null,
@@ -86,7 +86,7 @@ const mapStore = {
   },
 
   mutations: {
-    setLevel(state, payload) {
+    levelMove(state, payload) {
       state.level = payload;
     },
     structClear(state) {

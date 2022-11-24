@@ -94,22 +94,9 @@
 
       <hr class="my-4" />
       <!-- Description -->
-      <h6 class="heading-small text-muted mb-4">About me</h6>
+      <h6 class="heading-small text-muted mb-4">관심지역</h6>
       <div class="pl-lg-4">
-        <b-form-group
-          label="About Me"
-          label-class="form-control-label"
-          class="mb-0"
-          label-for="about-form-textaria"
-        >
-          <!--  <label class="form-control-label">About Me</label> -->
-          <b-form-textarea
-            rows="4"
-            value="A beautiful premium dashboard for BootstrapVue."
-            id="about-form-textaria"
-            placeholder="A few words about you ..."
-          ></b-form-textarea>
-        </b-form-group>
+        <EditFrofileFavorite />
       </div>
 
       <hr class="my-4" />
@@ -149,8 +136,12 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import { modifyMember, modifyPassword } from "@/api/memberApi";
+import EditFrofileFavorite from "./EditFrofileFavorite.vue";
 
 export default {
+  components: {
+    EditFrofileFavorite,
+  },
   data() {
     return {
       user: {
@@ -165,7 +156,7 @@ export default {
         originpassword: "",
         newpassword: "",
       },
-      errorMessage : "",
+      errorMessage: "",
     };
   },
   computed: {

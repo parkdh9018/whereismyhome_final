@@ -1,7 +1,10 @@
 import api from "./http";
 
 async function login(user, success, fail) {
-  await api.post(`/member/login`, JSON.stringify(user)).then(success).catch(fail);
+  await api
+    .post(`/member/login`, JSON.stringify(user))
+    .then(success)
+    .catch(fail);
 }
 
 async function findById(userid, success, fail) {
@@ -39,4 +42,29 @@ function modifyPassword(changePw) {
   return api.put("member/modifyPassword", changePw);
 }
 
-export { login, findById, tokenRegeneration, logout, idCheck, regist, passwordFind, modifyMember, modifyPassword };
+function favoriteList(userid) {
+  return api.get(`/member/favorite/${userid}`);
+}
+
+function addFavorite(param) {
+  return api.put("/member/favorite", param);
+}
+
+function deleteFavorite(code) {
+  return api.put(`member/favorite/${code}`);
+}
+
+export {
+  login,
+  findById,
+  tokenRegeneration,
+  logout,
+  idCheck,
+  regist,
+  passwordFind,
+  modifyMember,
+  modifyPassword,
+  favoriteList,
+  addFavorite,
+  deleteFavorite,
+};

@@ -24,10 +24,11 @@
     </b-card-text>
     <b-card-text>
       <b-tabs v-if="!serchResult" content-class="mt-3" fill>
-        <b-tab title="관심지역" active>
-          <p>관심지역</p>
+        <b-tab title="관심지역">
+          <EditFrofileFavorite v-if="checkUserInfo" />
+          <div v-else>로그인이 필요한 기능입니다.</div>
         </b-tab>
-        <b-tab title="주소로 찾기">
+        <b-tab title="주소로 찾기" active>
           <MapMenuSeletArea />
         </b-tab>
       </b-tabs>
@@ -39,12 +40,14 @@
 <script>
 import MapMenuSeletArea from "@/components/Maps/MapMenuSelectArea";
 import MapMenuPlaceList from "./MapMenuPlaceList.vue";
+import EditFrofileFavorite from "../../views/Pages/UserProfile/EditFrofileFavorite.vue";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     MapMenuSeletArea,
     MapMenuPlaceList,
+    EditFrofileFavorite,
   },
   data() {
     return {
@@ -57,6 +60,7 @@ export default {
   },
   computed: {
     ...mapGetters("map", ["center"]),
+    ...mapGetters("member", ["checkUserInfo"]),
   },
   methods: {
     closeEvent() {

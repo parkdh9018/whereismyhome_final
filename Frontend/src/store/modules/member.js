@@ -1,6 +1,14 @@
 import jwtDecode from "jwt-decode";
 import router from "@/routes/router";
-import { login, findById, tokenRegeneration, logout } from "@/api/memberApi";
+import {
+  login,
+  findById,
+  tokenRegeneration,
+  logout,
+  favoriteList,
+  addFavorite,
+  deleteFavorite,
+} from "@/api/memberApi";
 
 const memberStore = {
   namespaced: true,
@@ -9,8 +17,12 @@ const memberStore = {
     isLoginError: false,
     userInfo: null,
     isValidToken: false,
+    favoriteList: [],
   },
   getters: {
+    favoriteList: function (state) {
+      return state.favoriteList;
+    },
     checkUserInfo: function (state) {
       return state.userInfo;
     },
@@ -19,6 +31,9 @@ const memberStore = {
     },
   },
   mutations: {
+    SET_FAVORITE_LIST(state, payload) {
+      state.favoriteList = payload;
+    },
     SET_IS_LOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
     },
@@ -62,7 +77,7 @@ const memberStore = {
         }
       );
     },
-    async getUserInfo({ commit, dispatch }, token) {
+    async getUserInfo({ commit, dispatch, state }, token) {
       let decodeToken = jwtDecode(token);
       console.log("2. getUserInfo() decodeToken :: ", decodeToken);
       await findById(
@@ -71,6 +86,10 @@ const memberStore = {
           if (data.message === "success") {
             commit("SET_USER_INFO", data.userInfo);
             console.log("3. getUserInfo data >> ", data);
+            // 관심지역 목록
+            favoriteList(state.userInfo.userid).then(({ data }) => {
+              commit("SET_FAVORITE_LIST", data);
+            });
           } else {
             console.log("유저 정보 없음!!!!");
           }
@@ -145,6 +164,22 @@ const memberStore = {
           console.log(error);
         }
       );
+    },
+    // 관심지역 목록 추가하고 다시 가져옴
+    addFavoriteAction({ commit, state }, param) {
+      addFavorite(param).then(() => {
+        favoriteList(state.userInfo.userid).then(({ data }) => {
+          commit("SET_FAVORITE_LIST", data);
+        });
+      });
+    },
+    // 관심지역 목록 삭제하고 다시가져옴
+    deleteFavoriteAction({ commit, state }, code) {
+      deleteFavorite(code).then(() => {
+        favoriteList(state.userInfo.userid).then(({ data }) => {
+          commit("SET_FAVORITE_LIST", data);
+        });
+      });
     },
   },
 };

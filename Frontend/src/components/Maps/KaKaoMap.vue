@@ -99,7 +99,6 @@ export default {
     center: function (pos) {
       console.log("center change");
 
-      this.setLevel(this.map.getLevel());
       this.map.setCenter(pos);
 
       const bounds = this.map.getBounds();
@@ -160,11 +159,12 @@ export default {
     level: function (val) {
       console.log("level change" + val);
       this.map.setLevel(val);
+      this.levelMove(0);
     },
   },
   methods: {
     ...mapMutations("map", [
-      "setLevel",
+      "levelMove",
       "setCenter",
       "setAddress",
       "setDetailToggle",
@@ -219,11 +219,11 @@ export default {
       const setDetailToggle = this.setDetailToggle;
       const setCenter = this.setCenter;
       const setStructDetailPos = this.setStructDetailPos;
-      const setLevel = this.setLevel;
+      const levelMove = this.levelMove;
       kakao.maps.event.addListener(marker, "click", function () {
         setDetailToggle(true);
         setCenter(marker.getPosition());
-        setLevel(2);
+        levelMove(2);
         setStructDetailPos(marker.getPosition());
       });
     },

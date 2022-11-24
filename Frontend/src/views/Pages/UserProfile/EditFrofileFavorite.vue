@@ -1,10 +1,10 @@
 <template>
-  <b-container style="height: 400px" class="overflow-auto text-left">
+  <b-container class="overflow-auto text-left">
     <b-row>
       <b-col
         cols="12"
-        @click="placeClickEvent(place.address, place.category)"
-        v-for="place in structList"
+        @click="placeClickEvent(place.address)"
+        v-for="place in favoriteList"
         :key="place.id"
       >
         <stats-card
@@ -19,7 +19,7 @@
           </template>
         </stats-card>
       </b-col>
-      <b-col v-if="structList.length == 0"> 정보가 없습니다. </b-col>
+      <b-col v-if="favoriteList.length == 0"> 정보가 없습니다. </b-col>
     </b-row>
   </b-container>
 </template>
@@ -30,24 +30,21 @@ import { searchPosition } from "@/api/areaApi";
 
 export default {
   computed: {
-    ...mapGetters("map", ["structList"]),
+    ...mapGetters("member", ["favoriteList"]),
   },
   methods: {
     ...mapMutations("map", [
-      "levelMove",
       "setCenter",
       "setDetailToggle",
       "setStructDetailPos",
+      "setLevel",
     ]),
-    placeClickEvent(address, category) {
+    placeClickEvent(address) {
       searchPosition(address).then((pos) => {
-        this.levelMove(2);
+        this.setDetailToggle(true);
+        this.setLevel(2);
         this.setCenter(pos);
-        if (["아파트", "오피스텔", "다세대주택"].includes(category)) {
-          // 디테일 액션
-          this.setDetailToggle(true);
-          this.setStructDetailPos(pos);
-        }
+        this.setStructDetailPos(pos);
       });
     },
   },
