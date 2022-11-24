@@ -26,4 +26,6 @@ public interface HouseMapMapper {
 	List<BaseAddressDto> markerSido(Map<String, String> param) throws SQLException;
 	List<BaseAddressDto> markerGugun(Map<String, String> param) throws SQLException;
 	List<BaseAddressDto> markerDong(Map<String, String> param) throws SQLException;
+	List<HouseInfoDto> searchGugunAvg(Map<String, String> param) throws SQLException;
+
 }

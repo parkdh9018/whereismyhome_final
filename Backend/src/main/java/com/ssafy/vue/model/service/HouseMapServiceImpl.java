@@ -118,6 +118,12 @@ public class HouseMapServiceImpl implements HouseMapService {
 	}
 
 
+	@Override
+	public List<HouseInfoDto> searchGugunAvg(Map<String, String> param) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).searchGugunAvg(param);
+	}
+
+
 
 
 }
