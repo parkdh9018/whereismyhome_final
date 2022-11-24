@@ -6,7 +6,7 @@
 
 	<!-- 아파트  -->
 	<select id="getApartDeal" parameterType="map" resultType="houseDealDto">
-		select * DISTINCT sgdbb_cd
+		select *
 		from deal
 		where sgd_cd = #{sgd_cd}
 		<if test="cell == null or cell == ''">
@@ -19,6 +19,7 @@
 			or deal_type = "월세"
 		</if>
 		and house_type="아파트"
+		group by sgdbb_cd
 
 	</select>
 
@@ -60,7 +61,7 @@
 	
 	<!-- 연립다세대 -->
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
-		select * DISTINCT sgdbb_cd
+		select * 
 		from deal
 		where sgd_cd = #{sgd_cd}
 		<if test="sell == null or sell == ''">
@@ -73,7 +74,7 @@
 			or deal_type = "월세"
 		</if>
 		and house_type="연립다세대"
-		
+		group by sgdbb_cd
 	</select>
 	
 	<select id="getMultiplexHouseDealDetail" parameterType="map" resultType="houseDealDto">
@@ -96,7 +97,7 @@
 	
 	<!-- 오피스텔 -->
 	<select id="getOfficetelDeal" parameterType="map" resultType="houseDealDto">
-		select * DISTINCT sgdbb_cd
+		select * 
 		from deal
 		where sgd_cd = #{sgd_cd}
 		<if test="sell == null or sell == ''">
@@ -109,7 +110,7 @@
 			or deal_type = "월세"
 		</if>
 		and house_type="오피스텔"
-
+		group by sgdbb_cd
 	</select>
 	
 	<select id="getOfficetelDealDetail" parameterType="map" resultType="houseDealDto">
@@ -129,6 +130,7 @@
 		and house_type="오피스텔"
 		order by deal_ymd desc
 		limit 20
+		
 	</select>
 	
 
