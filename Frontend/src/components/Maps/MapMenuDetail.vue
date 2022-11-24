@@ -183,7 +183,8 @@ export default {
   watch: {
     structDetail: function () {
       console.log("struct watch")
-      this.tableData = this.structDetail.housedealDto.map((v) => {
+      if(this.structDetail.housedealDto) {
+        this.tableData = this.structDetail.housedealDto.map((v) => {
         return {
           계약일: v.deal_ymd,
           거래: v.deal_type,
@@ -191,8 +192,10 @@ export default {
           층: v.floor,
         };
       });
+      }
 
-      this.housedealList = this.structDetail.housedealDto;
+
+      this.housedealList = [...this.structDetail.housedealDto];
 
       this.code = this.housedealList[0].sgdbb_cd;
       this.bobn = this.housedealList[0].bobn;

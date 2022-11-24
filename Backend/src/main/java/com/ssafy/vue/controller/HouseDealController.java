@@ -117,7 +117,7 @@ public class HouseDealController {
 	
 	@ApiOperation(value = "Detail 다세대주택 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
 	@GetMapping("/multiplexDetail")
-	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
+	public ResponseEntity<DetailDto> getMultiplexHouseDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put( "sgdbb_cd", param.get("sgdbb_cd") );
@@ -130,7 +130,20 @@ public class HouseDealController {
 		if(param.containsKey("month")) {
 			resultMap.put("month", param.get("month"));
 		}
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDealDetail(resultMap), HttpStatus.OK);
+		List<HouseDealDto> dto1=houseDealService.getMultiplexHouseDealDetail(resultMap);
+		
+		DetailDto detailDto = new DetailDto(); 
+		detailDto.setHousedealDto(dto1);
+		
+		DetailDto temp = houseDealService.getApartAvg(param.get("sgdbb_cd"));
+		detailDto.setAvg_amt(temp.getAvg_amt());
+		detailDto.setMax_amt(temp.getMax_amt());
+		detailDto.setMax_gtn(temp.getMax_gtn());
+		detailDto.setAvg_gtn(temp.getAvg_gtn());
+		
+		List<AmtDto> temp2 = houseDealService.getAmt(param.get("sgdbb_cd"));
+		detailDto.setAmtDto(temp2);
+		return new ResponseEntity<DetailDto>(detailDto, HttpStatus.OK);
 	}
 	
 	
@@ -158,7 +171,7 @@ public class HouseDealController {
 	
 	@ApiOperation(value = "Detail 오피스텔 목록", notes = "정확히 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
 	@GetMapping("/officetelDetail")
-	public ResponseEntity<List<HouseDealDto>> getOfficetelDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
+	public ResponseEntity<DetailDto> getOfficetelDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put( "sgdbb_cd", param.get("sgdbb_cd") );
@@ -171,13 +184,26 @@ public class HouseDealController {
 		if(param.containsKey("month")) {
 			resultMap.put("month", param.get("month"));
 		}
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDealDetail(resultMap), HttpStatus.OK);
+		List<HouseDealDto> dto1=houseDealService.getOfficetelDealDetail(resultMap);
+		
+		DetailDto detailDto = new DetailDto(); 
+		detailDto.setHousedealDto(dto1);
+		
+		DetailDto temp = houseDealService.getApartAvg(param.get("sgdbb_cd"));
+		detailDto.setAvg_amt(temp.getAvg_amt());
+		detailDto.setMax_amt(temp.getMax_amt());
+		detailDto.setMax_gtn(temp.getMax_gtn());
+		detailDto.setAvg_gtn(temp.getAvg_gtn());
+		
+		List<AmtDto> temp2 = houseDealService.getAmt(param.get("sgdbb_cd"));
+		detailDto.setAmtDto(temp2);
+		return new ResponseEntity<DetailDto>(detailDto, HttpStatus.OK);
 	}
 	
+
 	@GetMapping("/markerApt/{aptCode}")
 	public ResponseEntity<List<MarkerApartDeal>> getMarkerApartList(@PathVariable("aptCode") String aptCode) throws Exception {
 		return new ResponseEntity<List<MarkerApartDeal>>(houseDealService.getMarkerApartDeal(aptCode), HttpStatus.OK);
 	}
-	
 	
 }

@@ -65,7 +65,7 @@ export default {
       } else if (category == "오피스텔") {
         return 'gradient-blue'
       } else {
-        return 'gradient-orange'
+        return 'gradient-gray'
       }
     }
   },

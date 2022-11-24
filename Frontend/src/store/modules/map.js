@@ -158,7 +158,7 @@ const mapStore = {
       // 아파트
       if (filter2.length == 0 || filter2.includes("아파트")) {
         dealApi.getApartDeal(param, ({ data }) => {
-          const data_worked = data.map((v) => {
+          const data_worked = data.filter(v => v.bobn != "").map((v) => {
             return {
               id: v.sgdbb_cd,
               name:  v.bldg_nm == "" ? `${v.bobn}-${v.bubn}` : v.bldg_nm,
@@ -173,7 +173,7 @@ const mapStore = {
       // 다가구주택 정보들 불러옴
       if (filter2.length == 0 || filter2.includes("다가구")) {
         dealApi.getMultiplexHouseDeal(param, ({ data }) => {
-          const data_worked = data.map((v) => {
+          const data_worked = data.filter(v => v.bobn != "").map((v) => {
             return {
               id: v.sgdbb_cd,
               name:  v.bldg_nm == "" ? `${v.bobn}-${v.bubn}` : v.bldg_nm,
@@ -188,7 +188,7 @@ const mapStore = {
       // 오피스텔
       if (filter2.length == 0 || filter2.includes("오피스텔")) {
         dealApi.getOfficetelDeal(param, ({ data }) => {
-          const data_worked = data.map((v) => {
+          const data_worked = data.filter(v => v.bobn != "").map((v) => {
             return {
               id: v.sgdbb_cd,
               name: v.bldg_nm == "" ? `${v.bobn}-${v.bubn}` : v.bldg_nm,
@@ -200,27 +200,6 @@ const mapStore = {
         });
       }
 
-      //// 예전 아파트 정보 불러옴
-      // if (filter2.length == 0 || filter2.includes("아파트")) {
-      //   console.log("아파트");
-      //   getApts(
-      //     { code: dongcode },
-      //     ({ data }) => {
-      //       const data_worked = data.map((v) => {
-      //         return {
-      //           id: v.aptCode,
-      //           name: v.apartmentName,
-      //           category: "아파트",
-      //           address: `${address_init} ${v.jibun}`,
-      //           lat: v.lat,
-      //           lng: v.lng,
-      //         };
-      //       });
-      //       commit("addStructList", data_worked);
-      //     },
-      //     (err) => console.log(err)
-      //   );
-      // }
     },
 
     markerDetail({commit}, aptInfo) {
