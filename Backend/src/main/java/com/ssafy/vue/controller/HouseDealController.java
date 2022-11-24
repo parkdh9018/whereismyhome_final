@@ -125,14 +125,20 @@ public class HouseDealController {
 	}
 	
 	@ApiOperation(value = "Detail 다세대주택 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/multiplexDeatil")
+	@GetMapping("/multiplexDetail")
 	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put( "sgdbb_cd", param.get("sgdbb_cd") );
-		resultMap.put("sell", param.get("sell"));
-		resultMap.put("year", param.get("year"));
-		resultMap.put("month", param.get("month"));
+		if(param.containsKey("sell")) {
+			resultMap.put("sell", param.get("sell"));
+		}
+		if(param.containsKey("year")) {
+			resultMap.put("year", param.get("year"));
+		}
+		if(param.containsKey("month")) {
+			resultMap.put("month", param.get("month"));
+		}
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDealDetail(resultMap), HttpStatus.OK);
 	}
 	
@@ -160,14 +166,20 @@ public class HouseDealController {
 	
 	
 	@ApiOperation(value = "Detail 오피스텔 목록", notes = "정확히 해당하는 오피스텔의 정보를 반환한다.", response = BoardDto.class)
-	@GetMapping("/officetelDeatil")
+	@GetMapping("/officetelDetail")
 	public ResponseEntity<List<HouseDealDto>> getOfficetelDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put( "sgdbb_cd", param.get("sgdbb_cd") );
-		resultMap.put("sell", param.get("sell"));
-		resultMap.put("year", param.get("year"));
-		resultMap.put("month", param.get("month"));
+		if(param.containsKey("sell")) {
+			resultMap.put("sell", param.get("sell"));
+		}
+		if(param.containsKey("year")) {
+			resultMap.put("year", param.get("year"));
+		}
+		if(param.containsKey("month")) {
+			resultMap.put("month", param.get("month"));
+		}
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDealDetail(resultMap), HttpStatus.OK);
 	}
 	
