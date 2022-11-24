@@ -94,11 +94,42 @@
           </b-card-text>
           <b-card-text class="border p-3">
             <h2>시세추이</h2>
-            <b-card class="bg-default">
-              <div class="chart">
-                <line-chart :height="350" :chart-data="chartData"> </line-chart>
-              </div>
-            </b-card>
+            <card type="default" header-classes="bg-transparent">
+              <b-row align-v="center" slot="header">
+                <b-col>
+                  <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
+                  <h5 class="h3 text-white mb-0">Sales value</h5>
+                </b-col>
+                <b-col>
+                  <b-nav class="nav-pills justify-content-end">
+                    <b-nav-item
+                      class="mr-2 mr-md-0"
+                      :active="bigLineChart.activeIndex === 0"
+                      link-classes="py-2 px-3"
+                      @click.prevent="initBigChart(0)"
+                    >
+                      <span class="d-none d-md-block">Month</span>
+                      <span class="d-md-none">M</span>
+                    </b-nav-item>
+                    <b-nav-item
+                      link-classes="py-2 px-3"
+                      :active="bigLineChart.activeIndex === 1"
+                      @click.prevent="initBigChart(1)"
+                    >
+                      <span class="d-none d-md-block">Week</span>
+                      <span class="d-md-none">W</span>
+                    </b-nav-item>
+                  </b-nav>
+                </b-col>
+              </b-row>
+              <line-chart
+                :height="350"
+                ref="bigChart"
+                :chart-data="bigLineChart.chartData"
+                :extra-options="bigLineChart.extraOptions"
+              >
+              </line-chart>
+            </card>
           </b-card-text>
           <b-card-text class="border p-3">
             <h2>실거래가</h2>
@@ -113,7 +144,9 @@
 
 <script>
 import { mapMutations, mapGetters } from "vuex";
+import * as chartConfigs from "@/components/Charts/config";
 import LineChart from "@/components/Charts/LineChart";
+import { lab } from "d3";
 
 export default {
   data() {
@@ -140,14 +173,22 @@ export default {
         gtn: "-",
         fee: "-",
       },
-      chartData: {
-        datasets: [
-          {
-            label: "Performance",
-            data: [20, 20, 20, 30, 15, 40, 20, 60, 60],
-          },
+      bigLineChart: {
+        allData: [
+          [0, 20, 10, 30, 15, 40, 20, 60, 60],
+          [0, 20, 5, 25, 10, 30, 15, 40, 40],
         ],
-        labels: ["1", "2", "3", "4", "5", "Oct", "Nov", "Dec"],
+        activeIndex: 0,
+        chartData: {
+          datasets: [
+            {
+              label: "Performance",
+              data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+            },
+          ],
+          labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        },
+        extraOptions: chartConfigs.blueChartOptions,
       },
       tableData: [],
     };
@@ -214,14 +255,6 @@ export default {
         label.push(`${v.yearmonth.slice(0, 4)}.${v.yearmonth.slice(4, 6)}`);
         data.push(v.obj_amt);
       });
-      console.log("===chartdata");
-      console.log(this.chartData);
-      console.log(this.chartData.datasets);
-      console.log(this.chartData.labels);
-      console.log(this.chartData.label);
-
-      this.chartData.datasets[0].data = data;
-      this.chartData.labels = label;
     },
   },
   updated() {
@@ -241,6 +274,19 @@ export default {
   },
   methods: {
     ...mapMutations("map", ["setDetailToggle"]),
+    initBigChart(index) {
+      let chartData = {
+        datasets: [
+          {
+            label: "Performance",
+            data: this.bigLineChart.allData[index],
+          },
+        ],
+        labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      };
+      this.bigLineChart.chartData = chartData;
+      this.bigLineChart.activeIndex = index;
+    },
   },
 };
 </script>
