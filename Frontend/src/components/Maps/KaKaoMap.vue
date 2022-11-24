@@ -127,7 +127,7 @@ export default {
         // 일반 마커
         getaptlist_move(params, ({ data }) => {
           data.forEach((apt) => {
-            this.makeMarker(new kakao.maps.LatLng(apt.lat, apt.lng));
+            this.makeMarker(apt);
           });
         });
       } else if (level >= 5 && level <= 6) {
@@ -214,8 +214,8 @@ export default {
     },
 
     // 마커 만들기
-    makeMarker: function (position) {
-      const marker = new kakao.maps.Marker({ position, clickable: true });
+    makeMarker: function (apt) {
+      const marker = new kakao.maps.Marker({ position : new kakao.maps.LatLng(apt.lat, apt.lng), clickable: true });
       marker.setMap(this.map);
       this.markers.push(marker);
       // this.clusterer.addMarker(marker);
@@ -225,11 +225,13 @@ export default {
       const setCenter = this.setCenter;
       const setStructDetailPos = this.setStructDetailPos;
       const levelMove = this.levelMove;
+      const dispatch = this.$store.dispatch;
       kakao.maps.event.addListener(marker, "click", function () {
         setDetailToggle(true);
         setCenter(marker.getPosition());
         levelMove(2);
         setStructDetailPos(marker.getPosition());
+        dispatch("map/markerDetail", apt);
       });
     },
 

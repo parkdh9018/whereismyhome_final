@@ -8,6 +8,7 @@ import com.ssafy.vue.model.AmtDto;
 import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.DetailDto;
 import com.ssafy.vue.model.HouseDealDto;
+import com.ssafy.vue.model.MarkerApartDeal;
 
 public interface HouseDealMapper {
 	
@@ -27,6 +28,10 @@ public interface HouseDealMapper {
 
 	public List<HouseDealDto> getOfficetelDeal(Map<String, Object> resultMap) throws SQLException;
 	public List<HouseDealDto> getOfficetelDealDetail(Map<String, Object> resultMap) throws SQLException;
+	
+	
+	
+	public List<MarkerApartDeal> getMarkerApartDeal(String aptCode) throws SQLException;
 
 
 	

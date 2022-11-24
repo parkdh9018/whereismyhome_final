@@ -8,6 +8,7 @@ import com.ssafy.vue.model.AmtDto;
 import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.DetailDto;
 import com.ssafy.vue.model.HouseDealDto;
+import com.ssafy.vue.model.MarkerApartDeal;
 
 public interface HouseDealService {
 	//아파트
@@ -25,8 +26,7 @@ public interface HouseDealService {
 	public List<HouseDealDto> getOfficetelDealDetail(Map<String, Object> resultMap) throws SQLException;
 
 
-
-
+	public List<MarkerApartDeal> getMarkerApartDeal(String aptCode) throws SQLException;
 	
 	
 	

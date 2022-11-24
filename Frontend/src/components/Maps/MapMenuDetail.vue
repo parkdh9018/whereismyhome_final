@@ -121,6 +121,7 @@ import LineChart from "@/components/Charts/LineChart";
 export default {
   data() {
     return {
+      detail: null,
       code: "",
       bubn: "",
       bobn: "",
@@ -219,6 +220,7 @@ export default {
     },
   },
   updated() {
+
       var roadviewContainer = document.getElementById("roadview"); //로드뷰를 표시할 div
       var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
       var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
@@ -237,7 +239,7 @@ export default {
       let labels = [];
       let data = [];
 
-      if (this.structDetail) {
+      if (this.structDetail.amtDto) {
         this.structDetail.amtDto.forEach((v) => {
           labels.push(`${v.yearmonth.slice(0, 4)}.${v.yearmonth.slice(4, 6)}`);
           data.push(v.obj_amt);

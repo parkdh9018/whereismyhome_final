@@ -18,7 +18,12 @@ const mapStore = {
     address: "",
     detailToggle: false,
     structDetailPos: null,
-    structDetail: null,
+    structDetail: {
+      max_amt: '',
+      avg_amt: '',
+      max_gtn: '',
+      avg_gtn: ''
+    },
     filter_buttons: [
       [
         { caption: "전세", state: true },
@@ -68,7 +73,12 @@ const mapStore = {
       state.level = payload;
     },
     structDetailClear(state) {
-      state.structDetail = null;
+      state.structDetail = {
+        max_amt: '',
+        avg_amt: '',
+        max_gtn: '',
+        avg_gtn: ''
+      };
     },
     structClear(state) {
       state.structList = [];
@@ -211,6 +221,55 @@ const mapStore = {
       //     (err) => console.log(err)
       //   );
       // }
+    },
+
+    markerDetail({commit}, aptInfo) {
+      dealApi.getMarkerAptList(aptInfo.aptCode, ({data}) => {
+        
+        const obj = {
+          avg_amt: 0,
+          max_amt: 0,
+          housedealDto : [],
+          amtDto : [],
+        }
+        
+        let max = 0;
+        let sum = 0;
+
+        data.forEach(apt => {
+
+          const price = apt.dealAmount.replace(",", "");
+
+          sum += parseInt(price);
+          max = Math.max(price, max);
+
+          const date = `${apt.dealYear}${apt.dealMonth.length == 2 ? apt.dealMonth : `0${apt.dealMonth}`}`;
+
+          obj.housedealDto.push({
+            bldg_nm : aptInfo.apartmentName,
+            bldg_area : apt.area,
+            deal_ymd : date,
+            floor : apt.floor,
+            house_type: '아파트',
+            deal_type : '매매',
+            build_year : aptInfo.buildYear,
+            obj_amt: price,
+          })
+
+          obj.amtDto.push({
+            obj_amt : price,
+            yearmonth : date
+          })
+
+        })
+
+
+        obj.avg_amt = parseInt(sum / data.length).toString();
+        obj.max_amt = max.toString();
+
+        commit("setStructDetail", obj);
+
+      });
     },
 
     // 상세 정보

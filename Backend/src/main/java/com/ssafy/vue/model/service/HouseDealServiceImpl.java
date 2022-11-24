@@ -12,6 +12,7 @@ import com.ssafy.vue.model.AmtDto;
 import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.DetailDto;
 import com.ssafy.vue.model.HouseDealDto;
+import com.ssafy.vue.model.MarkerApartDeal;
 import com.ssafy.vue.model.mapper.HouseDealMapper;
 
 @Service
@@ -65,6 +66,12 @@ public class HouseDealServiceImpl implements HouseDealService{
 	public List<HouseDealDto> getOfficetelDealDetail(Map<String, Object> resultMap) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDealDetail(resultMap);
+	}
+
+	@Override
+	public List<MarkerApartDeal> getMarkerApartDeal(String aptCode) throws SQLException {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(HouseDealMapper.class).getMarkerApartDeal(aptCode);
 	}
 
 

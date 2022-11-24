@@ -147,7 +147,10 @@
 		
 	</select>
 	
-
+	
+	<select id="getMarkerApartDeal" parameterType="string" resultType="MarkerApartDeal">
+		select * from housedeal where aptCode = #{aptCode}
+	</select>
 
 	
 

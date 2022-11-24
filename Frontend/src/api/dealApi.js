@@ -33,6 +33,10 @@ function getOfficetelDealDetail(param, success, fail) {
     .catch(fail);
 }
 
+function getMarkerAptList(aptCode,success,fail) {
+  api.get(`housedeal/markerApt/${aptCode}`).then(success).catch(fail);
+}
+
 export {
   getApartDeal,
   getApartDealDetail,
@@ -40,4 +44,5 @@ export {
   getMultiplexHouseDealDetail,
   getOfficetelDeal,
   getOfficetelDealDetail,
+  getMarkerAptList
 };
