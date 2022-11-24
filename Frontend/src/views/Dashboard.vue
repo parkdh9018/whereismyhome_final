@@ -1,65 +1,21 @@
 <template>
   <div>
-
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
-
     </base-header>
 
     <!--Charts-->
     <b-container fluid class="mt--7">
       <b-row>
-        <b-col xl="8" class="mb-5 mb-xl-0">
-          <card type="default" header-classes="bg-transparent">
-            <b-row align-v="center" slot="header">
-              <b-col>
-                <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
-                <h5 class="h3 text-white mb-0">Sales value</h5>
-              </b-col>
-              <b-col>
-                <b-nav class="nav-pills justify-content-end">
-                  <b-nav-item
-                       class="mr-2 mr-md-0"
-                       :active="bigLineChart.activeIndex === 0"
-                       link-classes="py-2 px-3"
-                       @click.prevent="initBigChart(0)">
-                      <span class="d-none d-md-block">Month</span>
-                      <span class="d-md-none">M</span>
-                  </b-nav-item>
-                  <b-nav-item
-                    link-classes="py-2 px-3"
-                    :active="bigLineChart.activeIndex === 1"
-                    @click.prevent="initBigChart(1)"
-                  >
-                    <span class="d-none d-md-block">Week</span>
-                    <span class="d-md-none">W</span>
-                  </b-nav-item>
-                </b-nav>
-              </b-col>
-            </b-row>
-            <line-chart
-              :height="350"
-              ref="bigChart"
-              :chart-data="bigLineChart.chartData"
-              :extra-options="bigLineChart.extraOptions"
-            >
-            </line-chart>
-          </card>
-        </b-col>
-
-        <b-col xl="4" class="mb-5 mb-xl-0">
+        <b-col xl="12" class="mb-5 mb-xl-0">
           <card header-classes="bg-transparent">
             <b-row align-v="center" slot="header">
               <b-col>
-                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                <h5 class="h3 mb-0">Total orders</h5>
+                <h6 class="text-uppercase text-muted ls-1 mb-1"></h6>
+                <h5 class="h3 mb-0">시도별 건물수</h5>
               </b-col>
             </b-row>
 
-            <bar-chart
-              :height="350"
-              ref="barChart"
-              :chart-data="redBarChart.chartData"
-            >
+            <bar-chart :height="350" ref="barChart" :chart-data="chartData">
             </bar-chart>
           </card>
         </b-col>
@@ -68,94 +24,79 @@
 
       <!--Tables-->
       <b-row class="mt-5">
-        <b-col xl="8" class="mb-5 mb-xl-0">
-          <page-visits-table></page-visits-table>
-        </b-col>
-        <b-col xl="4" class="mb-5 mb-xl-0">
-          <social-traffic-table></social-traffic-table>
+        <b-col xl="12">공지사항</b-col>
+        <b-col xl="12">
+          <b-table :items="boards"></b-table>
         </b-col>
       </b-row>
       <!--End tables-->
     </b-container>
-
   </div>
 </template>
 <script>
-  // Charts
-  import * as chartConfigs from '@/components/Charts/config';
-  import LineChart from '@/components/Charts/LineChart';
-  import BarChart from '@/components/Charts/BarChart';
+import { countsido } from "@/api/areaApi";
+import { mapGetters } from "vuex";
 
-  // Components
-  import BaseProgress from '@/components/BaseProgress';
-  import StatsCard from '@/components/Cards/StatsCard';
+// Charts
+import * as chartConfigs from "@/components/Charts/config";
+import LineChart from "@/components/Charts/LineChart";
+import BarChart from "@/components/Charts/BarChart";
 
-  // Tables
-  import SocialTrafficTable from './Dashboard/SocialTrafficTable';
-  import PageVisitsTable from './Dashboard/PageVisitsTable';
+// Components
+import BaseProgress from "@/components/BaseProgress";
+import StatsCard from "@/components/Cards/StatsCard";
 
-  export default {
-    components: {
-      LineChart,
-      BarChart,
-      BaseProgress,
-      StatsCard,
-      PageVisitsTable,
-      SocialTrafficTable
-    },
-    data() {
+// Tables
+import SocialTrafficTable from "./Dashboard/SocialTrafficTable";
+import PageVisitsTable from "./Dashboard/PageVisitsTable";
+
+export default {
+  components: {
+    LineChart,
+    BarChart,
+    BaseProgress,
+    StatsCard,
+    PageVisitsTable,
+    SocialTrafficTable,
+  },
+  data() {
+    return {
+      labels: [],
+      datas: [],
+      redBarChart: {
+        extraOptions: chartConfigs.blueChartOptions,
+      },
+    };
+  },
+  computed: {
+    chartData() {
+
       return {
-        bigLineChart: {
-          allData: [
-            [0, 20, 10, 30],
-            [0, 20, 5, 25]
-          ],
-          activeIndex: 0,
-          chartData: {
-            datasets: [
-              {
-                label: 'Performance',
-                data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
-              }
-            ],
-            labels: ['2019', '2020', '2021', '2022'],
+        labels: this.labels,
+        datasets: [
+          {
+            label: "Sales",
+            data: this.datas,
           },
-          extraOptions: chartConfigs.blueChartOptions,
-        },
-        redBarChart: {
-          chartData: {
-            labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-              label: 'Sales',
-              data: [25, 20, 30, 22, 17, 29]
-            }]
-          },
-          extraOptions: chartConfigs.blueChartOptions
-        }
+        ],
       };
     },
-    methods: {
-      initBigChart(index) {
-        let chartData = {
-          datasets: [
-            {
-              label: 'Performance',
-              data: this.bigLineChart.allData[index]
-            }
-          ],
-          labels: ['2019', '2020', '2021', '2022'],
-        };
-        this.bigLineChart.chartData = chartData;
-        this.bigLineChart.activeIndex = index;
-      }
-    },
-    mounted() {
-      this.initBigChart(0);
-    }
-  };
+    ...mapGetters("board",["boards"])
+  },
+  methods: {},
+  mounted() {
+
+    countsido(({ data }) => {
+      data.forEach((v) => {
+        this.labels.push(v.sidoName);
+        this.datas.push(v.sidoCount);
+      });
+    });
+  },
+};
 </script>
 <style>
-.el-table .cell{
+.el-table .cell {
   padding-left: 0px;
   padding-right: 0px;
 }

@@ -35,6 +35,11 @@ function areaList(params, success, fail) {
     .then(fail);
 }
 
+// 시도별 건물수
+function countsido(success, fail) {
+  api.get("map/countsido").then(success).catch(fail);
+}
+
 // 주소로 위도, 경도 찾는 함수
 function searchPosition(address) {
   return new Promise((resolve, reject) => {
@@ -117,4 +122,5 @@ export {
   aptListInDong,
   keywordSearch,
   getaptlist_move,
+  countsido
 };
