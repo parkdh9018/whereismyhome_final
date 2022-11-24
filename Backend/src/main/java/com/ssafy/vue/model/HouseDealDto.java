@@ -18,21 +18,22 @@ public class HouseDealDto {
 	private String deal_type;
 	private String rent_gtn;
 	private String rent_fee;
- 
-	private String sgd_code;
-	private String sgdbb_code;
+	private String sgd_cd;
+	private String sgdbb_cd;
 	
-	public String getSgd_code() {
-		return sgd_code;
+
+
+	public String getSgd_cd() {
+		return sgd_cd;
 	}
-	public void setSgd_code(String sgd_code) {
-		this.sgd_code = sgd_code;
+	public void setSgd_cd(String sgd_cd) {
+		this.sgd_cd = sgd_cd;
 	}
-	public String getSgdbb_code() {
-		return sgdbb_code;
+	public String getSgdbb_cd() {
+		return sgdbb_cd;
 	}
-	public void setSgdbb_code(String sgdbb_code) {
-		this.sgdbb_code = sgdbb_code;
+	public void setSgdbb_cd(String sgdbb_cd) {
+		this.sgdbb_cd = sgdbb_cd;
 	}
 	public String getSgg_cd() {
 		return sgg_cd;
