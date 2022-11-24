@@ -21,18 +21,7 @@
       <b-row>
         <b-col >
           <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-            <div>
-              <span class="heading">22</span>
-              <span class="description">Friends</span>
-            </div>
-            <div>
-              <span class="heading">10</span>
-              <span class="description">Photos</span>
-            </div>
-            <div>
-              <span class="heading">89</span>
-              <span class="description">Comments</span>
-            </div>
+            
           </div>
         </b-col>
       </b-row>
@@ -41,17 +30,16 @@
           {{user.username}}<span class="font-weight-light">, 27</span>
         </h5>
         <div class="h5 font-weight-300">
-          <i class="ni location_pin mr-2"></i>Bucharest, Romania
+          <i class="ni location_pin mr-2"></i>SSAFY 서울 12반
         </div>
         <div class="h5 mt-4">
-          <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
+          <i class="ni business_briefcase-24 mr-2"></i>Frontend - Backend
         </div>
         <div>
-          <i class="ni education_hat mr-2"></i>University of Computer Science
+          <i class="ni education_hat mr-2"></i>SSAFY
         </div>
         <hr class="my-4">
-        <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
-        <a href="#">Show more</a>
+
 
       </div>
     </b-card-body>

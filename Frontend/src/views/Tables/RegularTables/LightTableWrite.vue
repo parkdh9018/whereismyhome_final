@@ -4,16 +4,7 @@
   <b-row class="m-3">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
-        <b-form-group id="userid-group" label="작성자:" label-for="userid" description="작성자를 입력하세요.">
-          <b-form-input
-            id="userid"
-            :disabled="isUserid"
-            v-model="article.userid"
-            type="text"
-            required
-            placeholder="작성자 입력..."
-          ></b-form-input>
-        </b-form-group>
+ 
 
         <b-form-group id="subject-group" label="제목:" label-for="subject" description="제목을 입력하세요.">
           <b-form-input
@@ -35,8 +26,8 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit" variant="primary" class="m-1">글작성</b-button>
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+        <b-button type="submit" variant="btn btn-outline-success" class="m-1">글작성</b-button>
+        <b-button type="reset" variant="btn btn-outline-danger" class="m-1">초기화</b-button>
       </b-form>
     </b-col>
   </b-row>
