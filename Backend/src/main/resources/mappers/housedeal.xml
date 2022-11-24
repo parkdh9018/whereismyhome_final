@@ -6,7 +6,7 @@
 
 	<!-- 아파트  -->
 	<select id="getApartDeal" parameterType="map" resultType="houseDealDto">
-		select * 
+		select * DISTINCT sgdbb_cd
 		from deal
 		where sgd_cd = #{sgd_cd}
 		<if test="cell == null or cell == ''">
@@ -19,10 +19,11 @@
 			or deal_type = "월세"
 		</if>
 		and house_type="아파트"
+
 	</select>
 
 	<select id="getApartDealDetail" parameterType="map" resultType="houseDealDto">
-		select *
+		select *  
 		from deal
 		where sgdbb_cd = #{sgdbb_cd}
 		<if test="sell == null or sell == ''">
@@ -36,7 +37,7 @@
 		</if>
 		and house_type="아파트"
 		order by deal_ymd desc
-		limit 30 
+		limit 20
 		
 	</select>
 
@@ -59,26 +60,9 @@
 	
 	<!-- 연립다세대 -->
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
-		select *  
+		select * DISTINCT sgdbb_cd
 		from deal
 		where sgd_cd = #{sgd_cd}
-		<if test="sell == null or sell == ''">
-			or deal_type = "매매"
-		</if>
-		<if test="year != null and year != ''">
-			or deal_type = "전세"
-		</if>
-		<if test="month != null and month != ''">
-			or deal_type = "월세"
-		</if>
-		and house_type="연립다세대"
-	</select>
-	
-	<select id="getMultiplexHouseDealDetail" parameterType="map" resultType="houseDealDto">
-		select *
-
-		from deal
-		where sgdbb_cd = #{sgdbb_cd}
 		<if test="sell == null or sell == ''">
 			or deal_type = "매매"
 		</if>
@@ -92,9 +76,27 @@
 		
 	</select>
 	
+	<select id="getMultiplexHouseDealDetail" parameterType="map" resultType="houseDealDto">
+		select *
+		from deal
+		where sgdbb_cd = #{sgdbb_cd}
+		<if test="sell == null or sell == ''">
+			or deal_type = "매매"
+		</if>
+		<if test="year != null and year != ''">
+			or deal_type = "전세"
+		</if>
+		<if test="month != null and month != ''">
+			or deal_type = "월세"
+		</if>
+		and house_type="연립다세대"
+		order by deal_ymd desc
+		limit 20
+	</select>
+	
 	<!-- 오피스텔 -->
 	<select id="getOfficetelDeal" parameterType="map" resultType="houseDealDto">
-		select *
+		select * DISTINCT sgdbb_cd
 		from deal
 		where sgd_cd = #{sgd_cd}
 		<if test="sell == null or sell == ''">
@@ -125,6 +127,8 @@
 			or deal_type = "월세"
 		</if>
 		and house_type="오피스텔"
+		order by deal_ymd desc
+		limit 20
 	</select>
 	
 
