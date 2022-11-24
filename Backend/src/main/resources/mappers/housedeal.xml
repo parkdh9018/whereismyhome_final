@@ -25,7 +25,7 @@
 		select *
 		from deal
 		where sgdbb_cd = #{sgdbb_cd}
-		<if test="cell == null or cell == ''">
+		<if test="sell == null or sell == ''">
 			or deal_type = "매매"
 		</if>
 		<if test="year != null and year != ''">
@@ -35,15 +35,34 @@
 			or deal_type = "월세"
 		</if>
 		and house_type="아파트"
+		order by deal_ymd desc
+		limit 30 
+		
 	</select>
 
 
+
+	<select id="getApartAvg" parameterType="String" resultType="detailDto">
+		select *
+		from minmaxavg
+		where sgdbb_cd = #{sgdbb_cd}
+	</select>
+	
+	
+	<select id="getAmt" parameterType="String" resultType="amtDto">
+		SELECT obj_amt, left(deal_ymd, 6) as yearmonth 
+		from deal 
+		where obj_amt != "" and sgdbb_cd=#{sgdbb_cd}
+		group by left(deal_ymd, 6);
+	</select>
+	
+	
 	<!-- 연립다세대 -->
 	<select id="getMultiplexHouseDeal" parameterType="map" resultType="houseDealDto">
-		select *  , min(obj_amt) as min_amt
+		select *  
 		from deal
-		where bjdong_cd = #{bjd_cd}
-		<if test="cell == null or cell == ''">
+		where sgd_cd = #{sgd_cd}
+		<if test="sell == null or sell == ''">
 			or deal_type = "매매"
 		</if>
 		<if test="year != null and year != ''">
@@ -60,7 +79,7 @@
 
 		from deal
 		where sgdbb_cd = #{sgdbb_cd}
-		<if test="cell == null or cell == ''">
+		<if test="sell == null or sell == ''">
 			or deal_type = "매매"
 		</if>
 		<if test="year != null and year != ''">
@@ -70,7 +89,7 @@
 			or deal_type = "월세"
 		</if>
 		and house_type="연립다세대"
-
+		
 	</select>
 	
 	<!-- 오피스텔 -->
@@ -78,7 +97,7 @@
 		select *
 		from deal
 		where sgd_cd = #{sgd_cd}
-		<if test="cell == null or cell == ''">
+		<if test="sell == null or sell == ''">
 			or deal_type = "매매"
 		</if>
 		<if test="year != null and year != ''">
@@ -96,7 +115,7 @@
 		select *
 		from deal
 		where sgdbb_cd = #{sgdbb_cd}
-		<if test="cell == null or cell == ''">
+		<if test="sell == null or sell == ''">
 			or deal_type = "매매"
 		</if>
 		<if test="year != null and year != ''">

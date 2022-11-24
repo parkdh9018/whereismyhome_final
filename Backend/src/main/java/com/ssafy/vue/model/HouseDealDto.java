@@ -18,18 +18,22 @@ public class HouseDealDto {
 	private String deal_type;
 	private String rent_gtn;
 	private String rent_fee;
-	private String max_amt; 
-	private String min_amt; 
-	private String mean_amt; 
-	private String code;
+ 
+	private String sgd_code;
+	private String sgdbb_code;
 	
-	public String getCode() {
-		return code;
+	public String getSgd_code() {
+		return sgd_code;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setSgd_code(String sgd_code) {
+		this.sgd_code = sgd_code;
 	}
-
+	public String getSgdbb_code() {
+		return sgdbb_code;
+	}
+	public void setSgdbb_code(String sgdbb_code) {
+		this.sgdbb_code = sgdbb_code;
+	}
 	public String getSgg_cd() {
 		return sgg_cd;
 	}
@@ -132,24 +136,7 @@ public class HouseDealDto {
 	public void setRent_fee(String rent_fee) {
 		this.rent_fee = rent_fee;
 	}
-	public String getMax_amt() {
-		return max_amt;
-	}
-	public void setMax_amt(String max_amt) {
-		this.max_amt = max_amt;
-	}
-	public String getMin_amt() {
-		return min_amt;
-	}
-	public void setMin_amt(String min_amt) {
-		this.min_amt = min_amt;
-	}
-	public String getMean_amt() {
-		return mean_amt;
-	}
-	public void setMean_amt(String mean_amt) {
-		this.mean_amt = mean_amt;
-	}
+
 	
 	
 }

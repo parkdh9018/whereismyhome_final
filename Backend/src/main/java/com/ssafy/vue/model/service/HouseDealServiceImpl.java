@@ -8,7 +8,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.vue.model.AmtDto;
 import com.ssafy.vue.model.ApartDealDto;
+import com.ssafy.vue.model.DetailDto;
 import com.ssafy.vue.model.HouseDealDto;
 import com.ssafy.vue.model.mapper.HouseDealMapper;
 
@@ -28,6 +30,18 @@ public class HouseDealServiceImpl implements HouseDealService{
 	public List<HouseDealDto> getApartDealDetail(Map<String, Object> resultMap) throws SQLException {
 		return sqlSession.getMapper(HouseDealMapper.class).getApartDealDetail(resultMap);
 	}
+	
+	@Override
+	public DetailDto getApartAvg(String sgdbb_cd) throws SQLException {
+		return sqlSession.getMapper(HouseDealMapper.class).getApartAvg(sgdbb_cd);
+	}
+	
+	@Override
+	public List<AmtDto> getAmt(String sgdbb_cd) throws SQLException{
+		return sqlSession.getMapper(HouseDealMapper.class).getAmt(sgdbb_cd);
+	}
+
+
 
 //	다세대주택
 	@Override
@@ -52,6 +66,8 @@ public class HouseDealServiceImpl implements HouseDealService{
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(HouseDealMapper.class).getOfficetelDealDetail(resultMap);
 	}
+
+
 
 
 	

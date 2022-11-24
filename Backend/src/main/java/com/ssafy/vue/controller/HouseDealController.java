@@ -1,6 +1,8 @@
 package com.ssafy.vue.controller;
 
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.model.AmtDto;
 import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.BoardDto;
+import com.ssafy.vue.model.DetailDto;
 import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseDealDto;
 import com.ssafy.vue.model.MemberDto;
@@ -48,7 +52,7 @@ public class HouseDealController {
 	
 	
 //	아파트
-	@ApiOperation(value = "아파트 상세조회", notes = "아파트 상세조회 정보를 반환한다.", response = List.class)
+	@ApiOperation(value = "아파트 동별 목록", notes = "아파트 동별 정보를 반환한다.", response = List.class)
 	@GetMapping("/apart")
 	public ResponseEntity<List<HouseDealDto>> getApartDeal(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDeal - 호출 : ");
@@ -60,16 +64,37 @@ public class HouseDealController {
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getApartDeal(resultMap), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "Detail 다세대주택 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
+
+	
+	
+	@ApiOperation(value = "아파트 상세조회 목록", notes = "정확히 해당하는 다세대주택의 정보를 반환한다.", response = BoardDto.class)
 	@GetMapping("/apartDetail")
-	public ResponseEntity<List<HouseDealDto>> getApartDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
+	public ResponseEntity<DetailDto> getApartDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put( "sgd_cd", param.get("sgd_cd") );
-		resultMap.put("sell", param.get("sell"));
-		resultMap.put("year", param.get("year"));
-		resultMap.put("month", param.get("month"));
-		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getApartDealDetail(resultMap), HttpStatus.OK);
+		resultMap.put( "sgdbb_cd", param.get("sgdbb_cd") );
+		if(param.containsKey("sell")) {
+			resultMap.put("sell", param.get("sell"));
+		}
+		if(param.containsKey("year")) {
+			resultMap.put("year", param.get("year"));
+		}
+		if(param.containsKey("month")) {
+			resultMap.put("month", param.get("month"));
+		}
+		List<HouseDealDto> dto1=houseDealService.getApartDealDetail(resultMap);
+		
+		DetailDto detailDto = new DetailDto(); 
+		detailDto.setHousedealDto(dto1);
+		
+		DetailDto temp = houseDealService.getApartAvg(param.get("sgdbb_cd"));
+		detailDto.setAvg_amt(temp.getAvg_amt());
+		detailDto.setMin_amt(temp.getMin_amt());
+		detailDto.setMax_amt(temp.getMax_amt());
+		
+		List<AmtDto> temp2 = houseDealService.getAmt(param.get("sgdbb_cd"));
+		detailDto.setAmtDto(temp2);
+		return new ResponseEntity<DetailDto>(detailDto, HttpStatus.OK);
 	}
 	
 //	다세대주택
@@ -92,7 +117,7 @@ public class HouseDealController {
 	public ResponseEntity<List<HouseDealDto>> getMultiplexHouseDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put( "sgdbb_cd", param.get("sgdbb_cd") );
 		resultMap.put("sell", param.get("sell"));
 		resultMap.put("year", param.get("year"));
 		resultMap.put("month", param.get("month"));
@@ -121,7 +146,7 @@ public class HouseDealController {
 	public ResponseEntity<List<HouseDealDto>> getOfficetelDealDetail(@RequestParam HashMap<String, String> param) throws Exception {
 		logger.info("getApartDealDetail - 호출 : " );
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put( "sgd_cd", param.get("sgd_cd") );
+		resultMap.put( "sgdbb_cd", param.get("sgdbb_cd") );
 		resultMap.put("sell", param.get("sell"));
 		resultMap.put("year", param.get("year"));
 		resultMap.put("month", param.get("month"));
