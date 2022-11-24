@@ -53,7 +53,7 @@ export default {
     return {
       article: {
         articleno: 0,
-        userid: "",
+        userid: "admin",
         subject: "",
         content: "",
       },
@@ -70,7 +70,7 @@ export default {
 
       let err = true;
       let msg = "";
-      !this.article.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
+      // !this.article.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
       err && !this.article.subject && ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
       err && !this.article.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 

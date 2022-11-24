@@ -13,8 +13,8 @@
   <b-row class="mb-1 mt-2">
     <b-col>
       <b-card
-        :header-html="`<h3>${article.articleno}.
-        ${article.subject}</h3><div>조회 : ${article.hit}</div><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
+        :header-html="`<h1>${article.articleno}.
+        ${article.subject}</h1><h5>${article.regtime}  &emsp; &emsp; 조회 : ${article.hit} </h5><div><h3>${article.content}</h3><div></h6></div></br></br></br></br></br>`"
         class="mb-2 "
        
         no-body

@@ -6,7 +6,7 @@
 
 	<insert id="writeArticle" parameterType="boardDto">
 		insert into board (userid, subject, content, hit, regtime)
-		values (#{userid}, #{subject}, #{content}, 0, now())
+		values ("admin", #{subject}, #{content}, 0, now())
 	</insert>
 	
 	<select id="listArticle" parameterType="map" resultType="boardDto">

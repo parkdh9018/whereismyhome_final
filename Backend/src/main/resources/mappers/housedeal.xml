@@ -22,7 +22,6 @@
 		</trim>
 		and house_type="아파트"
 		group by sgdbb_cd
-
 	</select>
 	
 	

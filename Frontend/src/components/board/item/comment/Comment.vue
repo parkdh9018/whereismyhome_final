@@ -52,7 +52,7 @@ export default {
 .comment {
   text-align: left;
   border-radius: 5px;
-  border: 1px solid #41D7F2;
+  border: 1px solid #F2F2F2;
   padding: 10px 20px;
   margin: 10px;
 }
@@ -65,7 +65,7 @@ export default {
 }
 .cbtn {
   text-align: right;
-  color: steelblue;
+  color: #11CDEF;
   margin: 5px 0px;
 }
 </style>

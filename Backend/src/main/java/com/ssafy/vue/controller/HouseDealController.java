@@ -1,13 +1,9 @@
 package com.ssafy.vue.controller;
 
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,26 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.vue.model.AmtDto;
-import com.ssafy.vue.model.ApartDealDto;
 import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.DetailDto;
-import com.ssafy.vue.model.DongCodeDto;
 import com.ssafy.vue.model.HouseDealDto;
-import com.ssafy.vue.model.MemberDto;
 import com.ssafy.vue.model.service.HouseDealService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 //http://localhost:9999/vue/swagger-ui.html
 //@CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.POST} , maxAge = 6000)
@@ -95,8 +83,9 @@ public class HouseDealController {
 		
 		DetailDto temp = houseDealService.getApartAvg(param.get("sgdbb_cd"));
 		detailDto.setAvg_amt(temp.getAvg_amt());
-		detailDto.setMin_amt(temp.getMin_amt());
 		detailDto.setMax_amt(temp.getMax_amt());
+		detailDto.setMax_gtn(temp.getMax_gtn());
+		detailDto.setAvg_gtn(temp.getAvg_gtn());
 		
 		List<AmtDto> temp2 = houseDealService.getAmt(param.get("sgdbb_cd"));
 		detailDto.setAmtDto(temp2);

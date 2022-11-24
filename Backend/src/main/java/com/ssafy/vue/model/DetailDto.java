@@ -8,9 +8,23 @@ public class DetailDto{
 	private List<AmtDto> amtDto;
 	
 	private String max_amt;
-	private String min_amt;
 	private String avg_amt;
+	private String avg_gtn;
+	private String max_gtn;
 	
+	
+	public String getAvg_gtn() {
+		return avg_gtn;
+	}
+	public void setAvg_gtn(String avg_gtn) {
+		this.avg_gtn = avg_gtn;
+	}
+	public String getMax_gtn() {
+		return max_gtn;
+	}
+	public void setMax_gtn(String max_gtn) {
+		this.max_gtn = max_gtn;
+	}
 	public List<AmtDto> getAmtDto() {
 		return amtDto;
 	}
@@ -23,12 +37,7 @@ public class DetailDto{
 	public void setMax_amt(String max_amt) {
 		this.max_amt = max_amt;
 	}
-	public String getMin_amt() {
-		return min_amt;
-	}
-	public void setMin_amt(String min_amt) {
-		this.min_amt = min_amt;
-	}
+	
 	public String getAvg_amt() {
 		return avg_amt;
 	}
