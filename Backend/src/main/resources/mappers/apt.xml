@@ -88,5 +88,18 @@
 		(lng between #{lng1} and #{lng2})
 	</select>
 	
+	<select id="searchGugunAvg" parameterType="Map" resultType="Map">
+        select dc.dongName,SUBSTRING_INDEX(avg(cast(d.dealAmount AS SIGNED)),".",1)/10 amountAvg,  dc.lng,  dc.lat
+        from housedeal d
+        join houseinfo h
+        on h.aptCode = d.aptCode
+        and no = (select max(no) from housedeal where aptCode = h.aptCode)
+        join baseaddress dc
+        on h.dongcode = dc.dongCode
+        and dc.lng BETWEEN #{lng1} and #{lng2} 
+        and dc.lat BETWEEN #{lat1} and #{lat2}
+        and dc.dongName is not null
+        group by dc.dongName;
+    </select>
 
 </mapper>

@@ -99,7 +99,7 @@
 	<select id="getOfficetelDeal" parameterType="map" resultType="houseDealDto">
 		select * 
 		from deal
-		where sgd_cd = #{sgd_cd}
+		where sgd_cd = #{sgd_cd} 
 		<if test="sell == null or sell == ''">
 			or deal_type = "매매"
 		</if>
