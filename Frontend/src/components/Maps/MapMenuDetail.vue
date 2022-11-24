@@ -3,6 +3,7 @@
     <b-row no-gutters>
       <b-col md="12">
         <b-button
+          @click="favoriteClick"
           :pressed.sync="favoriteToggle"
           v-show="checkUserInfo"
           variant="success"
@@ -120,6 +121,9 @@ import LineChart from "@/components/Charts/LineChart";
 export default {
   data() {
     return {
+      code: "",
+      bubn: "",
+      bobn: "",
       roadviewCheck: true,
       favoriteToggle: null,
       house_type: "",
@@ -189,6 +193,9 @@ export default {
 
       this.housedealList = this.structDetail.housedealDto;
 
+      this.code = this.housedealList[0].sgdbb_cd;
+      this.bobn = this.housedealList[0].bobn;
+      this.bubn = this.housedealList[0].bubn;
       this.house_type = this.housedealList[0].house_type;
       this.bldg_name = this.housedealList[0].bldg_nm;
       this.buildYear = this.housedealList[0].build_year;
@@ -263,6 +270,21 @@ export default {
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
     },
+    favoriteClick() {
+      console.log(this.favoriteToggle);
+      if(this.favoriteToggle) {
+        this.$store.dispatch("member/addFavoriteAction", 
+        {
+          userid : this.checkUserInfo.userid,
+          house_type : this.house_type,
+          code : this.code,
+          name : this.bldg_name,
+          address : `${this.address} ${this.bobn}-${this.bubn}`
+        })
+      } else {
+
+      }
+    }
   },
 };
 </script>

@@ -9,10 +9,10 @@
       >
         <stats-card
           :title="place.category"
-          type="gradient-red"
           :sub-title="place.name"
-          icon="ni ni-active-40"
-          class="mb-1"
+          :type="iconColor(place.category)"
+          icon="ni ni-building"
+          class="mb-1 bg-gradient"
         >
           <template slot="footer">
             <span class="text-success mr-2">{{ place.address }}</span>
@@ -59,6 +59,15 @@ export default {
         }
       });
     },
+    iconColor(category) {
+      if(category == "아파트") {
+        return 'gradient-red'
+      } else if (category == "오피스텔") {
+        return 'gradient-blue'
+      } else {
+        return 'gradient-orange'
+      }
+    }
   },
 };
 </script>

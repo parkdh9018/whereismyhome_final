@@ -47,11 +47,11 @@ function favoriteList(userid) {
 }
 
 function addFavorite(param) {
-  return api.put("/member/favorite", param);
+  return api.post("/member/favorite", param);
 }
 
 function deleteFavorite(code) {
-  return api.put(`member/favorite/${code}`);
+  return api.delete(`member/favorite/${code}`);
 }
 
 export {
