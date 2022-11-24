@@ -64,8 +64,10 @@ export default {
         return 'gradient-red'
       } else if (category == "오피스텔") {
         return 'gradient-blue'
-      } else {
+      } else if (category == "연립다세대") {
         return 'gradient-gray'
+      } else {
+        return 'gradient-red'
       }
     }
   },
