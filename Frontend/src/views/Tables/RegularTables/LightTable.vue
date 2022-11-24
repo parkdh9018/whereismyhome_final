@@ -3,7 +3,7 @@
     <b-card-header class="border-0">
       <h3 class="mb-0">공지사항</h3>
 
-      <a v-if = "checkUserInfo && checkUserInfo[username] =='관리자'" class="btn btn-outline-success float-right" @click="moveWrite()">글쓰기</a>
+      <a v-if = "checkUserInfo && checkUserInfo.username =='관리자'" class="btn btn-outline-success float-right" @click="moveWrite()">글쓰기</a>
     </b-card-header>
 
     <el-table
