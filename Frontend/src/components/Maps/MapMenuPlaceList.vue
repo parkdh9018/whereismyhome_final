@@ -4,7 +4,7 @@
       <b-col
         cols="12"
         @click="placeClickEvent(place.address, place.category, place.id)"
-        v-for="(place, index) in structList"
+        v-for="(place, index) in getPlaceList"
         :key="index"
       >
         <stats-card
@@ -29,8 +29,16 @@ import { mapMutations, mapGetters } from "vuex";
 import { searchPosition } from "@/api/areaApi";
 
 export default {
+  data() {
+    return {
+      placeList : [],
+    }
+  },
   computed: {
     ...mapGetters("map", ["structList"]),
+    getPlaceList() {
+      return this.structList;
+    }
   },
   methods: {
     ...mapMutations("map", [

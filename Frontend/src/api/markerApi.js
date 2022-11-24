@@ -12,8 +12,16 @@ function markerDong(params) {
   return api.get(`/map/marker/dong/`, { params: params });
 }
 
-function searchDongAvg(params, success, fail) {
+function searchSidoAvg(params, success, fail) {
+  api.get("map/searchSidoAvg", { params }).then(success).catch(fail);
+}
+
+function searchGugunAvg(params, success, fail) {
   api.get("map/searchGugunAvg", { params }).then(success).catch(fail);
 }
 
-export { markerSido, markerGugun, markerDong, searchDongAvg };
+function searchDongAvg(params, success, fail) {
+  api.get("map/searchDongAvg", { params }).then(success).catch(fail);
+}
+
+export { markerSido, markerGugun, markerDong, searchDongAvg, searchGugunAvg, searchSidoAvg };

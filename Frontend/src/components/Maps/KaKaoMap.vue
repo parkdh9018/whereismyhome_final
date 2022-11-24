@@ -54,9 +54,8 @@ import MapMenu from "./MapMenu.vue";
 import MapMenuDetail from "@/components/Maps/MapMenuDetail";
 import { getaptlist_move, searchAddress } from "@/api/areaApi";
 import {
-  markerSido,
-  markerGugun,
-  markerDong,
+  searchSidoAvg,
+  searchGugunAvg,
   searchDongAvg,
 } from "@/api/markerApi";
 import { mapState, mapGetters, mapMutations } from "vuex";
@@ -138,16 +137,17 @@ export default {
             this.makeClusterMarker(v, "dongName");
           });
         });
+
       } else if (level >= 7 && level <= 8) {
         // 구/군 마커
-        markerGugun(params).then(({ data }) => {
+        searchGugunAvg(params, ({ data }) => {
           data.forEach((v) => {
             this.makeClusterMarker(v, "gugunName");
           });
         });
       } else {
         // 시/도 마커
-        markerSido(params).then(({ data }) => {
+        searchSidoAvg(params, ({ data }) => {
           data.forEach((v) => {
             this.makeClusterMarker(v, "sidoName");
           });

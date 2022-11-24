@@ -89,7 +89,7 @@
 	</select>
 	
 	<select id="searchSidoAvg" parameterType="Map" resultType="Map">
-        select dc.dongName,SUBSTRING_INDEX(avg(cast(d.dealAmount AS SIGNED)),".",1)/10 amountAvg,  dc.lng,  dc.lat
+        select dc.sidoName,SUBSTRING_INDEX(avg(cast(d.dealAmount AS SIGNED)),".",1)/10 amountAvg,  dc.lng,  dc.lat
         from housedeal d
         join houseinfo h
         on h.aptCode = d.aptCode

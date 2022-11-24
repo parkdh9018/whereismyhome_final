@@ -151,8 +151,8 @@ const mapStore = {
           const data_worked = data.map((v) => {
             return {
               id: v.sgdbb_cd,
-              name: v.bldg_nm,
-              category: v.house_type,
+              name:  v.bldg_nm == "" ? `${v.bobn}-${v.bubn}` : v.bldg_nm,
+              category: "아파트",
               address: `${address_init} ${v.bobn}-${v.bubn}`,
             };
           });
@@ -166,8 +166,8 @@ const mapStore = {
           const data_worked = data.map((v) => {
             return {
               id: v.sgdbb_cd,
-              name: v.bldg_nm,
-              category: v.house_type,
+              name:  v.bldg_nm == "" ? `${v.bobn}-${v.bubn}` : v.bldg_nm,
+              category: "연립다세대",
               address: `${address_init} ${v.bobn}-${v.bubn}`,
             };
           });
@@ -181,8 +181,8 @@ const mapStore = {
           const data_worked = data.map((v) => {
             return {
               id: v.sgdbb_cd,
-              name: v.bldg_nm,
-              category: v.house_type,
+              name: v.bldg_nm == "" ? `${v.bobn}-${v.bubn}` : v.bldg_nm,
+              category: "오피스텔",
               address: `${address_init} ${v.bobn}-${v.bubn}`,
             };
           });
