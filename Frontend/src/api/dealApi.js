@@ -1,34 +1,43 @@
 import api from "@/api/http";
 
-function getApartDetail(param, success, fail) {
-  api.get(`housedeal/apart/${param}`).then(success).catch(fail);
+// 아파트
+function getApartDeal(param, success, fail) {
+  api.get("housedeal/apart", { params: param }).then(success).catch(fail);
 }
 
-function getMultiplexes(param, success, fail) {
-  api.get(`housedeal/multiplex/${param}`).then(success).catch(fail);
+function getApartDealDetail(param, success, fail) {
+  api.get("housedeal/apartDetail", { params: param }).then(success).catch(fail);
 }
 
-function getMultiplexDetail(param, success, fail) {
-  api.get(`housedeal/multiplexDetail/${param}`).then(success).catch(fail);
+// 다세대주택
+function getMultiplexHouseDeal(param, success, fail) {
+  api.get("housedeal/multiplex", { params: param }).then(success).catch(fail);
 }
 
-function getApts(params, success, fail) {
-  api.get("map/apt/dong", { params: params }).then(success).catch(fail);
+function getMultiplexHouseDealDetail(param, success, fail) {
+  api
+    .get("housedeal/multiplexDetail", { params: param })
+    .then(success)
+    .catch(fail);
 }
 
-function getOfficetels(param, success, fail) {
-  api.get(`housedeal/officetel/${param}`).then(success).catch(fail);
+// 오피스텔
+function getOfficetelDeal(param, success, fail) {
+  api.get("housedeal/officetel", { params: param }).then(success).catch(fail);
 }
 
-function getOffiecetelDetail(param, success, fail) {
-  api.get(`housedeal/officetelDetail/${param}`).then(success).then(fail);
+function getOfficetelDealDetail(param, success, fail) {
+  api
+    .get("housedeal/officetelDetail", { params: param })
+    .then(success)
+    .catch(fail);
 }
 
 export {
-  getApartDetail,
-  getMultiplexes,
-  getMultiplexDetail,
-  getApts,
-  getOfficetels,
-  getOffiecetelDetail,
+  getApartDeal,
+  getApartDealDetail,
+  getMultiplexHouseDeal,
+  getMultiplexHouseDealDetail,
+  getOfficetelDeal,
+  getOfficetelDealDetail,
 };

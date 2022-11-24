@@ -1,4 +1,4 @@
-import { getMultiplexes } from "@/api/dealApi";
+import * as dealApi from "@/api/dealApi";
 import { keywordSearch } from "@/api/areaApi";
 
 const doFilter = (button) => {
@@ -6,29 +6,7 @@ const doFilter = (button) => {
   button.forEach((v) => {
     if (v.state) result.push(v.caption);
   });
-  console.log(result);
   return result;
-};
-
-const getBuildings = (commit, type, address_init, dongcode, filter) => {
-  // 이름 바꿔야함
-  getMultiplexes(
-    {
-      //데이터 형식
-      type,
-    },
-    ({ data }) => {
-      const data_worked = data.map((v) => {
-        return {
-          id: v.sgdbb_cd,
-          name: v.bldg_nm,
-          category: v.house_type,
-          address: `${address_init} ${v.bobn}-${v.bubn}`,
-        };
-      });
-      commit("addStructList", data_worked);
-    }
-  );
 };
 
 const mapStore = {
@@ -40,7 +18,11 @@ const mapStore = {
     address: "",
     detailToggle: false,
     structDetailPos: null,
-    structDetail: null,
+    structDetail: {
+      max_amt: "",
+      min_amt: "",
+      avg_amt: "",
+    },
     filter_buttons: [
       [
         { caption: "전세", state: true },
@@ -147,20 +129,67 @@ const mapStore = {
     getStructInDong({ commit, state }, [address_init, dongcode]) {
       commit("structClear");
 
-      const filter1 = doFilter(state.filter_buttons[0]);
-      const filter2 = doFilter(state.filter_buttons[1]);
+      let filter1 = doFilter(state.filter_buttons[0]);
+      let filter2 = doFilter(state.filter_buttons[1]);
+
+      let param = {
+        sgd_cd: dongcode,
+      };
+
+      filter1.forEach((v) => {
+        if (v == "매매") {
+          param.sell = 1;
+        } else if (v == "전세") {
+          param.year = 1;
+        } else {
+          param.month = 1;
+        }
+      });
+
+      // 아파트
+      if (filter2.length == 0 || filter2.includes("아파트")) {
+        dealApi.getApartDeal(param, ({ data }) => {
+          console.log(data);
+          const data_worked = data.map((v) => {
+            return {
+              id: v.sgdbb_cd,
+              name: v.bldg_nm,
+              category: v.house_type,
+              address: `${address_init} ${v.bobn}-${v.bubn}`,
+            };
+          });
+          commit("addStructList", data_worked);
+        });
+      }
 
       // 다가구주택 정보들 불러옴
       if (filter2.length == 0 || filter2.includes("다가구")) {
-        getBuildings(commit, "다가구", address_init, dongcode, filter1);
+        dealApi.getMultiplexHouseDeal(param, ({ data }) => {
+          const data_worked = data.map((v) => {
+            return {
+              id: v.sgdbb_cd,
+              name: v.bldg_nm,
+              category: v.house_type,
+              address: `${address_init} ${v.bobn}-${v.bubn}`,
+            };
+          });
+          commit("addStructList", data_worked);
+        });
       }
-      // 아파트
-      if (filter2.length == 0 || filter2.includes("아파트")) {
-        getBuildings(commit, "아파트", address_init, dongcode, filter1);
-      }
+
       // 오피스텔
       if (filter2.length == 0 || filter2.includes("오피스텔")) {
-        getBuildings(commit, "오피스텔", address_init, dongcode, filter1);
+        dealApi.getOfficetelDeal(param, ({ data }) => {
+          const data_worked = data.map((v) => {
+            return {
+              id: v.sgdbb_cd,
+              name: v.bldg_nm,
+              category: v.house_type,
+              address: `${address_init} ${v.bobn}-${v.bubn}`,
+            };
+          });
+          commit("addStructList", data_worked);
+        });
       }
 
       //// 예전 아파트 정보 불러옴
@@ -187,15 +216,28 @@ const mapStore = {
     },
 
     // 상세 정보
-    getDetail({ commit }, code) {
-      getDeals(
-        {
-          code: code,
-        },
-        ({ data }) => {
+    getDetail({ commit }, [code, type]) {
+      let param = {
+        sgdbb_cd: code,
+      };
+      console.log("getDetail");
+      console.log(code, type);
+      if (type == "아파트") {
+        dealApi.getApartDealDetail(param, ({ data }) => {
+          console.log(data);
           commit("setStructDetail", data);
-        }
-      );
+        });
+      } else if (type == "연립다세대") {
+        dealApi.getMultiplexHouseDealDetail(param, ({ data }) => {
+          console.log(data);
+          commit("setStructDetail", data);
+        });
+      } else {
+        dealApi.getOfficetelDealDetail(param, ({ data }) => {
+          console.log(data);
+          commit("setStructDetail", data);
+        });
+      }
     },
   },
 };

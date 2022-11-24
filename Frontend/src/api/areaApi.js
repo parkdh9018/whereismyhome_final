@@ -17,15 +17,12 @@ function houseList(params, success, fail) {
 }
 
 function aptListInDong(params, success, fail) {
-  api.get("map/apt/dong", { params}).then(success).catch(fail);
+  api.get("map/apt/dong", { params }).then(success).catch(fail);
 }
 
 // 지도 중심 움직였을 때
 function getaptlist_move(params, success, fail) {
-  api
-    .get("/map/apt/nearby", {params})
-    .then(success)
-    .catch(fail);
+  api.get("/map/apt/nearby", { params }).then(success).catch(fail);
 }
 
 // 지역 코드 받아오는 함수

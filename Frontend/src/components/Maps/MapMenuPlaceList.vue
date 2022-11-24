@@ -3,9 +3,9 @@
     <b-row>
       <b-col
         cols="12"
-        @click="placeClickEvent(place.address, place.category)"
-        v-for="place in structList"
-        :key="place.id"
+        @click="placeClickEvent(place.address, place.category, place.id)"
+        v-for="(place, index) in structList"
+        :key="index"
       >
         <stats-card
           :title="place.category"
@@ -39,14 +39,15 @@ export default {
       "setDetailToggle",
       "setStructDetailPos",
     ]),
-    placeClickEvent(address, category) {
+    placeClickEvent(address, category, code) {
       searchPosition(address).then((pos) => {
-        this.levelMove(2);
         this.setCenter(pos);
-        if (["아파트", "오피스텔", "다세대주택"].includes(category)) {
+        this.levelMove(2);
+        if (["아파트", "오피스텔", "연립다세대"].includes(category)) {
           // 디테일 액션
-          this.setDetailToggle(true);
+          this.$store.dispatch("map/getDetail", [code, category]);
           this.setStructDetailPos(pos);
+          this.setDetailToggle(true);
         }
       });
     },
