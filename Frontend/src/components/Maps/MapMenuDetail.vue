@@ -2,13 +2,22 @@
   <b-card no-body id="detail_card">
     <b-row no-gutters>
       <b-col md="12">
+        <b-button
+          :pressed.sync="favoriteToggle"
+          v-show="checkUserInfo"
+          variant="success"
+          style="z-index: 1; right: 0"
+          class="position-absolute m-2"
+          >{{
+            favoriteToggle == true ? "즐겨찾기 해제" : "즐겨찾기 등록"
+          }}</b-button
+        >
         <div id="roadview" style="width: 100%; height: 300px"></div>
       </b-col>
       <b-col md="12">
         <b-card-header>
           <span
-            ><b-badge pill variant="info"> 이름 </b-badge>
-            {{ bldg_name }}</span
+            ><b-badge pill variant="info"> 이름 </b-badge> {{ bldg_name }}</span
           >
           <span class="float-right"
             ><b-badge pill variant="info"> 건축년도 </b-badge>
@@ -16,19 +25,19 @@
           >
         </b-card-header>
         <b-card-body>
-          <b-card-text class=" font-weight-bold">
+          <b-card-text class="font-weight-bold">
             <span>면적 : {{ bldg_area }} m² | {{ tot_area }} m²</span>
-            <h2 class="float-right mr-2"><b-badge variant="info">{{type}}</b-badge></h2>
+            <h2 class="float-right mr-2">
+              <b-badge variant="info">{{ type }}</b-badge>
+            </h2>
           </b-card-text>
           <b-card-text class="border p-3">
-            <h2> 시세</h2>
+            <h2>시세</h2>
             <stats-card class="bg-gradient-primary mb-2">
               <h5 class="card-title text-uppercase text-white mb-1">
                 <b-badge class="bg-green text-white"> 매매 </b-badge>
               </h5>
-              <div class="text-white">
-                최근실거래가
-              </div>
+              <div class="text-white">최근실거래가</div>
               <span class="h2 font-weight-bold mb-0 text-white">
                 18억 8,000만 (22.07 / 4층)
               </span>
@@ -51,9 +60,7 @@
               <h5 class="card-title text-uppercase text-white mb-1">
                 <b-badge class="bg-orange text-white"> 전세 </b-badge>
               </h5>
-              <div class="text-white">
-                최근실거래가
-              </div>
+              <div class="text-white">최근실거래가</div>
               <span class="h2 font-weight-bold mb-0 text-white">
                 7억 8,000만 (22.07 / 4층)
               </span>
@@ -80,7 +87,6 @@
                 >5000만 / 255만</span
               >
             </stats-card>
-
           </b-card-text>
           <b-card-text class="border p-3">
             <h2>시세추이</h2>
@@ -140,13 +146,17 @@ import LineChart from "@/components/Charts/LineChart";
 export default {
   data() {
     return {
-      type: "아파트",
+      sgdbb_cd: "110",
+      favoriteToggle: null,
+      house_type: "아파트",
       sell_type: "매매",
       bldg_name: "동부센트레빌",
       buildYear: "2021.3",
       dealAmount: "20,000",
       bldg_area: "105",
       tot_area: "82",
+      bobn: "44",
+      bubn: "8",
       bigLineChart: {
         allData: [
           [0, 20, 10, 30, 15, 40, 20, 60, 60],
@@ -164,21 +174,24 @@ export default {
         },
         extraOptions: chartConfigs.blueChartOptions,
       },
-      tableData : [
-          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
-          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
-          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
-          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
-          { 계약일: '2022.11.17', 거래 : '월세', 가격 : '2억 3000', 층 : '12층' },
-        ]
+      tableData: [
+        { 계약일: "2022.11.17", 거래: "월세", 가격: "2억 3000", 층: "12층" },
+        { 계약일: "2022.11.17", 거래: "월세", 가격: "2억 3000", 층: "12층" },
+        { 계약일: "2022.11.17", 거래: "월세", 가격: "2억 3000", 층: "12층" },
+        { 계약일: "2022.11.17", 거래: "월세", 가격: "2억 3000", 층: "12층" },
+        { 계약일: "2022.11.17", 거래: "월세", 가격: "2억 3000", 층: "12층" },
+      ],
     };
   },
   components: {
     LineChart,
   },
-  updated : {
-    
+  mounted() {
+    this.favoriteToggle = this.favoriteList
+      .map((v) => v.code)
+      .includes(this.sgdbb_cd);
   },
+  updated() {},
   watch: {
     structDetailPos: function (val) {
       var roadviewContainer = document.getElementById("roadview"); //로드뷰를 표시할 div
@@ -189,9 +202,23 @@ export default {
         roadview.setPanoId(panoId, val); //panoId와 중심좌표를 통해 로드뷰 실행
       });
     },
+    favoriteToggle: function (val) {
+      if (val) {
+        this.$store.dispatch("member/addFavoriteAction", {
+          userid: this.checkUserInfo.userid,
+          house_type: this.house_type,
+          code: this.sgdbb_cd,
+          name: this.bldg_name,
+          address: `${this.address} ${this.bobn} - ${this.bubn}`,
+        });
+      } else {
+        this.$store.dispatch("member/deleteFavoriteAction", this.sgdbb_cd);
+      }
+    },
   },
   computed: {
-    ...mapGetters("map", ["structDetailPos"]),
+    ...mapGetters("map", ["structDetailPos", "address"]),
+    ...mapGetters("member", ["checkUserInfo", "favoriteList"]),
   },
   methods: {
     ...mapMutations("map", ["setDetailToggle"]),
