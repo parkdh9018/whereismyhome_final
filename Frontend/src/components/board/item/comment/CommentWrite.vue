@@ -5,10 +5,22 @@
       <button class="small" @click="updateCommentCancel">취소</button>
       <button class="small" @click="updateComment">수정</button>
     </div>
-    <div v-else class="regist_form">
-      <textarea id="comment" name="comment" v-model="comment" cols="35" rows="2"></textarea>
-      <button @click="registComment">등록</button>
+    <div v-else>
+      <b-row>
+      <b-col sm="11">
+        <b-form-textarea id="comment" name="comment " v-model="comment" rows="3" max-rows="8"></b-form-textarea>
+      </b-col>
+    <b-col sm="1">
+      <b-button variant="btn btn-outline-info ml-2" size="sm" @click="registComment">등록</b-button>
+    </b-col>
+      </b-row>
+
+
+      
+  
     </div>
+    <!-- <b-form-textarea id="comment" name="comment " v-model="comment" rows="3" max-rows="8"></b-form-textarea>
+    <b-button variant="btn btn-outline-info ml-2" size="sm" @click="registComment">등록</b-button> -->
   </div>
 </template>
 
@@ -130,9 +142,9 @@ textarea {
   font-size: large;
 }
 
-button {
+/* b-button {
   float: right;
-}
+} */
 
 button.small {
   width: 60px;

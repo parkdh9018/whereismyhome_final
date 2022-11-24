@@ -24,5 +24,7 @@ public interface HouseMapService {
 	List<BaseAddressDto> markerGugun(Map<String, String> param) throws Exception;
 	List<BaseAddressDto> markerDong(Map<String, String> param) throws Exception;
 	List<HouseInfoDto> searchGugunAvg(Map<String, String> param)throws Exception;
+	List<HouseInfoDto> searchSidoAvg(Map<String, String> param) throws Exception;
+	List<HouseInfoDto> searchDongAvg(Map<String, String> param)throws Exception;
 	
 }

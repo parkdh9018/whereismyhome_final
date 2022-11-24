@@ -88,7 +88,38 @@
 		(lng between #{lng1} and #{lng2})
 	</select>
 	
+	<select id="searchSidoAvg" parameterType="Map" resultType="Map">
+        select dc.dongName,SUBSTRING_INDEX(avg(cast(d.dealAmount AS SIGNED)),".",1)/10 amountAvg,  dc.lng,  dc.lat
+        from housedeal d
+        join houseinfo h
+        on h.aptCode = d.aptCode
+        and no = (select max(no) from housedeal where aptCode = h.aptCode)
+        join baseaddress dc
+        on left(h.dongcode,2) = left(dc.dongCode,2)
+        and dc.lng BETWEEN #{lng1} and #{lng2} 
+        and dc.lat BETWEEN #{lat1} and #{lat2}
+        and dc.sidoName is not null
+        and dc.gugunName is null
+        and dc.dongName is null
+        group by dc.sidoName;
+    </select>
+	
+	
 	<select id="searchGugunAvg" parameterType="Map" resultType="Map">
+        select dc.gugunName,SUBSTRING_INDEX(avg(cast(d.dealAmount AS SIGNED)),".",1)/10 amountAvg,  dc.lng,  dc.lat
+        from housedeal d
+        join houseinfo h
+        on h.aptCode = d.aptCode
+        and no = (select max(no) from housedeal where aptCode = h.aptCode)
+        join baseaddress dc
+        on left(h.dongcode,5) = left(dc.dongCode,5)
+        and dc.lng BETWEEN #{lng1} and #{lng2} 
+        and dc.lat BETWEEN #{lat1} and #{lat2}
+        and dc.gugunName is not null
+        and dc.dongName is null
+        group by dc.gugunName;
+    </select>
+	<select id="searchDongAvg" parameterType="Map" resultType="Map">
         select dc.dongName,SUBSTRING_INDEX(avg(cast(d.dealAmount AS SIGNED)),".",1)/10 amountAvg,  dc.lng,  dc.lat
         from housedeal d
         join houseinfo h

@@ -52,7 +52,7 @@ export default {
 .comment {
   text-align: left;
   border-radius: 5px;
-  background-color: #B8A996;
+  border: 1px solid #41D7F2;
   padding: 10px 20px;
   margin: 10px;
 }

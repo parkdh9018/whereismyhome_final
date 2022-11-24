@@ -124,6 +124,18 @@ public class HouseMapServiceImpl implements HouseMapService {
 	}
 
 
+	@Override
+	public List<HouseInfoDto> searchSidoAvg(Map<String, String> param) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).searchSidoAvg(param);
+	}
+
+
+	@Override
+	public List<HouseInfoDto> searchDongAvg(Map<String, String> param) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).searchDongAvg(param);
+	}
+
+
 
 
 }

@@ -169,6 +169,16 @@ public class HouseMapController {
 		return new ResponseEntity<List<BaseAddressDto>>(haHouseMapService.markerDong(param), HttpStatus.OK);
 	}
 	
+	@GetMapping("/searchSidoAvg")
+	public ResponseEntity<List<HouseInfoDto>> searchSidoAvg(@RequestParam("lat1") String lat1, @RequestParam("lat2") String lat2, @RequestParam("lng1") String lng1, @RequestParam("lng2") String lng2) throws Exception {
+		Map<String , String> param = new HashMap<>();
+		param.put("lat1", lat1);
+		param.put("lat2", lat2);
+		param.put("lng1", lng1);
+		param.put("lng2", lng2);
+		logger.info("aptNearbyDong - 호출 {} {}", lat1, lng1);
+		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.searchSidoAvg(param), HttpStatus.OK);
+	}
 	
 	@GetMapping("/searchGugunAvg")
 	public ResponseEntity<List<HouseInfoDto>> searchGugunAvg(@RequestParam("lat1") String lat1, @RequestParam("lat2") String lat2, @RequestParam("lng1") String lng1, @RequestParam("lng2") String lng2) throws Exception {
@@ -180,6 +190,19 @@ public class HouseMapController {
 		logger.info("aptNearbyDong - 호출 {} {}", lat1, lng1);
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.searchGugunAvg(param), HttpStatus.OK);
 	}
+	
+	@GetMapping("/searchDongAvg")
+	public ResponseEntity<List<HouseInfoDto>> searchDongAvg(@RequestParam("lat1") String lat1, @RequestParam("lat2") String lat2, @RequestParam("lng1") String lng1, @RequestParam("lng2") String lng2) throws Exception {
+		Map<String , String> param = new HashMap<>();
+		param.put("lat1", lat1);
+		param.put("lat2", lat2);
+		param.put("lng1", lng1);
+		param.put("lng2", lng2);
+		logger.info("aptNearbyDong - 호출 {} {}", lat1, lng1);
+		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.searchDongAvg(param), HttpStatus.OK);
+	}
+	
+	
 	
 //	@GetMapping("/donglist/{guguncode}/{dongname}")
 //	public ResponseEntity<List<DongCodeDto>> donglist(@PathVariable("guguncode") String guguncode, @PathVariable("dongname") String dongname) throws Exception {
