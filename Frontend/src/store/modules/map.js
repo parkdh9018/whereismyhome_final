@@ -18,11 +18,7 @@ const mapStore = {
     address: "",
     detailToggle: false,
     structDetailPos: null,
-    structDetail: {
-      max_amt: "",
-      min_amt: "",
-      avg_amt: "",
-    },
+    structDetail: null,
     filter_buttons: [
       [
         { caption: "전세", state: true },
@@ -70,6 +66,9 @@ const mapStore = {
   mutations: {
     levelMove(state, payload) {
       state.level = payload;
+    },
+    structDetailClear(state) {
+      state.structDetail = null;
     },
     structClear(state) {
       state.structList = [];
@@ -149,7 +148,6 @@ const mapStore = {
       // 아파트
       if (filter2.length == 0 || filter2.includes("아파트")) {
         dealApi.getApartDeal(param, ({ data }) => {
-          console.log(data);
           const data_worked = data.map((v) => {
             return {
               id: v.sgdbb_cd,
@@ -217,6 +215,11 @@ const mapStore = {
 
     // 상세 정보
     getDetail({ commit }, [code, type]) {
+
+      commit("structDetailClear");
+
+      console.log("===detail");
+
       let param = {
         sgdbb_cd: code,
       };
