@@ -58,9 +58,15 @@ public class HouseDealController {
 		logger.info("getApartDeal - 호출 : ");
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put( "sgd_cd", param.get("sgd_cd") );
-		resultMap.put("sell", param.get("sell"));
-		resultMap.put("year", param.get("year"));
-		resultMap.put("month", param.get("month"));
+		if(param.containsKey("sell")) {
+			resultMap.put("sell", param.get("sell"));
+		}
+		if(param.containsKey("year")) {
+			resultMap.put("year", param.get("year"));
+		}
+		if(param.containsKey("month")) {
+			resultMap.put("month", param.get("month"));
+		}
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getApartDeal(resultMap), HttpStatus.OK);
 	}
 	
@@ -105,9 +111,15 @@ public class HouseDealController {
 		Map<String, Object> resultMap = new HashMap<>();
 		System.out.println("di");
 		resultMap.put( "sgd_cd", param.get("sgd_cd") );
-		resultMap.put("sell", param.get("sell"));
-		resultMap.put("year", param.get("year"));
-		resultMap.put("month", param.get("month"));
+		if(param.containsKey("sell")) {
+			resultMap.put("sell", param.get("sell"));
+		}
+		if(param.containsKey("year")) {
+			resultMap.put("year", param.get("year"));
+		}
+		if(param.containsKey("month")) {
+			resultMap.put("month", param.get("month"));
+		}
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getMultiplexHouseDeal(resultMap), HttpStatus.OK);
 
 	}
@@ -133,9 +145,15 @@ public class HouseDealController {
 		Map<String, Object> resultMap = new HashMap<>();
 		System.out.println("di");
 		resultMap.put( "sgd_cd", param.get("sgd_cd") );
-		resultMap.put("sell", param.get("sell"));
-		resultMap.put("year", param.get("year"));
-		resultMap.put("month", param.get("month"));
+		if(param.containsKey("sell")) {
+			resultMap.put("sell", param.get("sell"));
+		}
+		if(param.containsKey("year")) {
+			resultMap.put("year", param.get("year"));
+		}
+		if(param.containsKey("month")) {
+			resultMap.put("month", param.get("month"));
+		}
 		return new ResponseEntity<List<HouseDealDto>>(houseDealService.getOfficetelDeal(resultMap), HttpStatus.OK);
 
 	}
